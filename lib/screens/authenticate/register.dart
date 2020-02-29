@@ -43,7 +43,7 @@ class _RegisterState extends State<Register> {
             resizeToAvoidBottomPadding: false,
             backgroundColor: Colors.white,
             appBar: AppBar(
-              backgroundColor: Color(0xff16071e),
+              backgroundColor: Colors.lightBlue[900],
               elevation: 0.0,
               title: Text('Registration'),
               actions: <Widget>[
@@ -72,22 +72,22 @@ class _RegisterState extends State<Register> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         RaisedButton(
-                          color: Color(0xff16071e),
+                          color: Colors.lightBlue[900],
                           padding: const EdgeInsets.all(10.0),
                           shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(10.0),
-                              side: BorderSide(color: Color(0xff16071e))),
+                              side: BorderSide(color: Colors.lightBlue[900])),
                           onPressed: onStepCancel,
                           child: Text('Back',
                               style:
                                   TextStyle(color: Colors.white, fontSize: 17)),
                         ),
                         RaisedButton(
-                          color: Color(0xff16071e),
+                          color: Colors.lightBlue[900],
                           padding: const EdgeInsets.all(10.0),
                           shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(10.0),
-                              side: BorderSide(color: Color(0xff16071e))),
+                              side: BorderSide(color: Colors.lightBlue[900])),
                           onPressed: onStepContinue,
                           child: Text('Next',
                               style:
@@ -304,7 +304,7 @@ class _RegisterState extends State<Register> {
                       title: Text(' '),
                       content: Container(
                           child: RaisedButton(
-                              color: Color(0xff16071e),
+                              color: Colors.lightBlue[900],
                               padding: const EdgeInsets.all(10.0),
                               shape: RoundedRectangleBorder(
                                   borderRadius: new BorderRadius.circular(10.0),

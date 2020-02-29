@@ -12,15 +12,14 @@ class _AuthenticateState extends State<Authenticate> {
       body: Container(
           decoration: new BoxDecoration(color: Colors.white),
           child: Column(children: <Widget>[
-            SizedBox(height: 150.0),
+            SizedBox(height: 100.0),
             Image(
-              image: AssetImage("img/GearWithTitle.png"),
-              width: 175.0,
+              image: AssetImage("img/zoda.png"),
+              width: 200,
             ),
-            SizedBox(height: 15.0),
             Text(
-              '"If you in panic get a Mechanic"',
-              style: TextStyle(color: Color(0xff16071e), fontSize: 17.0, fontStyle: FontStyle.italic,fontWeight: FontWeight.bold),
+              '"Find your best place"',
+              style: TextStyle(color: Colors.lightBlue[900], fontSize: 17.0, fontStyle: FontStyle.italic,fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 75.0),
             RaisedButton(
@@ -69,7 +68,7 @@ class _AuthenticateState extends State<Authenticate> {
                         style: TextStyle(
                             fontSize: 27.0,
                             fontFamily: 'Georgia',
-                            color: Color(0xff16071e),
+                            color: Colors.lightBlue[900],
                             fontWeight: FontWeight.bold
                             ),
                       ),

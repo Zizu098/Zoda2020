@@ -23,7 +23,7 @@ final AuthService _auth = AuthService();
       resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Color(0xff16071e),
+        backgroundColor: Colors.lightBlue[900],
         // elevation: 0.0,
         title: Text('Login Page'),
         
@@ -69,7 +69,7 @@ final AuthService _auth = AuthService();
                 height: 20.0,
               ),
               RaisedButton(
-                color: Color(0xff16071e),
+                color: Colors.lightBlue[900],
                  padding: const EdgeInsets.all(10.0),
                  shape: RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0),
                 side: BorderSide(color: Colors.black)),
