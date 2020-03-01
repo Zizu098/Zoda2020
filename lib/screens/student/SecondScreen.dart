@@ -98,6 +98,7 @@ class FirstScreen extends StatelessWidget {
           title: Text("School"),
         ),
         body: ListView(
+          scrollDirection: Axis.vertical,
           children: <Widget>[
             Container(
               child: Padding(

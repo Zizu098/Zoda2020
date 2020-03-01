@@ -231,7 +231,7 @@ class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
                     ),
                     InkWell(
                       child: FlatButton(
-                        color: Color(0xfff9811e),
+                        color: Color(0xff1d1f33),
                         onPressed: () {
                           Navigator.push(
                               context,

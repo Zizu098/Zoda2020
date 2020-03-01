@@ -19,7 +19,7 @@ class _RegisterState extends State<Register> {
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
-    GlobalKey<FormState>()
+    GlobalKey<FormState>(),
   ];
 
   int _currentStep = 0;
@@ -314,7 +314,20 @@ class _RegisterState extends State<Register> {
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 17),
                               ),
-                              onPressed: () async {})),
+                              onPressed: () async {
+                                  setState(() {
+                                    loading = true;
+                                  });
+                                  dynamic result = await _auth.registerWithEmailAndPassword(_email, _password);
+                                  if(result == null){
+                                    setState(() {
+                                      error = 'Email already used';
+                                      loading = false;
+                                  });
+                                  }else{
+                                    Navigator.of(context).pushReplacementNamed("/login");
+                                  }
+                              })),
                       isActive: true,
                       state: StepState.complete,
                     ),
