@@ -3,7 +3,8 @@ import 'package:zoda/database.services/auth.dart';
 import 'package:zoda/models/userDetail.dart';
 import 'package:zoda/screens/migration/migrationHome.dart';
 import 'package:zoda/screens/student/studentHome.dart';
-import 'package:zoda/database.services/bestCountries.dart';
+import 'package:zoda/database.services/topCountries.service.dart';
+import 'package:zoda/models/topCountriesDetail.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:zoda/database.services/user.service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -21,7 +22,12 @@ class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
   UserDetail user = new UserDetail();
   List<UserDetail> u, c;
+
   var url;
+
+  TopCountriesService topServ = new TopCountriesService();
+  TopCountriesDetail topCountry = new TopCountriesDetail();
+
   bool infoWindowVisible = false;
   bool status = false;
   // _HomeState(){
@@ -439,7 +445,24 @@ class _homeScreenBottomPartState extends State<homeScreenBottomPart> {
               scrollDirection: Axis.horizontal,
               children: countryCards,
             ),
-          )
+          ),
+          SizedBox(height: 50.0,),
+          RaisedButton(
+              color: Color(0xfff9811e),
+              onPressed: () {
+                
+              },
+              padding: EdgeInsets.all(15.0),
+              shape: new RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(30.0)),
+              child: Text(
+                'Add top 10 countries',
+                textAlign: TextAlign.center,
+                style:
+                    TextStyle(fontSize: 25.0, fontFamily: 'Georgia', height: 1),
+              ),
+              textColor: Colors.white,
+            ),
         ],
       ),
     );
@@ -458,20 +481,20 @@ class countryCard extends StatefulWidget {
 
 class _countryCardState extends State<countryCard> {
   // final String imagePath, countryName;
-  List<bestCountries> allData = [];
+  List<TopCountriesService> allData = [];
   // countryCard(this.imagePath, this.countryName);
   void initState() {
     DatabaseReference ref = FirebaseDatabase.instance.reference();
-    ref.child('bestCountries').once().then((DataSnapshot snap) {
+    ref.child('TopCountriesService').once().then((DataSnapshot snap) {
       var keys = snap.value.keys;
       var data = snap.value;
       allData.clear();
       for (var key in keys) {
-        bestCountries c = new bestCountries(
-          data[key]['name'],
-          data[key]['image'],
-        );
-        allData.add(c);
+        // TopCountriesService c = new TopCountriesService(
+        //   data[key]['name'],
+        //   data[key]['image'],
+        // );
+        // allData.add(c);
       }
       setState(() {
         print('length: ${allData.length}');
