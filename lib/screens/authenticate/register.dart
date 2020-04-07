@@ -1,11 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zoda/components/loading/loading.dart';
 import 'package:zoda/database.Services/auth.dart';
+import 'package:zoda/models/userDetail.dart';
 import 'package:zoda/theme/input.dart';
 import 'login.dart';
-
-// import 'package:google_sign_in/google_sign_in.dart';
+import 'package:zoda/database.services/user.service.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart';
+import 'dart:io';
 
 class Register extends StatefulWidget {
   @override
@@ -14,13 +20,17 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
-
+  UserDetail userData = new UserDetail();
+  UserService userServ = new UserService();
   static List<GlobalKey<FormState>> formKeys = [
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
   ];
+
+  File _image;
+  String fileName;
 
   int _currentStep = 0;
 
@@ -34,9 +44,32 @@ class _RegisterState extends State<Register> {
   String _password = "";
   String error = '';
   bool loading = false;
+  var url;
+
+  String conButton = 'Next';
+  String dropdownValue = 'None';
 
   @override
   Widget build(BuildContext context) {
+
+    Future getImage() async{
+      var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+      setState(() {
+        _image = image;
+        print('Image Path $_image');
+      });
+    }
+    Future uploadPic(BuildContext context) async{
+      fileName = basename(_image.path);
+      StorageReference firebaseStorageRef=FirebaseStorage.instance.ref().child(fileName);
+      var downUrl = fileName;
+      url = downUrl.toString();
+      setState(() {
+        userData.imgUrl = url;
+      });
+      StorageUploadTask uploadTask=firebaseStorageRef.putFile(_image);
+    }
+
     return loading
         ? Loading()
         : Scaffold(
@@ -60,7 +93,8 @@ class _RegisterState extends State<Register> {
                 ),
               ],
             ),
-            body: Container(
+            body:
+            Container(
               child: Theme(
                 data: ThemeData(primaryColor: Color(0xfff9811e)),
                 child: Stepper(
@@ -89,7 +123,7 @@ class _RegisterState extends State<Register> {
                               borderRadius: new BorderRadius.circular(10.0),
                               side: BorderSide(color: Colors.lightBlue[900])),
                           onPressed: onStepContinue,
-                          child: Text('Next',
+                          child: Text(conButton,
                               style:
                                   TextStyle(color: Colors.white, fontSize: 17)),
                         ),
@@ -112,6 +146,8 @@ class _RegisterState extends State<Register> {
                                 onChanged: (String value) {
                                   setState(() {
                                     _firstName = value;
+                                    // userData.userId = '1';
+                                    userData.firstName = value;  
                                   });
                                 },
                                 decoration: textInputDecoration.copyWith(
@@ -133,35 +169,34 @@ class _RegisterState extends State<Register> {
                                 onChanged: (String value) {
                                   setState(() {
                                     _lastName = value;
+                                    userData.lastName = value;
                                   });
                                 },
                               ),
                               SizedBox(
                                 height: 15.0,
                               ),
-                              TextFormField(
-                                initialValue: _age == 0 ? "" : _age.toString(),
+                             TextFormField(
+                                initialValue: _email,
                                 decoration: textInputDecoration.copyWith(
-                                    hintText: 'Age'),
-                                validator: (val) => val.isEmpty
-                                    ? "Enter Your Age"
-                                    : int.parse(val) <= 10
-                                        ? 'your age should be greater than 10'
-                                        : int.parse(val) >= 80
-                                            ? 'your age should be smaller than 80'
-                                            : null,
+                                    hintText: 'Email'),
+                                validator: (val) {
+                                  if (val.isEmpty || !val.contains('@')) {
+                                    return 'Please enter valid email';
+                                  }
+                                  return null;
+                                },
                                 onChanged: (value) {
                                   setState(() {
-                                    _age = int.parse(value);
+                                    _email = value;
+                                    userData.email = value;
                                   });
                                 },
-                                keyboardType: TextInputType.number,
-                                inputFormatters: <TextInputFormatter>[
-                                  WhitelistingTextInputFormatter.digitsOnly
-                                ],
                               ),
-                              SizedBox(
-                                height: 15.0,
+                              Text(
+                                error,
+                                style: TextStyle(
+                                    color: Colors.red, fontSize: 14.0),
                               ),
                               TextFormField(
                                 decoration: textInputDecoration.copyWith(
@@ -173,6 +208,7 @@ class _RegisterState extends State<Register> {
                                 onChanged: (value) {
                                   setState(() {
                                     _password = value;
+                                    
                                   });
                                 },
                               ),
@@ -200,6 +236,7 @@ class _RegisterState extends State<Register> {
                                 style: TextStyle(
                                     color: Colors.red, fontSize: 14.0),
                               ),
+                             
                             ],
                           ),
                         ),
@@ -224,50 +261,38 @@ class _RegisterState extends State<Register> {
                                 onChanged: (value) {
                                   setState(() {
                                     _address = value;
+                                    userData.address = value;
                                   });
                                 },
                               ),
                               SizedBox(
                                 height: 15.0,
-                              ),
-                              TextFormField(
-                                initialValue: _email,
+                              ), TextFormField(
+                                initialValue: _age == 0 ? "" : _age.toString(),
                                 decoration: textInputDecoration.copyWith(
-                                    hintText: 'Email'),
-                                validator: (val) {
-                                  if (val.isEmpty || !val.contains('@')) {
-                                    return 'Please enter valid email';
-                                  }
-                                  return null;
-                                },
+                                    hintText: 'Age'),
+                                validator: (val) => val.isEmpty
+                                    ? "Enter Your Age"
+                                    : int.parse(val) <= 10
+                                        ? 'your age should be greater than 10'
+                                        : int.parse(val) >= 90
+                                            ? 'your age should be smaller than 80'
+                                            : null,
                                 onChanged: (value) {
                                   setState(() {
-                                    _email = value;
+                                    _age = int.parse(value);
+                                    userData.age = int.parse(value);
                                   });
                                 },
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  WhitelistingTextInputFormatter.digitsOnly
+                                ],
                               ),
-                              SizedBox(height: 40.0),
-                              Text(
-                                error,
-                                style: TextStyle(
-                                    color: Colors.red, fontSize: 14.0),
+                               SizedBox(
+                                height: 15.0,
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      isActive: true,
-                    ),
-                    Step(
-                      title: Text(' '),
-                      content: Container(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 20.0, horizontal: 50.0),
-                        child: Form(
-                          key: formKeys[2],
-                          child: Column(
-                            children: <Widget>[
-                              TextFormField(
+                               TextFormField(
                                 initialValue: _phone,
                                 maxLines: 1,
                                 decoration: textInputDecoration.copyWith(
@@ -281,6 +306,7 @@ class _RegisterState extends State<Register> {
                                 onChanged: (value) {
                                   setState(() {
                                     _phone = value;
+                                    userData.phone = value;
                                   });
                                 },
                                 keyboardType: TextInputType.number,
@@ -293,7 +319,31 @@ class _RegisterState extends State<Register> {
                                 error,
                                 style: TextStyle(
                                     color: Colors.red, fontSize: 14.0),
+                              ),   
+                               Row(
+                               mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                              Text('Status:', style: TextStyle(fontSize: 18),),
+                              DropdownButton(
+                                value: dropdownValue,
+                                icon: Icon(Icons.arrow_drop_down),
+                                iconSize: 24,
+                                elevation: 16,
+                                items: <String>['None','High school','Bachelor', 'Maj', 'PHD', 'Work'].map<DropdownMenuItem<String>>
+                                ((String value){return DropdownMenuItem<String>(value: value,child: Text(value),);
+                                }).toList(),
+                                style: TextStyle(fontSize: 18, color: Colors.black),
+                                onChanged: (String newValue){
+                                  setState((){
+                                    dropdownValue = newValue;
+                                    userData.status = newValue;
+                                  });
+                                },
                               ),
+                              ],
+                              ),
+                              SizedBox(height: 40.0),
                             ],
                           ),
                         ),
@@ -303,33 +353,44 @@ class _RegisterState extends State<Register> {
                     Step(
                       title: Text(' '),
                       content: Container(
-                          child: RaisedButton(
-                              color: Colors.lightBlue[900],
-                              padding: const EdgeInsets.all(10.0),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: new BorderRadius.circular(10.0),
-                                  side: BorderSide(color: Colors.black)),
-                              child: Text(
-                                '  Register  ',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 17),
-                              ),
-                              onPressed: () async {
-                                  setState(() {
-                                    loading = true;
-                                  });
-                                  dynamic result = await _auth.registerWithEmailAndPassword(_email, _password);
-                                  if(result == null){
-                                    setState(() {
-                                      error = 'Email already used';
-                                      loading = false;
-                                  });
-                                  }else{
-                                    Navigator.of(context).pushReplacementNamed("/login");
-                                  }
-                              })),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            SizedBox(height: 20.0),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: CircleAvatar(
+                                    radius: 100,
+                                    backgroundColor: Color(0xff476fb),
+                                    child: ClipOval(
+                                      child: SizedBox(
+                                        width: 180.0,
+                                        height: 180.0,
+                                        child:(_image != null) ? Image.file(_image, fit:BoxFit.fill)
+                                         :Image.network('https://scontent.fcai3-1.fna.fbcdn.net/v/t1.0-9/p960x960/84387413_3463413623731310_2162071027679494144_o.jpg?_nc_cat=106&_nc_sid=85a577&_nc_ohc=bmRqps74ZTMAX8H8Vwa&_nc_ht=scontent.fcai3-1.fna&_nc_tp=6&oh=41b236c306b94899bf519f329a68342a&oe=5E906D1D',
+                                         fit: BoxFit.fill),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top:60.0),
+                                  child: IconButton(icon: Icon(FontAwesomeIcons.camera, size: 30.0,),
+                                   onPressed: (){
+                                     getImage();
+                                  }),
+                                )
+                              ],
+                            ),
+                            SizedBox(height: 20.0,),
+                          ],
+                        ),
+                         ),
                       isActive: true,
-                      state: StepState.complete,
+                      // state: StepState.complete,
                     ),
                   ],
                   type: StepperType.horizontal,
@@ -339,28 +400,43 @@ class _RegisterState extends State<Register> {
                     });
                     // _currentStep = step;
                   },
-                  onStepContinue: () {
+                  onStepContinue:() {
                     setState(() {
-                      if (formKeys[_currentStep].currentState.validate()) {
-                        formKeys[_currentStep].currentState.save();
-                        if (_currentStep < 4) {
-                          _currentStep = _currentStep + 1;
-                        } else {
+                      if (_currentStep == 2 || formKeys[_currentStep].currentState.validate()) {
+                        // formKeys[_currentStep].currentState.save();
+                        if (_currentStep < 3) {
+                          if(_currentStep == 1){
+                          conButton = 'Register';
+                        }else if(_currentStep == 2){
+                          setState(() {
+                                    loading = true;
+                                  });
+                                  dynamic result =  _auth.registerWithEmailAndPassword(_email, _password);
+                                  void getId() async{
+                                  final FirebaseUser user = await FirebaseAuth.instance.currentUser();
+                                  userData.userId = user.uid.toString();
+                                  userServ.add(userData);
+                                 } 
+                                 
+                                  if(result == null){
+                                    setState(() {
+                                      error = 'Email already used';
+                                      loading = false;
+                                  });
+                                  }else{
+                                    uploadPic(context).then(
+                                      (v){
+                                        Navigator.of(context).pushReplacementNamed("./login");
+                                      }
+                                    );
+                                    getId();
+                                  }
+                        }
+                        _currentStep = _currentStep + 1; 
+                        }else{
                           _currentStep = 0;
                         }
-                        // if (_formKey.currentState.validate()) {
-                        //   setState(() {loading = true;});
-                        //   dynamic result = await _auth
-                        //       .registerWithEmailAndPassword(email, password);
-                        //   if (result == null) {
-                        //     setState(() {
-                        //       error = 'please enter a valid email';
-                        //       loading = false;
-                        //     });
-                        //   } else {
-                        //     Navigator.of(context).pushReplacementNamed('/home');
-                        //   }
-                        // }
+                       
                       }
                     });
                   },
@@ -378,161 +454,3 @@ class _RegisterState extends State<Register> {
           );
   }
 }
-
-// List<Step> steps = [
-//   Step(
-//     title: Text('  '),
-//     content: Container(
-//       padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-//       child: Form(
-//         key: formKeys[0],
-//         child: Column(
-//           children: <Widget>[
-//             TextFormField(
-//               decoration:
-//                   textInputDecoration.copyWith(hintText: 'Fisrt name'),
-//               validator: (val) =>
-//                   val.isEmpty ? 'Enter your First name' : null,
-//             ),
-//             SizedBox(
-//               height: 15.0,
-//             ),
-//             TextFormField(
-//               decoration: textInputDecoration.copyWith(hintText: 'Last name'),
-//               validator: (val) =>
-//                   val.isEmpty ? 'Enter your Last name ' : null,
-//             ),
-//             SizedBox(
-//               height: 15.0,
-//             ),
-//             TextFormField(
-//               decoration: textInputDecoration.copyWith(hintText: 'Age'),
-//               validator: (val) => val.isEmpty ? 'Enter your Age ' : null,
-//               keyboardType: TextInputType.number,
-//               inputFormatters: <TextInputFormatter>[
-//                 WhitelistingTextInputFormatter.digitsOnly
-//               ],
-//             ),
-//             SizedBox(
-//               height: 15.0,
-//             ),
-//             TextFormField(
-//               decoration: textInputDecoration.copyWith(hintText: 'Password'),
-//               validator: (val) =>
-//                   val.length < 6 ? 'Enter n password 6+ chars long' : null,
-//               obscureText: true,
-//               onChanged: (val) {
-//           //     setState(() => password = val);
-//                 //  = val;
-//               },
-//             ),
-//             SizedBox(
-//               height: 15.0,
-//             ),
-//             TextFormField(
-//               decoration:
-//                   textInputDecoration.copyWith(hintText: 'Confirm Password'),
-//               validator: (val) {
-//                 if (val.isEmpty) {
-//                   //|| password!=val
-//               //    log(password);
-//                   return 'Password not matched';
-//                 }
-//               },
-//               obscureText: true,
-//             ),
-//             SizedBox(height: 5.0),
-//             Text(
-//               error,
-//               style: TextStyle(color: Colors.red, fontSize: 14.0),
-//             ),
-//           ],
-//         ),
-//       ),
-//     ),
-//     isActive: true,
-//   ),
-//   Step(
-//     title: Text(' '),
-//     content: Container(
-//       padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-//       child: Form(
-//         key: formKeys[1],
-//         child: Column(
-//           children: <Widget>[
-//             TextFormField(
-//               decoration: textInputDecoration.copyWith(hintText: 'Address'),
-//               validator: (val) => val.isEmpty ? 'Enter your address' : null,
-//             ),
-//             SizedBox(
-//               height: 15.0,
-//             ),
-//             TextFormField(
-//                 decoration: textInputDecoration.copyWith(hintText: 'Email'),
-//                 validator: (val) {
-//                   if (val.isEmpty || !val.contains('@')) {
-//                     return 'Please enter valid email';
-//                   }
-//                 }),
-//             SizedBox(height: 40.0),
-//             Text(
-//               error,
-//               style: TextStyle(color: Colors.red, fontSize: 14.0),
-//             ),
-//           ],
-//         ),
-//       ),
-//     ),
-//     isActive: true,
-//   ),
-//   Step(
-//     title: Text(' '),
-//     content: Container(
-//       padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-//       child: Form(
-//         key: formKeys[2],
-//         child: Column(
-//           children: <Widget>[
-//             TextFormField(
-//               maxLines: 1,
-//               decoration:
-//                   textInputDecoration.copyWith(hintText: 'Phone Number'),
-//               validator: (val) {
-//                 if (val.isEmpty || val.length != 11) {
-//                   return 'Please enter valid number';
-//                 }
-//               },
-//               keyboardType: TextInputType.number,
-//               inputFormatters: <TextInputFormatter>[
-//                 WhitelistingTextInputFormatter.digitsOnly
-//               ],
-//             ),
-//             SizedBox(height: 5.0),
-//             Text(
-//               error,
-//               style: TextStyle(color: Colors.red, fontSize: 14.0),
-//             ),
-//           ],
-//         ),
-//       ),
-//     ),
-//     isActive: true,
-//   ),
-//   Step(
-//     title: Text(' '),
-//     content: Container(
-//         child: RaisedButton(
-//             color: Color(0xff16071e),
-//             padding: const EdgeInsets.all(10.0),
-//             shape: RoundedRectangleBorder(
-//                 borderRadius: new BorderRadius.circular(10.0),
-//                 side: BorderSide(color: Colors.black)),
-//             child: Text(
-//               '  Register  ',
-//               style: TextStyle(color: Colors.white, fontSize: 17),
-//             ),
-//             onPressed: () async {})),
-//     isActive: true,
-//     state: StepState.complete,
-//   ),
-// ];

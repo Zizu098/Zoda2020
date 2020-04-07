@@ -1,19 +1,39 @@
 class UserDetail {
-  final String firstName;
-  final String lastName;
-  final int age;
-  final String address;
-  final String email;
-  final String phone;
-  final String userId;
+  String firstName;
+  String lastName;
+  int age;
+  String address;
+  String email;
+  String phone;
+  String userId;
+  String imgUrl;
+  String status;
 
-  UserDetail({this.userId,
+  UserDetail({
+      this.userId,
       this.firstName,
       this.lastName,
       this.address,
       this.age,
       this.phone,
-      this.email});
+      this.email,
+      this.imgUrl,
+      this.status
+      });
+
+
+  UserDetail.fromMap(Map snapshot, String id):
+
+    userId = id ?? '',
+    firstName = snapshot['firstName'] ?? '',
+    lastName = snapshot['lastName'] ?? '',
+    age = snapshot['age'] ?? 0,
+    address = snapshot['address'] ?? '',
+    email = snapshot['email'] ?? '',
+    phone = snapshot['phone'] ?? '',
+    imgUrl = snapshot['imgUrl'] ?? '',
+    status = snapshot['status'] ?? '';
+
 
   toJson() {
     return {
@@ -23,7 +43,9 @@ class UserDetail {
       "address": address,
       "age": age,
       "phone": phone,
-      "email": email
+      "email": email,
+      "imgUrl": imgUrl,
+      "status": status
     };
   }
 }
