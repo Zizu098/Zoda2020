@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zoda/database.services/auth.dart';
+import 'package:zoda/models/topCountries.dart';
 import 'package:zoda/models/userDetail.dart';
 import 'package:zoda/screens/migration/migrationHome.dart';
 import 'package:zoda/screens/student/studentHome.dart';
@@ -25,8 +26,7 @@ class _HomeState extends State<Home> {
 
   var url;
 
-  TopCountriesService topServ = new TopCountriesService();
-  TopCountriesDetail topCountry = new TopCountriesDetail();
+  
 
   bool infoWindowVisible = false;
   bool status = false;
@@ -419,15 +419,27 @@ class homeScreenBottomPart extends StatefulWidget {
 }
 
 class _homeScreenBottomPartState extends State<homeScreenBottomPart> {
+  TopCountriesService topServ = new TopCountriesService();
+  TopCountriesDetail topCountry = new TopCountriesDetail();
+
+  // _homeScreenBottomPartState(){
+  //   topCountry.topCountriesId = 2;
+  //   topCountry.topCountriesName = 'Denmark';
+  //   topCountry.topCountriesContinent = 'Europe';
+  //   topCountry.topCountriesEvaluation = 5.0;
+  //   topCountry.topCountriesImage = 'img/denmark.png';
+  //   topCountry.topCountriesDescription = 'Denmark is a Scandinavian country comprising the Jutland Peninsula and numerous islands. It\'s linked to nearby Sweden via the Öresund bridge. Copenhagen, its capital, is home to royal palaces and colorful Nyhavn harbor, plus the Tivoli amusement park and the iconic “Little Mermaid” statue. Odense is writer Hans Christian Andersen\’s hometown, with a medieval core of cobbled streets and half-timbered houses.';
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: new BoxDecoration(color: bkColor),
-      child: Column(
+      child: ListView(
         children: <Widget>[
           Padding(
             padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -443,26 +455,52 @@ class _homeScreenBottomPartState extends State<homeScreenBottomPart> {
             height: 65,
             child: ListView(
               scrollDirection: Axis.horizontal,
-              children: countryCards,
+              // children: countryCards,
             ),
           ),
-          SizedBox(height: 50.0,),
-          RaisedButton(
-              color: Color(0xfff9811e),
-              onPressed: () {
-                
-              },
-              padding: EdgeInsets.all(15.0),
-              shape: new RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(30.0)),
-              child: Text(
-                'Add top 10 countries',
-                textAlign: TextAlign.center,
-                style:
-                    TextStyle(fontSize: 25.0, fontFamily: 'Georgia', height: 1),
-              ),
-              textColor: Colors.white,
-            ),
+          // SizedBox(height: 50.0,),
+        Card(
+        // child: Column(
+        //   mainAxisSize: MainAxisSize.min,
+        //   children: <Widget>[
+        //     // Row(
+        //     //   children: <Widget>[
+        //     ListTile(
+        //       // leading: Image(image: AssetImage(topCountry.topCountriesImage)),
+        //       title: Text(topCountry.topCountriesName),
+        //       subtitle: Text(topCountry.topCountriesContinent),
+        //     ),
+        //     //   ],
+        //     // ),
+        //     ButtonBar(
+        //       children: <Widget>[
+        //         Text(topCountry.topCountriesName),
+        //         Text(topCountry.topCountriesContinent),
+        //         FlatButton(
+        //           child: Text('View'),
+        //           onPressed: () {/* ... */},
+        //         ),
+        //       ],
+        //     ),
+        //   ],
+        // ),
+          ),
+          // RaisedButton(
+          //     color: Color(0xfff9811e),
+          //     onPressed: () {
+          //       topServ.addTopCountries(topCountry);
+          //     },
+          //     padding: EdgeInsets.all(15.0),
+          //     shape: new RoundedRectangleBorder(
+          //         borderRadius: new BorderRadius.circular(30.0)),
+          //     child: Text(
+          //       'Add top 10 countries',
+          //       textAlign: TextAlign.center,
+          //       style:
+          //           TextStyle(fontSize: 25.0, fontFamily: 'Georgia', height: 1),
+          //     ),
+          //     textColor: Colors.white,
+          //   ),
         ],
       ),
     );
@@ -470,63 +508,64 @@ class _homeScreenBottomPartState extends State<homeScreenBottomPart> {
 }
 // var homeScreenBottomPart =
 
-List<countryCard> countryCards = [
-  // countryCard("assets/images/map1.png", "North Of America"),
-];
+// List<countryCard> countryCards = [
+//   // countryCard("assets/images/map1.png", "North Of America"),
+// ];
 
-class countryCard extends StatefulWidget {
-  @override
-  _countryCardState createState() => _countryCardState();
-}
+// class countryCard extends StatefulWidget {
+//   @override
+//   _countryCardState createState() => _countryCardState();
+// }
 
-class _countryCardState extends State<countryCard> {
-  // final String imagePath, countryName;
-  List<TopCountriesService> allData = [];
-  // countryCard(this.imagePath, this.countryName);
-  void initState() {
-    DatabaseReference ref = FirebaseDatabase.instance.reference();
-    ref.child('TopCountriesService').once().then((DataSnapshot snap) {
-      var keys = snap.value.keys;
-      var data = snap.value;
-      allData.clear();
-      for (var key in keys) {
-        // TopCountriesService c = new TopCountriesService(
-        //   data[key]['name'],
-        //   data[key]['image'],
-        // );
-        // allData.add(c);
-      }
-      setState(() {
-        print('length: ${allData.length}');
-      });
-    });
-  }
+// class _countryCardState extends State<countryCard> {
+//   // final String imagePath, countryName;
+//   List<TopCountriesService> allData = [];
+//   // countryCard(this.imagePath, this.countryName);
+//   void initState() {
+    
+//     DatabaseReference ref = FirebaseDatabase.instance.reference();
+//     ref.child('TopCountriesService').once().then((DataSnapshot snap) {
+//       var keys = snap.value.keys;
+//       var data = snap.value;
+//       allData.clear();
+//       for (var key in keys) {
+//         // TopCountriesService c = new TopCountriesService(
+//         //   data[key]['name'],
+//         //   data[key]['image'],
+//         // );
+//         // allData.add(c);
+//       }
+//       setState(() {
+//         print('length: ${allData.length}');
+//       });
+//     });
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(
-            height: 60.0,
-            width: 40.0,
-            // child: Image.asset(
-            //   imagePath,
-            //   fit: BoxFit.cover,
-            // ),
-            child: allData.length == 0
-                ? new Text('no data')
-                : new Text('there is data')),
-      ],
-    );
-  }
+//   @override
+//   Widget build(BuildContext context) {
+//     return Stack(
+//       children: <Widget>[
+//         Container(
+//             height: 60.0,
+//             width: 40.0,
+//             // child: Image.asset(
+//             //   imagePath,
+//             //   fit: BoxFit.cover,
+//             // ),
+//             child: allData.length == 0
+//                 ? new Text('no data')
+//                 : new Text('there is data')),
+//       ],
+//     );
+//   }
 
-  Widget UI() {
-    return new Card(
-      child: new Container(
-        child: new Column(
-          children: <Widget>[new Text('Name')],
-        ),
-      ),
-    );
-  }
-}
+//   Widget UI() {
+//     return new Card(
+//       child: new Container(
+//         child: new Column(
+//           children: <Widget>[new Text('Name')],
+//         ),
+//       ),
+//     );
+//   }
+// }

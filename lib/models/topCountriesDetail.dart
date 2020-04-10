@@ -4,8 +4,9 @@ class TopCountriesDetail {
   int topCountriesId;
   String topCountriesName;
   String topCountriesContinent;
-  Float topCountriesEvaluation;
+  double topCountriesEvaluation;
   String topCountriesImage;
+  String topCountriesDescription;
  
 
   TopCountriesDetail({
@@ -14,6 +15,7 @@ class TopCountriesDetail {
       this.topCountriesContinent,
       this.topCountriesEvaluation,
       this.topCountriesImage,
+      this.topCountriesDescription
       });
 
 
@@ -23,7 +25,9 @@ class TopCountriesDetail {
     topCountriesName = snapshot['topCountriesName'] ?? '',
     topCountriesContinent = snapshot['topCountriesContinent'] ?? '',
     topCountriesEvaluation = snapshot['topCountriesEvaluation'] ?? 0,
-    topCountriesImage = snapshot['topCountriesImage'] ?? '';
+    topCountriesImage = snapshot['topCountriesImage'] ?? '',
+    topCountriesDescription = snapshot['topCountriesDescription'] ?? '';
+
 
   toJson() {
     return {
@@ -32,6 +36,7 @@ class TopCountriesDetail {
       "topCountriesContinent": topCountriesContinent,
       "topCountriesEvaluation": topCountriesEvaluation,
       "topCountriesImage": topCountriesImage,
+      "topCountriesDescription": topCountriesDescription
   };
 }
 }
