@@ -26,8 +26,6 @@ class _HomeState extends State<Home> {
 
   var url;
 
-  
-
   bool infoWindowVisible = false;
   bool status = false;
   // _HomeState(){
@@ -130,6 +128,7 @@ class _HomeState extends State<Home> {
     getUser();
     // TODO: implement build
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text('ZODA'),
         backgroundColor: Colors.lightBlue[900],
@@ -210,12 +209,13 @@ class _HomeState extends State<Home> {
           ),
         ],
       )),
-      body: (Column(
+      body: 
+        ListView(
         children: <Widget>[
           HomeScreenTopPart(),
           homeScreenBottomPart(),
         ],
-      )),
+      ),
     );
   }
 }
@@ -417,74 +417,57 @@ class homeScreenBottomPart extends StatefulWidget {
   @override
   _homeScreenBottomPartState createState() => _homeScreenBottomPartState();
 }
-
+List<TopCountriesDetail> t;
 class _homeScreenBottomPartState extends State<homeScreenBottomPart> {
-  TopCountriesService topServ = new TopCountriesService();
+  // TopCountriesService topServ = new TopCountriesService();
   TopCountriesDetail topCountry = new TopCountriesDetail();
-
-  // _homeScreenBottomPartState(){
+  List<TopCountriesDetail> countriesList;
+  TopCountriesService topServ = new TopCountriesService();
+  List<Widget> cardList = new List();
+  void getTopCountries() async {
+    setState(() async {
+      t = await topServ.fetchData();
+    });
+  }
+  // t.length
+    List<Widget> buildCard(){
+    for(int i=0; i<3; i++){
+    cardList.add(new Card(
+      child: ListTile(
+      title: Text('dd'),
+    ),
+    ));           
+  }
+  return cardList;
+}     
+  
+  _homeScreenBottomPartState(){
+    
   //   topCountry.topCountriesId = 2;
   //   topCountry.topCountriesName = 'Denmark';
   //   topCountry.topCountriesContinent = 'Europe';
   //   topCountry.topCountriesEvaluation = 5.0;
   //   topCountry.topCountriesImage = 'img/denmark.png';
   //   topCountry.topCountriesDescription = 'Denmark is a Scandinavian country comprising the Jutland Peninsula and numerous islands. It\'s linked to nearby Sweden via the Öresund bridge. Copenhagen, its capital, is home to royal palaces and colorful Nyhavn harbor, plus the Tivoli amusement park and the iconic “Little Mermaid” statue. Odense is writer Hans Christian Andersen\’s hometown, with a medieval core of cobbled streets and half-timbered houses.';
-  // }
-
+  }
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: new BoxDecoration(color: bkColor),
-      child: ListView(
-        children: <Widget>[
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "Top 10 Countries",
-                  style: dropDownMenuItemStyle,
-                ),
-              ],
-            ),
-          ),
-          Container(
-            height: 65,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              // children: countryCards,
-            ),
-          ),
-          // SizedBox(height: 50.0,),
-        Card(
-        // child: Column(
-        //   mainAxisSize: MainAxisSize.min,
-        //   children: <Widget>[
-        //     // Row(
-        //     //   children: <Widget>[
-        //     ListTile(
-        //       // leading: Image(image: AssetImage(topCountry.topCountriesImage)),
-        //       title: Text(topCountry.topCountriesName),
-        //       subtitle: Text(topCountry.topCountriesContinent),
-        //     ),
-        //     //   ],
-        //     // ),
-        //     ButtonBar(
-        //       children: <Widget>[
-        //         Text(topCountry.topCountriesName),
-        //         Text(topCountry.topCountriesContinent),
-        //         FlatButton(
-        //           child: Text('View'),
-        //           onPressed: () {/* ... */},
-        //         ),
-        //       ],
-        //     ),
-        //   ],
-        // ),
-          ),
+    getTopCountries();
+    buildCard();
+    return Column(
+    children: <Widget>[
+      Text('data'),
+      ListView(
+        shrinkWrap: true,
+        scrollDirection: Axis.vertical,
+        children: cardList,
+    ),
+    ]
+    );
+  }
+}
+  
+//
           // RaisedButton(
           //     color: Color(0xfff9811e),
           //     onPressed: () {
@@ -501,11 +484,37 @@ class _homeScreenBottomPartState extends State<homeScreenBottomPart> {
           //     ),
           //     textColor: Colors.white,
           //   ),
-        ],
-      ),
-    );
-  }
-}
+
+// Card(
+        // // child: Column(
+        // //   mainAxisSize: MainAxisSize.min,
+        // //   children: <Widget>[
+        // //     // Row(
+        // //     //   children: <Widget>[
+        // //     ListTile(
+        // //       // leading: Image(image: AssetImage(topCountry.topCountriesImage)),
+        // //       title: Text(topCountry.topCountriesName),
+        // //       subtitle: Text(topCountry.topCountriesContinent),
+        // //     ),
+        // //     //   ],
+        // //     // ),
+        // //     ButtonBar(
+        // //       children: <Widget>[
+        // //         Text(topCountry.topCountriesName),
+        // //         Text(topCountry.topCountriesContinent),
+        // //         FlatButton(
+        // //           child: Text('View'),
+        // //           onPressed: () {/* ... */},
+        // //         ),
+        // //       ],
+        // //     ),
+        // //   ],
+        // // ),
+        //   ),
+
+
+
+
 // var homeScreenBottomPart =
 
 // List<countryCard> countryCards = [
