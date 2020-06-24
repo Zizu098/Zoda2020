@@ -51,23 +51,24 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-
-    Future getImage() async{
+    Future getImage() async {
       var image = await ImagePicker.pickImage(source: ImageSource.gallery);
       setState(() {
         _image = image;
         print('Image Path $_image');
       });
     }
-    Future uploadPic(BuildContext context) async{
+
+    Future uploadPic(BuildContext context) async {
       fileName = basename(_image.path);
-      StorageReference firebaseStorageRef=FirebaseStorage.instance.ref().child(fileName);
+      StorageReference firebaseStorageRef =
+          FirebaseStorage.instance.ref().child(fileName);
       var downUrl = fileName;
       url = downUrl.toString();
       setState(() {
         userData.imgUrl = url;
       });
-      StorageUploadTask uploadTask=firebaseStorageRef.putFile(_image);
+      StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
     }
 
     return loading
@@ -93,8 +94,7 @@ class _RegisterState extends State<Register> {
                 ),
               ],
             ),
-            body:
-            Container(
+            body: Container(
               child: Theme(
                 data: ThemeData(primaryColor: Color(0xfff9811e)),
                 child: Stepper(
@@ -105,17 +105,21 @@ class _RegisterState extends State<Register> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        RaisedButton(
-                          color: Colors.lightBlue[900],
-                          padding: const EdgeInsets.all(10.0),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(10.0),
-                              side: BorderSide(color: Colors.lightBlue[900])),
-                          onPressed: onStepCancel,
-                          child: Text('Back',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 17)),
-                        ),
+                        if (_currentStep > 0)(
+                          
+                            RaisedButton(
+                              color: Colors.lightBlue[900],
+                              padding: const EdgeInsets.all(10.0),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(10.0),
+                                  side:
+                                      BorderSide(color: Colors.lightBlue[900])),
+                              onPressed: onStepCancel,
+                              child: Text('Back',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 17)),
+                            ))
+                          ,
                         RaisedButton(
                           color: Colors.lightBlue[900],
                           padding: const EdgeInsets.all(10.0),
@@ -135,8 +139,7 @@ class _RegisterState extends State<Register> {
                     Step(
                       title: Text('  '),
                       content: Container(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 20.0, horizontal: 50.0),
+                        padding: EdgeInsets.only(bottom: 150),
                         child: Form(
                           key: formKeys[0],
                           child: Column(
@@ -147,7 +150,7 @@ class _RegisterState extends State<Register> {
                                   setState(() {
                                     _firstName = value;
                                     // userData.userId = '1';
-                                    userData.firstName = value;  
+                                    userData.firstName = value;
                                   });
                                 },
                                 decoration: textInputDecoration.copyWith(
@@ -176,7 +179,7 @@ class _RegisterState extends State<Register> {
                               SizedBox(
                                 height: 15.0,
                               ),
-                             TextFormField(
+                              TextFormField(
                                 initialValue: _email,
                                 decoration: textInputDecoration.copyWith(
                                     hintText: 'Email'),
@@ -208,7 +211,6 @@ class _RegisterState extends State<Register> {
                                 onChanged: (value) {
                                   setState(() {
                                     _password = value;
-                                    
                                   });
                                 },
                               ),
@@ -236,7 +238,6 @@ class _RegisterState extends State<Register> {
                                 style: TextStyle(
                                     color: Colors.red, fontSize: 14.0),
                               ),
-                             
                             ],
                           ),
                         ),
@@ -246,8 +247,7 @@ class _RegisterState extends State<Register> {
                     Step(
                       title: Text(' '),
                       content: Container(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 20.0, horizontal: 50.0),
+                        padding: EdgeInsets.only(bottom: 120),
                         child: Form(
                           key: formKeys[1],
                           child: Column(
@@ -267,7 +267,8 @@ class _RegisterState extends State<Register> {
                               ),
                               SizedBox(
                                 height: 15.0,
-                              ), TextFormField(
+                              ),
+                              TextFormField(
                                 initialValue: _age == 0 ? "" : _age.toString(),
                                 decoration: textInputDecoration.copyWith(
                                     hintText: 'Age'),
@@ -289,10 +290,10 @@ class _RegisterState extends State<Register> {
                                   WhitelistingTextInputFormatter.digitsOnly
                                 ],
                               ),
-                               SizedBox(
+                              SizedBox(
                                 height: 15.0,
                               ),
-                               TextFormField(
+                              TextFormField(
                                 initialValue: _phone,
                                 maxLines: 1,
                                 decoration: textInputDecoration.copyWith(
@@ -319,36 +320,52 @@ class _RegisterState extends State<Register> {
                                 error,
                                 style: TextStyle(
                                     color: Colors.red, fontSize: 14.0),
-                              ),   
-                               Row(
-                               mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                              Text('Status:', style: TextStyle(fontSize: 18),),
-                              DropdownButton(
-                                value: dropdownValue,
-                                icon: Icon(Icons.arrow_drop_down),
-                                iconSize: 24,
-                                elevation: 16,
-                                items: <String>['None','High school','Bachelor', 'Maj', 'PHD', 'Work'].map<DropdownMenuItem<String>>
-                                ((String value){return DropdownMenuItem<String>(value: value,child: Text(value),);
-                                }).toList(),
-                                style: TextStyle(fontSize: 18, color: Colors.black),
-                                onChanged: (String newValue){
-                                  setState((){
-                                    dropdownValue = newValue;
-                                    userData.status = newValue;
-                                  });
-                                },
                               ),
-                              ],
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    'Status:',
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  DropdownButton(
+                                    value: dropdownValue,
+                                    icon: Icon(Icons.arrow_drop_down),
+                                    iconSize: 24,
+                                    elevation: 16,
+                                    items: <String>[
+                                      'None',
+                                      'High school',
+                                      'Bachelor',
+                                      'Maj',
+                                      'PHD',
+                                      'Work'
+                                    ].map<DropdownMenuItem<String>>(
+                                        (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                    style: TextStyle(
+                                        fontSize: 18, color: Colors.black),
+                                    onChanged: (String newValue) {
+                                      setState(() {
+                                        dropdownValue = newValue;
+                                        userData.status = newValue;
+                                      });
+                                    },
+                                  ),
+                                ],
                               ),
                               SizedBox(height: 40.0),
                             ],
                           ),
                         ),
                       ),
-                      isActive: true,
+                      isActive: _currentStep > 0,
                     ),
                     Step(
                       title: Text(' '),
@@ -363,80 +380,90 @@ class _RegisterState extends State<Register> {
                                 Align(
                                   alignment: Alignment.center,
                                   child: CircleAvatar(
-                                    radius: 100,
+                                    radius: 90,
                                     backgroundColor: Color(0xff476fb),
                                     child: ClipOval(
                                       child: SizedBox(
                                         width: 180.0,
                                         height: 180.0,
-                                        child:(_image != null) ? Image.file(_image, fit:BoxFit.fill)
-                                         :Image.network('https://scontent.fcai3-1.fna.fbcdn.net/v/t1.0-9/p960x960/84387413_3463413623731310_2162071027679494144_o.jpg?_nc_cat=106&_nc_sid=85a577&_nc_ohc=bmRqps74ZTMAX8H8Vwa&_nc_ht=scontent.fcai3-1.fna&_nc_tp=6&oh=41b236c306b94899bf519f329a68342a&oe=5E906D1D',
-                                         fit: BoxFit.fill),
+                                        child: (_image != null)
+                                            ? Image.file(_image,
+                                                fit: BoxFit.fill)
+                                            : Image.network(
+                                                'https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png',
+                                                fit: BoxFit.fill),
                                       ),
                                     ),
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(top:60.0),
-                                  child: IconButton(icon: Icon(FontAwesomeIcons.camera, size: 30.0,),
-                                   onPressed: (){
-                                     getImage();
-                                  }),
+                                  padding: EdgeInsets.only(top: 60.0),
+                                  child: IconButton(
+                                      icon: Icon(
+                                        FontAwesomeIcons.camera,
+                                        size: 30.0,
+                                      ),
+                                      onPressed: () {
+                                        getImage();
+                                      }),
                                 )
                               ],
                             ),
-                            SizedBox(height: 20.0,),
+                            SizedBox(
+                              height: 20.0,
+                            ),
                           ],
                         ),
-                         ),
-                      isActive: true,
+                      ),
+                      isActive: _currentStep > 1,
                       // state: StepState.complete,
                     ),
                   ],
                   type: StepperType.horizontal,
                   onStepTapped: (step) {
                     setState(() {
-                      _currentStep = step;
+                      _currentStep = _currentStep;
                     });
                     // _currentStep = step;
                   },
-                  onStepContinue:() {
+                  onStepContinue: () {
                     setState(() {
-                      if (_currentStep == 2 || formKeys[_currentStep].currentState.validate()) {
+                      if (_currentStep == 2 ||
+                          formKeys[_currentStep].currentState.validate()) {
                         // formKeys[_currentStep].currentState.save();
                         if (_currentStep < 3) {
-                          if(_currentStep == 1){
-                          conButton = 'Register';
-                        }else if(_currentStep == 2){
-                          setState(() {
-                                    loading = true;
-                                  });
-                                  dynamic result =  _auth.registerWithEmailAndPassword(_email, _password);
-                                  void getId() async{
-                                  final FirebaseUser user = await FirebaseAuth.instance.currentUser();
-                                  userData.userId = user.uid.toString();
-                                  userServ.add(userData);
-                                 } 
-                                 
-                                  if(result == null){
-                                    setState(() {
-                                      error = 'Email already used';
-                                      loading = false;
-                                  });
-                                  }else{
-                                    uploadPic(context).then(
-                                      (v){
-                                        Navigator.of(context).pushReplacementNamed("./login");
-                                      }
-                                    );
-                                    getId();
-                                  }
-                        }
-                        _currentStep = _currentStep + 1; 
-                        }else{
+                          if (_currentStep == 1) {
+                            conButton = 'Register';
+                          } else if (_currentStep == 2) {
+                            setState(() {
+                              loading = true;
+                            });
+                            dynamic result = _auth.registerWithEmailAndPassword(
+                                _email, _password);
+                            void getId() async {
+                              final FirebaseUser user =
+                                  await FirebaseAuth.instance.currentUser();
+                              userData.userId = user.uid.toString();
+                              userServ.add(userData);
+                            }
+
+                            if (result == null) {
+                              setState(() {
+                                error = 'Email already used';
+                                loading = false;
+                              });
+                            } else {
+                              uploadPic(context).then((v) {
+                                Navigator.of(context)
+                                    .pushReplacementNamed("./login");
+                              });
+                              getId();
+                            }
+                          }
+                          _currentStep = _currentStep + 1;
+                        } else {
                           _currentStep = 0;
                         }
-                       
                       }
                     });
                   },

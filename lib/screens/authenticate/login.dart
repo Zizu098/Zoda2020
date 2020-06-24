@@ -34,18 +34,22 @@ final AuthService _auth = AuthService();
           key: _formKey,
           child: Column(
             children: <Widget>[
+
               SizedBox(
-                height: 20.0,
+                height: 10.0,
               ),
                Image(
               image: AssetImage("img/GearWithTitle.png"),
               width: 100.0,
             ),
             SizedBox(
-                height: 75.0,
+                height: 45.0,
               ),
+
               TextFormField(
-                decoration:textInputDecoration.copyWith(hintText: 'Email'), 
+
+                decoration:textInputDecoration.copyWith(hintText: 'Email', icon: Icon(Icons.person)), 
+                
                 validator: (val) => val.isEmpty ? 'Enter an valid email ': null,
                 onChanged: (val) {
                   if(val.endsWith(' '))
@@ -58,7 +62,7 @@ final AuthService _auth = AuthService();
                 height: 20.0,
               ),
               TextFormField(
-                decoration:textInputDecoration.copyWith(hintText: 'Password'),
+                decoration:textInputDecoration.copyWith(hintText: 'Password',icon: Icon(Icons.lock)),
                 obscureText: true,
                 validator: (val) => val.length < 6 ? 'Enter n password 6+ chars long': null,
                 onChanged: (val) {
