@@ -469,8 +469,10 @@ class _RegisterState extends State<Register> {
                   },
                   onStepCancel: () {
                     setState(() {
-                      if (_currentStep > 0)
+                      if (_currentStep > 0){
                         _currentStep = _currentStep - 1;
+                        conButton = 'Next';
+                      }
                       else
                         _currentStep = 0;
                     });
