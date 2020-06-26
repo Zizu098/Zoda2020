@@ -23,12 +23,24 @@ class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
   UserDetail userData = new UserDetail();
   UserService userServ = new UserService();
+  UserService userEmailServ = new UserService();
+  List<UserDetail> fetchEmails;
   static List<GlobalKey<FormState>> formKeys = [
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
   ];
+
+ Future <List<UserDetail>> fetchEmail() async{
+    // setState(() async {
+      fetchEmails = await userEmailServ.fetchData();
+    // });
+  }
+
+  void initState(){
+    fetchEmail();
+  }
 
   File _image;
   String fileName;
@@ -106,25 +118,22 @@ class _RegisterState extends State<Register> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        if (_currentStep > 0)(                          
-                            RaisedButton(
-                              color: Colors.lightBlue[900],
-                              padding: const EdgeInsets.all(10.0),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: new BorderRadius.circular(10.0),
-                                  side:
-                                      BorderSide(color: Colors.lightBlue[900])),
-                              onPressed: onStepCancel,
-                              child: Text('Back',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 17)),
-                            )
-                            )else(
-                              Visibility(
-                                visible: false,
-                              child: RaisedButton(
-                                onPressed: null)
-                            )),
+                        if (_currentStep > 0)
+                          (RaisedButton(
+                            color: Colors.lightBlue[900],
+                            padding: const EdgeInsets.all(10.0),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(10.0),
+                                side: BorderSide(color: Colors.lightBlue[900])),
+                            onPressed: onStepCancel,
+                            child: Text('Back',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 17)),
+                          ))
+                        else
+                          (Visibility(
+                              visible: false,
+                              child: RaisedButton(onPressed: null))),
                         RaisedButton(
                           color: Colors.lightBlue[900],
                           padding: const EdgeInsets.all(10.0),
@@ -189,7 +198,7 @@ class _RegisterState extends State<Register> {
                                 decoration: textInputDecoration.copyWith(
                                     hintText: 'Email'),
                                 validator: (val) {
-                                  if (EmailValidator.validate(val)) {
+                                  if (!EmailValidator.validate(val)) {
                                     return 'Please enter valid email';
                                   }
                                   return null;
@@ -365,9 +374,9 @@ class _RegisterState extends State<Register> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height:0.0),
+                              SizedBox(height: 0.0),
                             ],
-                          ),     
+                          ),
                         ),
                       ),
                       isActive: _currentStep > 0,
@@ -412,7 +421,7 @@ class _RegisterState extends State<Register> {
                                         getImage();
                                       }),
                                 )
-                              ],   
+                              ],
                             ),
                             SizedBox(
                               height: 20.0,
@@ -437,7 +446,20 @@ class _RegisterState extends State<Register> {
                           formKeys[_currentStep].currentState.validate()) {
                         // formKeys[_currentStep].currentState.save();
                         if (_currentStep < 3) {
-                          if (_currentStep == 1) {
+                          if (_currentStep == 0) {
+                            for (int i = 0; i < fetchEmails.length; i++) {
+                              if (fetchEmails[i].email == _email){
+                                setState(() {
+                                   error = 'Email already used';
+                                   _currentStep--;
+                                });
+                            }else{
+                              setState(() {
+                                error = '';
+                              });
+                            }
+                            }
+                          } else if (_currentStep == 1) {
                             conButton = 'Register';
                           } else if (_currentStep == 2) {
                             setState(() {
@@ -474,11 +496,10 @@ class _RegisterState extends State<Register> {
                   },
                   onStepCancel: () {
                     setState(() {
-                      if (_currentStep > 0){
+                      if (_currentStep > 0) {
                         _currentStep = _currentStep - 1;
                         conButton = 'Next';
-                      }
-                      else
+                      } else
                         _currentStep = 0;
                     });
                   },
