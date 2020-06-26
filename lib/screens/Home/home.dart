@@ -236,7 +236,7 @@ class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
         ClipPath(
           // clipper: CustomShapeClipper(),
           child: Container(
-            height: 300.0,
+            height: 320.0,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 // color: bkColor,
@@ -269,7 +269,7 @@ class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(
-                  height: 40.0,
+                  height: 30.0,
                 ),
 
                 Row(
@@ -332,11 +332,24 @@ class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
                       ),
                     ),
                   ],
-                )
+                ),
+                Text(
+                  '\nTOP 10 COUNTRIES',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.white,
+                    
+                  ),
+                  textAlign: TextAlign.left,
+                  
+                ),
+                Spacer(),
+                Icon(Icons.arrow_drop_down,size: 40,color: Colors.lightBlue[200],)
               ],
             ),
           ),
         )
+        
       ],
     );
   }
@@ -502,7 +515,7 @@ class _HomeScreenBottomPartState extends State<HomeScreenBottomPart> {
                         onPressed: () {
                           _createAlertDialog(context);
                         },
-                        icon: Icon(Icons.timeline),color: Colors.blue[700],
+                        icon: Icon(Icons.info_outline),color: Colors.blue[700],
                         iconSize: 35,
                         
                       ),
