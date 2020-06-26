@@ -105,8 +105,7 @@ class _RegisterState extends State<Register> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        if (_currentStep > 0)(
-                          
+                        if (_currentStep > 0)(                          
                             RaisedButton(
                               color: Colors.lightBlue[900],
                               padding: const EdgeInsets.all(10.0),
@@ -118,8 +117,13 @@ class _RegisterState extends State<Register> {
                               child: Text('Back',
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 17)),
-                            ))
-                          ,
+                            )
+                            )else(
+                              Visibility(
+                                visible: false,
+                              child: RaisedButton(
+                                onPressed: null)
+                            )),
                         RaisedButton(
                           color: Colors.lightBlue[900],
                           padding: const EdgeInsets.all(10.0),
@@ -360,9 +364,9 @@ class _RegisterState extends State<Register> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 40.0),
+                              SizedBox(height:0.0),
                             ],
-                          ),
+                          ),     
                         ),
                       ),
                       isActive: _currentStep > 0,
@@ -407,7 +411,7 @@ class _RegisterState extends State<Register> {
                                         getImage();
                                       }),
                                 )
-                              ],
+                              ],   
                             ),
                             SizedBox(
                               height: 20.0,
