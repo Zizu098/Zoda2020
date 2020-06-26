@@ -5,7 +5,7 @@ class TopCountriesDetail {
   String flag;
   double evaluation;
   // String topCountriesImage;
-  // String topCountriesDescription;
+  String description;
  
 
   TopCountriesDetail({
@@ -14,7 +14,7 @@ class TopCountriesDetail {
       this.flag,
       this.evaluation,
       // this.topCountriesImage,
-      // this.topCountriesDescription
+      this.description
       });
 
 
@@ -23,9 +23,9 @@ class TopCountriesDetail {
     url = 'id' ?? 0,
     location = snapshot['location'] ?? '',
     flag = snapshot['flag'] ?? '',
-    evaluation = snapshot['evaluation'] ?? 0;
+    evaluation = snapshot['evaluation'] ?? 0,
     // topCountriesImage = snapshot['topCountriesImage'] ?? '',
-    // topCountriesDescription = snapshot['topCountriesDescription'] ?? '';
+    description = snapshot['description'] ?? '';
 
 
   toJson() {
@@ -35,7 +35,7 @@ class TopCountriesDetail {
       "flag": flag,
       "evaluation": evaluation,
       // "topCountriesImage": topCountriesImage,
-      // "topCountriesDescription": topCountriesDescription
+      "description": description
   };
 }
 }

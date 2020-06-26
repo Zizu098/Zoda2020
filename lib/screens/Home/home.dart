@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zoda/database.services/auth.dart';
 import 'package:zoda/models/topCountriesDetail.dart';
@@ -26,17 +27,7 @@ class _HomeState extends State<Home> {
 
   bool infoWindowVisible = false;
   bool status = false;
-  // _HomeState(){
-
-  // }
-
-  //   void getUser() async{
-  //   userServ.fetchData().then((u) {
-  //     setState(() {
-  //       user = u.firstWhere((s) => s.phone == '01091477247');
-  //     });
-  //   });
-  // }
+  
 
   void getUser() async {
     setState(() async {
@@ -224,7 +215,6 @@ const TextStyle dropDownMenuItemStyle =
 
 Color firstColor = Colors.lightBlue[900];
 Color secondColor = Colors.lightBlue[700];
-// List<String> locations = ['Cairo (Cai)', 'Alexandria (Alex)'];
 
 ThemeData appTheme = ThemeData(
   primaryColor: Color(0xFFF3791A),
@@ -246,7 +236,7 @@ class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
         ClipPath(
           // clipper: CustomShapeClipper(),
           child: Container(
-            height: 350.0,
+            height: 300.0,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 // color: bkColor,
@@ -256,83 +246,14 @@ class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
             child: Column(
               children: <Widget>[
                 SizedBox(
-                  height: 50.0,
+                  height: 30.0,
                 ),
 
-                //search bar
-                // Padding(
-                //     padding: EdgeInsets.symmetric(horizontal: 32.0),
-                //     child:
-                //      Material(
-                //         elevation: 5.0,
-                //         borderRadius: BorderRadius.all(
-                //           Radius.circular(30.0),
-                //         ),
-                //         child: TextField(
-                //           controller: TextEditingController(text: locations[0]),
-                //           style: dropDownMenuItemStyle,
-                //           cursorColor: appTheme.primaryColor,
-                //           decoration: InputDecoration(
-                //             contentPadding: EdgeInsets.symmetric(
-                //                 horizontal: 32.0, vertical: 14.0),
-                //             suffix: Material(
-                //               elevation: 2.0,
-                //               borderRadius: BorderRadius.all(
-                //                 Radius.circular(30.0),
-                //               ),
-                //               child: Icon(
-                //                 Icons.search,
-                //                 color: Colors.black,
-                //               ),
-                //             ),
-                //             border: InputBorder.none,
-                //           ),
-                //         ))),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
                     children: <Widget>[
-                      // Icon(Icons.location_on, color: Colors.white),
-                      // SizedBox(
-                      //   width: 16.0,
-                      // ),
-                      // PopupMenuButton(
-                      //   onSelected: (index) {
-                      //     setState(() {
-                      //       selectedLocationIndex = index;
-                      //     });
-                      //   },
-                      //   child: Row(
-                      //     children: <Widget>[
-                      //       Text(
-                      //         locations[selectedLocationIndex],
-                      //         style: dropDownLabelStyle,
-                      //       ),
-                      //       Icon(
-                      //         Icons.keyboard_arrow_down,
-                      //         color: Colors.white,
-                      //       )
-                      //     ],
-                      //   ),
-                      //   itemBuilder: (BuildContext context) =>
-                      //       <PopupMenuItem<int>>[
-                      //     PopupMenuItem(
-                      //       child: Text(locations[0],
-                      //           style: dropDownMenuItemStyle),
-                      //       value: 0,
-                      //     ),
-                      //     PopupMenuItem(
-                      //       child: Text(locations[1],
-                      //           style: dropDownMenuItemStyle),
-                      //       value: 1,
-                      //     ),
-                      //   ],
-                      // ),
-                      // Spacer(),
-                      // Icon(
-                      //   Icons.settings,
-                      //   color: Colors.white,
-                      // ),
+                     
                     ],
                   ),
                 ),
@@ -363,7 +284,7 @@ class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
                           borderRadius: new BorderRadius.circular(50.0),
                         ),
                         color: Color(0xfff9811e),
-                        splashColor: Colors.red[400],
+                        splashColor: Colors.yellow[200],
                         onPressed: () {
                           Navigator.push(
                               context,
@@ -391,7 +312,7 @@ class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
                         shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(50.0),
                         ),
-                        splashColor: Colors.blueAccent[100],
+                        splashColor: Colors.red[200],
                         color: Color(0xffffceae),
                         onPressed: () {
                           Navigator.push(
@@ -421,57 +342,116 @@ class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
   }
 }
 
-// var viewAllStyle = TextStyle(fontSize: 14.0, color: appTheme.primaryColor);
-// ListView listview;
+
 class HomeScreenBottomPart extends StatefulWidget {
   @override
   _HomeScreenBottomPartState createState() => _HomeScreenBottomPartState();
 }
 
 class _HomeScreenBottomPartState extends State<HomeScreenBottomPart> {
-  final List<TopCountriesDetail> locations = [
+  TextEditingController customController = TextEditingController();
+
+  _createAlertDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          
+          return CupertinoAlertDialog(
+            title: Text("Finland is a Northern European nation bordering Sweden, Norway and Russia. Norway and Russia. Its capital, Helsinki, occupies a peninsula and surrounding islands in the Baltic Sea.Helsinki is home to the 18th-century sea fortress Suomenlinna,the fashionable Design District and diverse museums. The Northern Lights can be seen from the country's Arctic Lapland province, a vast wilderness with national parks and ski resorts."),
+            actions: [
+              CupertinoDialogAction(
+                child: Text('Close'),
+                onPressed: () {
+                  Navigator.of(context).pop(customController);
+                },
+                
+              ),
+            ],
+          );
+        });
+  }
+
+ List<TopCountriesDetail> locations = [
     TopCountriesDetail(
-        url: 'Europ', location: 'Finland', flag: 'finland.png', evaluation: 5),
+        url: 'Europ',
+        location: 'Finland',
+        flag: 'finland.png',
+        evaluation: 5,
+        description:
+            "Finland is a Northern European nation bordering Sweden, Norway and Russia. Its capital, Helsinki, occupies a peninsula and surrounding islands in the Baltic Sea. Helsinki is home to the 18th-century sea fortress Suomenlinna, the fashionable Design District and diverse museums. The Northern Lights can be seen from the country's Arctic Lapland province, a vast wilderness with national parks and ski resorts."),
     TopCountriesDetail(
-        url: 'Europ', location: 'Austria', flag: 'austria.png', evaluation: 5),
+        url: 'Europ',
+        location: 'Austria',
+        flag: 'austria.png',
+        evaluation: 5,
+        description:
+            "Austria, officially the Republic of Austria, is a landlocked East Alpine country in the southern part of Central Europe. It is composed of nine federated states, one of which is Vienna, Austria's capital and its largest city"),
     TopCountriesDetail(
-        url: 'Europ', location: 'Canada', flag: 'canada.png', evaluation: 5),
+        url: 'Europ',
+        location: 'Canada',
+        flag: 'canada.png',
+        evaluation: 5,
+        description:
+            "Canada is a country in the northern part of North America. Its ten provinces and three territories extend from the Atlantic to the Pacific and northward into the Arctic Ocean, covering 9.98 million square kilometres, making it the world's second-largest country by total area"),
     TopCountriesDetail(
-        url: 'Europ', location: 'Denmark', flag: 'denmark.png', evaluation: 5),
+        url: 'Europ',
+        location: 'Denmark',
+        flag: 'denmark.png',
+        evaluation: 5,
+        description:
+            "Denmark is a Scandinavian country comprising the Jutland Peninsula and numerous islands. It's linked to nearby Sweden via the Öresund bridge. Copenhagen, its capital, is home to royal palaces and colorful Nyhavn harbor, plus the Tivoli amusement park and the iconic “Little Mermaid” statue. Odense is writer Hans Christian Andersen’s hometown, with a medieval core of cobbled streets and half-timbered houses."),
     TopCountriesDetail(
-        url: 'Europ', location: 'Iceland', flag: 'iceland.png', evaluation: 4),
+        url: 'Europ',
+        location: 'Iceland',
+        flag: 'iceland.png',
+        evaluation: 4,
+        description:
+            "Iceland, a Nordic island nation, is defined by its dramatic landscape with volcanoes, geysers, hot springs and lava fields. Massive glaciers are protected in Vatnajökull and Snæfellsjökull national parks. Most of the population lives in the capital, Reykjavik, which runs on geothermal power and is home to the National and Saga museums, tracing Iceland’s Viking history."),
     TopCountriesDetail(
         url: 'Europ',
         location: 'Netherlands',
         flag: 'netherlands.png',
-        evaluation: 4),
+        evaluation: 4,
+        description:
+            '"The Netherlands, a country in northwestern Europe, is known for a flat landscape of canals, tulip fields, windmills and cycling routes. Amsterdam, the capital, is home to the Rijksmuseum, Van Gogh Museum and the house where Jewish diarist Anne Frank hid during WWII. Canalside mansions and a trove of works from artists including Rembrandt and Vermeer remain from the citys 17th-century "Golden Age."'),
     TopCountriesDetail(
         url: 'Europ',
         location: 'New Zealand',
         flag: 'new zealand.png',
-        evaluation: 4),
+        evaluation: 4,
+        description:
+            "New Zealand is an island country in the southwestern Pacific Ocean. It comprises two main landmasses—the North Island and the South Island —and around 600 smaller islands, covering a total area of 268,021 square kilometres"),
     TopCountriesDetail(
-        url: 'Europ', location: 'Norway', flag: 'norway.png', evaluation: 3),
+        url: 'Europ',
+        location: 'Norway',
+        flag: 'norway.png',
+        evaluation: 3,
+        description:
+            "Norway is a Scandinavian country encompassing mountains, glaciers and deep coastal fjords. Oslo, the capital, is a city of green spaces and museums. Preserved 9th-century Viking ships are displayed at Oslo’s Viking Ship Museum. Bergen, with colorful wooden houses, is the starting point for cruises to the dramatic Sognefjord. Norway is also known for fishing, hiking and skiing, notably at Lillehammer’s Olympic resort."),
     TopCountriesDetail(
-        url: 'Europ', location: 'Sweden', flag: 'sweden.png', evaluation: 3),
+        url: 'Europ',
+        location: 'Sweden',
+        flag: 'sweden.png',
+        evaluation: 3,
+        description:
+            "Sweden is a Scandinavian nation with thousands of coastal islands and inland lakes, along with vast boreal forests and glaciated mountains. Its principal cities, eastern capital Stockholm and southwestern Gothenburg and Malmö, are all coastal. Stockholm is built on 14 islands. It has more than 50 bridges, as well as the medieval old town, Gamla Stan, royal palaces and museums such as open-air Skansen."),
     TopCountriesDetail(
         url: 'Europ',
         location: 'Switzerland',
         flag: 'switzerland.png',
-        evaluation: 3),
+        evaluation: 3,
+        description:
+            "Switzerland is a mountainous Central European country, home to numerous lakes, villages and the high peaks of the Alps. Its cities contain medieval quarters, with landmarks like capital Bern’s Zytglogge clock tower and Lucerne’s wooden chapel bridge. The country is also known for its ski resorts and hiking trails. Banking and finance are key industries, and Swiss watches and chocolate are world renowned."),
   ];
   @override
   Widget build(BuildContext context) {
     return Container(
-    
       child: new ListView.builder(
           physics: ScrollPhysics(),
           shrinkWrap: true,
           itemCount: locations.length,
           itemBuilder: (BuildContext context, int index) =>
-              buildTripCard(context, index)
-              ),
-              
+              buildTripCard(context, index)),
     );
   }
 
@@ -479,24 +459,27 @@ class _HomeScreenBottomPartState extends State<HomeScreenBottomPart> {
     return new Container(
       child: Card(
         child: Padding(
-          padding: const EdgeInsets.only(left: 25.0, right: 15),
+          padding: const EdgeInsets.only(left: 45.0, right: 35),
           child: Column(
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(top: 8.0, bottom: 5.0),
+                padding: const EdgeInsets.only(top: 8.0),
                 child: Row(
                   children: <Widget>[
                     CircleAvatar(
                       backgroundImage:
                           AssetImage('img/${locations[index].flag}'),
                       backgroundColor: Colors.black,
-                      radius: 25,
-                      
+                      radius: 20,
                     ),
-                    Text('   '+
-                        locations[index].location ,
-                        style: new TextStyle(fontSize: 25),
-                      ),
+                    Text(
+                      '   ' + locations[index].location,
+                      style: new TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.blue[800],
+                        letterSpacing: 2,),
+                    ),
                     Spacer(),
                     Text(
                       locations[index].url,
@@ -506,17 +489,22 @@ class _HomeScreenBottomPartState extends State<HomeScreenBottomPart> {
                 ),
               ),
               Padding(
-                  padding: const EdgeInsets.only(top: 8.0, bottom: 2.0),
+                  padding: const EdgeInsets.only(top: 5.0),
                   child: Row(
                     children: <Widget>[
-                      // Text(
-                      //   locations[index].location,
-                      //   style: new TextStyle(fontSize: 25),
-                      // ),
-                      Spacer(),
+                      
                       Text(
                         locations[index].evaluation.toString(),
                         style: new TextStyle(fontSize: 20),
+                      ),
+                      Spacer(),
+                      IconButton(
+                        onPressed: () {
+                          _createAlertDialog(context);
+                        },
+                        icon: Icon(Icons.timeline),color: Colors.blue[700],
+                        iconSize: 35,
+                        
                       ),
                     ],
                   ))
@@ -527,187 +515,3 @@ class _HomeScreenBottomPartState extends State<HomeScreenBottomPart> {
     );
   }
 }
-
-// return Column(
-//   children: <Widget>[
-//     ListView.builder(
-//       physics: ScrollPhysics(),
-//         shrinkWrap: true,
-//         itemCount: locations.length,
-//         itemBuilder: (context, index) {
-//           return Card(
-//             // padding:
-//             //     const EdgeInsets.symmetric(horizontal: 1.0, vertical: 4.0),
-//             child: ListTile(
-//               title: Text(locations[index].location),
-//               leading: CircleAvatar(
-//                 backgroundImage: AssetImage('img/${locations[index].flag}'),
-//               ),
-//             ),
-//           );
-//         }),
-//   ],
-// );
-
-// List<TopCountriesDetail> t;
-
-// class _homeScreenBottomPartState extends State<homeScreenBottomPart> {
-//   // TopCountriesService topServ = new TopCountriesService();
-//   // TopCountriesDetail topCountry = new TopCountriesDetail();
-//   // List<TopCountriesDetail> countriesList;
-//   // TopCountriesService topServ = new TopCountriesService();
-//   // List<Widget> cardList = new List();
-//   void getTopCountries() async {
-//     setState(() async {
-//       // t = await topServ.fetchData();
-//     });
-//   }
-
-// t.length
-// List<Widget> buildCard() {
-//   for (int i = 0; i < 10; i++) {
-//     cardList.add(new Card(
-//       child: ListTile(
-//         title: Text('topCountry'),
-//       ),
-//     ));
-//   }
-//   return cardList;
-// }
-
-// _homeScreenBottomPartState() {
-//   topCountry.topCountriesId = 2;
-//   topCountry.topCountriesName = 'Denmark';
-//   topCountry.topCountriesContinent = 'Europe';
-//   topCountry.topCountriesEvaluation = 5.0;
-//   topCountry.topCountriesImage = 'img/denmark.png';
-//   topCountry.topCountriesDescription =
-//       'Denmark is a Scandinavian country comprising the Jutland Peninsula and numerous islands. It\'s linked to nearby Sweden via the Öresund bridge. Copenhagen, its capital, is home to royal palaces and colorful Nyhavn harbor, plus the Tivoli amusement park and the iconic “Little Mermaid” statue. Odense is writer Hans Christian Andersen\’s hometown, with a medieval core of cobbled streets and half-timbered houses.';
-// }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     getTopCountries();
-//     buildCard();
-//     return Column(
-//         crossAxisAlignment: CrossAxisAlignment.center,
-//         children: <Widget>[
-//           Text('Top 10  '),
-//           ListView(
-//             shrinkWrap: true,
-//             scrollDirection: Axis.vertical,
-//             children: cardList,
-//           ),
-
-//         ]);
-//   }
-// }
-
-//
-// RaisedButton(
-//     color: Color(0xfff9811e),
-//     onPressed: () {
-//       topServ.addTopCountries(topCountry);
-//     },
-//     padding: EdgeInsets.all(15.0),
-//     shape: new RoundedRectangleBorder(
-//         borderRadius: new BorderRadius.circular(30.0)),
-//     child: Text(
-//       'Add top 10 countries',
-//       textAlign: TextAlign.center,
-//       style:
-//           TextStyle(fontSize: 25.0, fontFamily: 'Georgia', height: 1),
-//     ),
-//     textColor: Colors.white,
-//   ),
-
-// Card(
-// // child: Column(
-// //   mainAxisSize: MainAxisSize.min,
-// //   children: <Widget>[
-// //     // Row(
-// //     //   children: <Widget>[
-// //     ListTile(
-// //       // leading: Image(image: AssetImage(topCountry.topCountriesImage)),
-// //       title: Text(topCountry.topCountriesName),
-// //       subtitle: Text(topCountry.topCountriesContinent),
-// //     ),
-// //     //   ],
-// //     // ),
-// //     ButtonBar(
-// //       children: <Widget>[
-// //         Text(topCountry.topCountriesName),
-// //         Text(topCountry.topCountriesContinent),
-// //         FlatButton(
-// //           child: Text('View'),
-// //           onPressed: () {/* ... */},
-// //         ),
-// //       ],
-// //     ),
-// //   ],
-// // ),
-//   ),
-
-// var homeScreenBottomPart =
-
-// List<countryCard> countryCards = [
-//   // countryCard("assets/images/map1.png", "North Of America"),
-// ];
-
-// class countryCard extends StatefulWidget {
-//   @override
-//   _countryCardState createState() => _countryCardState();
-// }
-
-// class _countryCardState extends State<countryCard> {
-//   // final String imagePath, countryName;
-//   List<TopCountriesService> allData = [];
-//   // countryCard(this.imagePath, this.countryName);
-//   void initState() {
-
-//     DatabaseReference ref = FirebaseDatabase.instance.reference();
-//     ref.child('TopCountriesService').once().then((DataSnapshot snap) {
-//       var keys = snap.value.keys;
-//       var data = snap.value;
-//       allData.clear();
-//       for (var key in keys) {
-//         // TopCountriesService c = new TopCountriesService(
-//         //   data[key]['name'],
-//         //   data[key]['image'],
-//         // );
-//         // allData.add(c);
-//       }
-//       setState(() {
-//         print('length: ${allData.length}');
-//       });
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Stack(
-//       children: <Widget>[
-//         Container(
-//             height: 60.0,
-//             width: 40.0,
-//             // child: Image.asset(
-//             //   imagePath,
-//             //   fit: BoxFit.cover,
-//             // ),
-//             child: allData.length == 0
-//                 ? new Text('no data')
-//                 : new Text('there is data')),
-//       ],
-//     );
-//   }
-
-//   Widget UI() {
-//     return new Card(
-//       child: new Container(
-//         child: new Column(
-//           children: <Widget>[new Text('Name')],
-//         ),
-//       ),
-//     );
-//   }
-// }
