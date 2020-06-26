@@ -12,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
 import 'dart:io';
+import 'package:email_validator/email_validator.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -188,7 +189,7 @@ class _RegisterState extends State<Register> {
                                 decoration: textInputDecoration.copyWith(
                                     hintText: 'Email'),
                                 validator: (val) {
-                                  if (val.isEmpty || !val.contains('@')) {
+                                  if (EmailValidator.validate(val)) {
                                     return 'Please enter valid email';
                                   }
                                   return null;
@@ -237,11 +238,11 @@ class _RegisterState extends State<Register> {
                                 obscureText: true,
                               ),
                               SizedBox(height: 5.0),
-                              Text(
-                                error,
-                                style: TextStyle(
-                                    color: Colors.red, fontSize: 14.0),
-                              ),
+                              // Text(
+                              //   error,
+                              //   style: TextStyle(
+                              //       color: Colors.red, fontSize: 14.0),
+                              // ),
                             ],
                           ),
                         ),
@@ -320,11 +321,11 @@ class _RegisterState extends State<Register> {
                                 ],
                               ),
                               SizedBox(height: 5.0),
-                              Text(
-                                error,
-                                style: TextStyle(
-                                    color: Colors.red, fontSize: 14.0),
-                              ),
+                              // Text(
+                              //   error,
+                              //   style: TextStyle(
+                              //       color: Colors.red, fontSize: 14.0),
+                              // ),
                               Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment:
