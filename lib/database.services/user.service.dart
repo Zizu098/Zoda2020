@@ -1,12 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:zoda/common/Repository.dart';
-import 'package:zoda/models/user.dart';
 import 'package:zoda/models/userDetail.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class UserService {
 
   Repository _rep = Repository("user");
+  final db = Firestore.instance.collection("user");
 
   final String uid;
   List<UserDetail> users;
@@ -30,4 +29,16 @@ class UserService {
     users = result.documents.map((doc)=> UserDetail.fromMap(doc.data, doc.documentID)).toList();
     return users;
   }
+
+
+   Future<UserDetail> getById(String userId)async {
+    var result =  await db.where("userId",isEqualTo: userId).getDocuments();
+    var user = result.documents.first;
+    return UserDetail.fromMap(user.data, user.documentID);
+  }
+
+  Future update(UserDetail data , String userId) async{
+    return await _rep.updateDocument(data.toJson(), userId);
+  }
+
 }

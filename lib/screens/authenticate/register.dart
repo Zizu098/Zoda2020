@@ -296,7 +296,7 @@ class _RegisterState extends State<Register> {
                                 onChanged: (value) {
                                   setState(() {
                                     _age = int.parse(value);
-                                    userData.age = int.parse(value);
+                                    userData.age = value;
                                   });
                                 },
                                 keyboardType: TextInputType.number,

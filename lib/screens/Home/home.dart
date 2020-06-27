@@ -9,6 +9,7 @@ import 'package:zoda/screens/student/studentHome.dart';
 import 'package:zoda/database.services/user.service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:custom_switch/custom_switch.dart';
+import 'package:zoda/screens/Home/profile.dart';
 
 var bkColor = Colors.white;
 
@@ -155,7 +156,7 @@ class _HomeState extends State<Home> {
               style:
                   TextStyle(fontSize: 16, color: Color.fromRGBO(50, 51, 53, 1)),
             ),
-            onTap: null,
+            onTap: ()=>Navigator.push(context, new MaterialPageRoute(builder: (context) => new Profile())),
           ),
           ListTile(
             leading: Icon(Icons.settings),

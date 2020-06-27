@@ -1,7 +1,7 @@
 class UserDetail {
   String firstName;
   String lastName;
-  int age;
+  String age;
   String address;
   String email;
   String phone;
@@ -27,7 +27,7 @@ class UserDetail {
     userId = id ?? '',
     firstName = snapshot['firstName'] ?? '',
     lastName = snapshot['lastName'] ?? '',
-    age = snapshot['age'] ?? 0,
+    age = snapshot['age'] ?? '',
     address = snapshot['address'] ?? '',
     email = snapshot['email'] ?? '',
     phone = snapshot['phone'] ?? '',
