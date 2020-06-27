@@ -1,41 +1,41 @@
 
 class TopCountriesDetail {
-  String url;
-  String location;
-  String flag;
-  double evaluation;
-  // String topCountriesImage;
-  String description;
+  String topCountriesContinent;
+  String topCountriesName;
+  String topCountriesImage;
+  num topCountriesEvaluation;
+  // String topCountriesId;
+  String topCountriesDescription;
  
 
   TopCountriesDetail({
-      this.url,
-      this.location,
-      this.flag,
-      this.evaluation,
-      // this.topCountriesImage,
-      this.description
+      this.topCountriesContinent,
+      this.topCountriesName,
+      this.topCountriesImage,
+      // this.topCountriesEvaluation,
+      // this.topCountriesId,
+      this.topCountriesDescription
       });
 
 
   TopCountriesDetail.fromMap(Map snapshot, String id):
 
-    url = 'id' ?? 0,
-    location = snapshot['location'] ?? '',
-    flag = snapshot['flag'] ?? '',
-    evaluation = snapshot['evaluation'] ?? 0,
-    // topCountriesImage = snapshot['topCountriesImage'] ?? '',
-    description = snapshot['description'] ?? '';
+    topCountriesContinent = snapshot['topCountriesContinent'] ?? '',
+    topCountriesName = snapshot['topCountriesName'] ?? '',
+    topCountriesImage = snapshot['topCountriesImage'] ?? '',
+    topCountriesEvaluation = snapshot['topCountriesEvaluation'] ?? 0.0,
+    // topCountriesId = snapshot['topCountriesId'] ?? '',
+    topCountriesDescription = snapshot['topCountriesDescription'] ?? '';
 
 
   toJson() {
     return {
-      "url": url,
-      "location": location,
-      "flag": flag,
-      "evaluation": evaluation,
-      // "topCountriesImage": topCountriesImage,
-      "description": description
+      "topCountriesContinent": topCountriesContinent,
+      "topCountriesName": topCountriesName,
+      "topCountriesImage": topCountriesImage,
+      "topCountriesEvaluation": topCountriesEvaluation,
+      // "topCountriesId": topCountriesId,
+      "topCountriesDescription": topCountriesDescription
   };
 }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zoda/components/loading/loading.dart';
 import 'package:zoda/database.services/auth.dart';
+import 'package:zoda/database.services/topCountries.service.dart';
 import 'package:zoda/models/topCountriesDetail.dart';
 import 'package:zoda/models/userDetail.dart';
 import 'package:flutter/src/widgets/scroll_physics.dart';
@@ -10,6 +12,7 @@ import 'package:zoda/database.services/user.service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:custom_switch/custom_switch.dart';
 import 'package:zoda/screens/Home/profile.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 var bkColor = Colors.white;
 
@@ -28,7 +31,6 @@ class _HomeState extends State<Home> {
 
   bool infoWindowVisible = false;
   bool status = false;
-  
 
   void getUser() async {
     setState(() async {
@@ -115,6 +117,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    Loading();
     getUser();
     // TODO: implement build
     return Scaffold(
@@ -156,20 +159,21 @@ class _HomeState extends State<Home> {
               style:
                   TextStyle(fontSize: 16, color: Color.fromRGBO(50, 51, 53, 1)),
             ),
-            onTap: ()=>Navigator.push(context, new MaterialPageRoute(builder: (context) => new Profile())),
+            onTap: () => Navigator.push(context,
+                new MaterialPageRoute(builder: (context) => new Profile())),
           ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text(
-              'Settings',
-              style:
-                  TextStyle(fontSize: 16, color: Color.fromRGBO(50, 51, 53, 1)),
-            ),
-            onTap: () {
-              infoWindowVisible = false;
-              createSettingsPopUp(context);
-            },
-          ),
+          // ListTile(
+          //   leading: Icon(Icons.settings),
+          //   title: Text(
+          //     'Settings',
+          //     style:
+          //         TextStyle(fontSize: 16, color: Color.fromRGBO(50, 51, 53, 1)),
+          //   ),
+          //   onTap: () {
+          //     infoWindowVisible = false;
+          //     createSettingsPopUp(context);
+          //   },
+          // ),
           ListTile(
             leading: Icon(Icons.phone),
             title: Text(
@@ -249,13 +253,10 @@ class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
                 SizedBox(
                   height: 10.0,
                 ),
-
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
-                    children: <Widget>[
-                     
-                    ],
+                    children: <Widget>[],
                   ),
                 ),
                 SizedBox(
@@ -272,7 +273,6 @@ class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
                 SizedBox(
                   height: 30.0,
                 ),
-
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -339,23 +339,23 @@ class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
                   style: TextStyle(
                     fontSize: 20.0,
                     color: Colors.white,
-                    
                   ),
                   textAlign: TextAlign.left,
-                  
                 ),
                 Spacer(),
-                Icon(Icons.arrow_drop_down,size: 40,color: Colors.lightBlue[200],)
+                Icon(
+                  Icons.arrow_drop_down,
+                  size: 40,
+                  color: Colors.lightBlue[200],
+                )
               ],
             ),
           ),
         )
-        
       ],
     );
   }
 }
-
 
 class HomeScreenBottomPart extends StatefulWidget {
   @override
@@ -364,112 +364,49 @@ class HomeScreenBottomPart extends StatefulWidget {
 
 class _HomeScreenBottomPartState extends State<HomeScreenBottomPart> {
   TextEditingController customController = TextEditingController();
-
-  _createAlertDialog(BuildContext context) {
+  TopCountriesService fetchTopData = new TopCountriesService();
+  List<TopCountriesDetail> location;
+  Future<List<TopCountriesDetail>> _fetchTopData() async {
+    location = await fetchTopData.fetchData();
+    setState(() {
+      if(location == null)
+      Loading();
+    });
+  }
+  void initState() {
+    _fetchTopData();
+  }
+  _createAlertDialog(BuildContext context, String description) {
     return showDialog(
         context: context,
         builder: (context) {
-          
           return CupertinoAlertDialog(
-            title: Text("Finland is a Northern Europeean nation bordering Sweden, Norway and Russia. Norway and Russia. Its capital, Helsinki, occupies a peninsula and surrounding islands in the Baltic Sea.Helsinki is home to the 18th-century sea fortress Suomenlinna,the fashionable Design District and diverse museums. The Northern Lights can be seen from the country's Arctic Lapland province, a vast wilderness with national parks and ski resorts."),
+            title: Text(description),
             actions: [
               CupertinoDialogAction(
                 child: Text('Close'),
                 onPressed: () {
                   Navigator.of(context).pop(customController);
                 },
-                
               ),
             ],
           );
         });
   }
 
- List<TopCountriesDetail> locations = [
-    TopCountriesDetail(
-        url: 'Europe',
-        location: 'Finland',
-        flag: 'finland.png',
-        evaluation: 5,
-        description:
-            "Finland is a Northern Europeean nation bordering Sweden, Norway and Russia. Its capital, Helsinki, occupies a peninsula and surrounding islands in the Baltic Sea. Helsinki is home to the 18th-century sea fortress Suomenlinna, the fashionable Design District and diverse museums. The Northern Lights can be seen from the country's Arctic Lapland province, a vast wilderness with national parks and ski resorts."),
-    TopCountriesDetail(
-        url: 'Europe',
-        location: 'Austria',
-        flag: 'austria.png',
-        evaluation: 5,
-        description:
-            "Austria, officially the Republic of Austria, is a landlocked East Alpine country in the southern part of Central Europee. It is composed of nine federated states, one of which is Vienna, Austria's capital and its largest city"),
-    TopCountriesDetail(
-        url: 'Europe',
-        location: 'Canada',
-        flag: 'canada.png',
-        evaluation: 5,
-        description:
-            "Canada is a country in the northern part of North America. Its ten provinces and three territories extend from the Atlantic to the Pacific and northward into the Arctic Ocean, covering 9.98 million square kilometres, making it the world's second-largest country by total area"),
-    TopCountriesDetail(
-        url: 'Europe',
-        location: 'Denmark',
-        flag: 'denmark.png',
-        evaluation: 5,
-        description:
-            "Denmark is a Scandinavian country comprising the Jutland Peninsula and numerous islands. It's linked to nearby Sweden via the Öresund bridge. Copenhagen, its capital, is home to royal palaces and colorful Nyhavn harbor, plus the Tivoli amusement park and the iconic “Little Mermaid” statue. Odense is writer Hans Christian Andersen’s hometown, with a medieval core of cobbled streets and half-timbered houses."),
-    TopCountriesDetail(
-        url: 'Europe',
-        location: 'Iceland',
-        flag: 'iceland.png',
-        evaluation: 4,
-        description:
-            "Iceland, a Nordic island nation, is defined by its dramatic landscape with volcanoes, geysers, hot springs and lava fields. Massive glaciers are protected in Vatnajökull and Snæfellsjökull national parks. Most of the population lives in the capital, Reykjavik, which runs on geothermal power and is home to the National and Saga museums, tracing Iceland’s Viking history."),
-    TopCountriesDetail(
-        url: 'Europe',
-        location: 'Netherlands',
-        flag: 'netherlands.png',
-        evaluation: 4,
-        description:
-            '"The Netherlands, a country in northwestern Europee, is known for a flat landscape of canals, tulip fields, windmills and cycling routes. Amsterdam, the capital, is home to the Rijksmuseum, Van Gogh Museum and the house where Jewish diarist Anne Frank hid during WWII. Canalside mansions and a trove of works from artists including Rembrandt and Vermeer remain from the citys 17th-century "Golden Age."'),
-    TopCountriesDetail(
-        url: 'Europe',
-        location: 'New Zealand',
-        flag: 'new zealand.png',
-        evaluation: 4,
-        description:
-            "New Zealand is an island country in the southwestern Pacific Ocean. It comprises two main landmasses—the North Island and the South Island —and around 600 smaller islands, covering a total area of 268,021 square kilometres"),
-    TopCountriesDetail(
-        url: 'Europe',
-        location: 'Norway',
-        flag: 'norway.png',
-        evaluation: 3,
-        description:
-            "Norway is a Scandinavian country encompassing mountains, glaciers and deep coastal fjords. Oslo, the capital, is a city of green spaces and museums. Preserved 9th-century Viking ships are displayed at Oslo’s Viking Ship Museum. Bergen, with colorful wooden houses, is the starting point for cruises to the dramatic Sognefjord. Norway is also known for fishing, hiking and skiing, notably at Lillehammer’s Olympic resort."),
-    TopCountriesDetail(
-        url: 'Europe',
-        location: 'Sweden',
-        flag: 'sweden.png',
-        evaluation: 3,
-        description:
-            "Sweden is a Scandinavian nation with thousands of coastal islands and inland lakes, along with vast boreal forests and glaciated mountains. Its principal cities, eastern capital Stockholm and southwestern Gothenburg and Malmö, are all coastal. Stockholm is built on 14 islands. It has more than 50 bridges, as well as the medieval old town, Gamla Stan, royal palaces and museums such as open-air Skansen."),
-    TopCountriesDetail(
-        url: 'Europe',
-        location: 'Switzerland',
-        flag: 'switzerland.png',
-        evaluation: 3,
-        description:
-            "Switzerland is a mountainous Central Europeean country, home to numerous lakes, villages and the high peaks of the Alps. Its cities contain medieval quarters, with landmarks like capital Bern’s Zytglogge clock tower and Lucerne’s wooden chapel bridge. The country is also known for its ski resorts and hiking trails. Banking and finance are key industries, and Swiss watches and chocolate are world renowned."),
-  ];
   @override
   Widget build(BuildContext context) {
     return Container(
       child: new ListView.builder(
           physics: ScrollPhysics(),
           shrinkWrap: true,
-          itemCount: locations.length,
+          itemCount: (location != null) ? location.length : 10,
           itemBuilder: (BuildContext context, int index) =>
-              buildTripCard(context, index)),
+              _buildTripCard(context, index)),
     );
   }
 
-  Widget buildTripCard(BuildContext context, int index) {
+  Widget _buildTripCard(BuildContext context, int index) {
     return new Container(
       child: Card(
         child: Padding(
@@ -481,22 +418,23 @@ class _HomeScreenBottomPartState extends State<HomeScreenBottomPart> {
                 child: Row(
                   children: <Widget>[
                     CircleAvatar(
-                      backgroundImage:
-                          AssetImage('img/${locations[index].flag}'),
+                      backgroundImage: (location == null) ? AssetImage('img/Z.png')
+                          :AssetImage('${location[index].topCountriesImage}'),
                       backgroundColor: Colors.black,
                       radius: 20,
                     ),
                     Text(
-                      '   ' + locations[index].location,
+                      '   ' + location[index].topCountriesName,
                       style: new TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
                         color: Colors.blue[800],
-                        letterSpacing: 2,),
+                        letterSpacing: 2,
+                      ),
                     ),
                     Spacer(),
                     Text(
-                      locations[index].url,
+                      location[index].topCountriesContinent,
                       style: new TextStyle(fontSize: 15),
                     ),
                   ],
@@ -506,17 +444,26 @@ class _HomeScreenBottomPartState extends State<HomeScreenBottomPart> {
                   padding: const EdgeInsets.only(top: 5.0),
                   child: Row(
                     children: <Widget>[
-                      
-                      Text(
-                        locations[index].evaluation.toString(),
-                        style: new TextStyle(fontSize: 20),
+                      SmoothStarRating(
+                        rating: location[index].topCountriesEvaluation.toDouble(),
+                        isReadOnly: true,
+                        size: 20,
+                        filledIconData: Icons.star,
+                        halfFilledIconData: Icons.star_half,
+                        defaultIconData: Icons.star_border,
+                        starCount: 5,
+                        allowHalfRating: true,
+                        spacing: 2.0,
+                        onRated: null,
                       ),
                       Spacer(),
                       IconButton(
                         onPressed: () {
-                          _createAlertDialog(context);
+                          _createAlertDialog(
+                              context, location[index].topCountriesDescription);
                         },
-                        icon: Icon(Icons.info_outline),color: Colors.blue[700],
+                        icon: Icon(Icons.info_outline),
+                        color: Colors.blue[700],
                         iconSize: 35,
                         splashColor: Colors.lightBlue,
                       ),

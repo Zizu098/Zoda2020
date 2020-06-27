@@ -94,7 +94,7 @@ class _ProfileState extends State<Profile> {
   final GlobalKey<FormState> _formKeyValue = new GlobalKey<FormState>();
   bool _enableEdit = false;
   var iconEdit = Icons.edit;
-  var colorEdit = 0xfff9811e;
+  Color colorEdit = Colors.lightBlue[900];
   DateTime _dateTime;
 
   @override
@@ -152,7 +152,7 @@ class _ProfileState extends State<Profile> {
                         decoration: InputDecoration(
                           icon: Icon(
                             FontAwesomeIcons.userCircle,
-                            color: Color(0xfff9811e),
+                            color: Colors.lightBlue[900],
                           ),
                           hintText: 'First Name',
                           labelText: "Name",
@@ -169,7 +169,7 @@ class _ProfileState extends State<Profile> {
                         decoration: InputDecoration(
                           icon: Icon(
                             FontAwesomeIcons.envelope,
-                            color: Color(0xfff9811e),
+                            color: Colors.lightBlue[900],
                           ),
                           hintText: 'Email',
                           labelText: 'Email',
@@ -186,7 +186,7 @@ class _ProfileState extends State<Profile> {
                         decoration: InputDecoration(
                           icon: Icon(
                             FontAwesomeIcons.user,
-                            color: Color(0xfff9811e),
+                            color: Colors.lightBlue[900],
                           ),
                           hintText: 'Age',
                           labelText: 'Age',
@@ -198,7 +198,7 @@ class _ProfileState extends State<Profile> {
                         decoration: InputDecoration(
                           icon: Icon(
                             Icons.phone_android,
-                            color: Color(0xfff9811e),
+                            color: Colors.lightBlue[900],
                           ),
                           hintText: 'Phone',
                           labelText: 'Phone',
@@ -210,7 +210,7 @@ class _ProfileState extends State<Profile> {
                         decoration: InputDecoration(
                           icon: Icon(
                             FontAwesomeIcons.addressCard,
-                            color: Color(0xfff9811e),
+                            color: Colors.lightBlue[900],
                           ),
                           hintText: 'Address',
                           labelText: 'adress',
@@ -254,14 +254,14 @@ class _ProfileState extends State<Profile> {
               _enableEdit = !_enableEdit;
               if (_enableEdit) {
                 iconEdit = Icons.clear;
-                colorEdit = 0xFFFF0000;
+                colorEdit = Colors.lightBlue[200];
               } else {
                 iconEdit = Icons.edit;
-                colorEdit = 0xfff9811e;
+                colorEdit = Colors.lightBlue[900];
               }
             });
           },
-          backgroundColor: Color(colorEdit),
+          backgroundColor: colorEdit,
           tooltip: "Edit",
           child: Icon(iconEdit),
         ));
