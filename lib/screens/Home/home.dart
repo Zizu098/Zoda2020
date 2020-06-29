@@ -13,6 +13,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:custom_switch/custom_switch.dart';
 import 'package:zoda/screens/Home/profile.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 var bkColor = Colors.white;
 
@@ -22,7 +23,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  UserService userServ = new UserService();
+  UserService _userServ = new UserService();
   final AuthService _auth = AuthService();
   UserDetail user = new UserDetail();
   List<UserDetail> u, c;
@@ -31,15 +32,30 @@ class _HomeState extends State<Home> {
 
   bool infoWindowVisible = false;
   bool status = false;
-
-  void getUser() async {
-    setState(() async {
-      u = await userServ.fetchData();
-      // c = await _auth.currentUSer();
-      user = u.first;
-      final ref = FirebaseStorage.instance.ref().child(user.imgUrl);
-      url = await ref.getDownloadURL();
+  String userId;
+  Future<void> getUser() async {
+    // setState(() async {
+    //   u = await userServ.fetchData();
+    //   // c = await _auth.currentUSer();
+    //   user = u.first;
+    //   final ref = FirebaseStorage.instance.ref().child(user.imgUrl);
+    //   url = await ref.getDownloadURL();
+    // });
+    FirebaseUser userData = await FirebaseAuth.instance.currentUser();
+    setState(() {
+      userId = userData.uid;
+      //user = _userService.getById(userId);
     });
+    _userServ.getById(userId).then((value) => {
+          this.setState(() {
+            user = value;
+          }),
+          print(user)
+        });
+  }
+
+  void initState() {
+    getUser();
   }
 
   createContactPopUp(BuildContext context) {
@@ -118,7 +134,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     Loading();
-    getUser();
     // TODO: implement build
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -142,7 +157,7 @@ class _HomeState extends State<Home> {
                     margin: EdgeInsets.fromLTRB(0, 18, 0, 5),
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        image: DecorationImage(image: NetworkImage('$url'))),
+                        image: DecorationImage(image: NetworkImage('${user.imgUrl}')) ?? DecorationImage(image: AssetImage('img/Z.png')) ),
                   ),
                   Text(
                     this.user.email ?? "wait email data.",
@@ -369,13 +384,14 @@ class _HomeScreenBottomPartState extends State<HomeScreenBottomPart> {
   Future<List<TopCountriesDetail>> _fetchTopData() async {
     location = await fetchTopData.fetchData();
     setState(() {
-      if(location == null)
-      Loading();
+      if (location == null) Loading();
     });
   }
+
   void initState() {
     _fetchTopData();
   }
+
   _createAlertDialog(BuildContext context, String description) {
     return showDialog(
         context: context,
@@ -418,8 +434,9 @@ class _HomeScreenBottomPartState extends State<HomeScreenBottomPart> {
                 child: Row(
                   children: <Widget>[
                     CircleAvatar(
-                      backgroundImage: (location == null) ? AssetImage('img/Z.png')
-                          :AssetImage('${location[index].topCountriesImage}'),
+                      backgroundImage: (location == null)
+                          ? AssetImage('img/Z.png')
+                          : AssetImage('${location[index].topCountriesImage}'),
                       backgroundColor: Colors.black,
                       radius: 20,
                     ),
@@ -445,7 +462,8 @@ class _HomeScreenBottomPartState extends State<HomeScreenBottomPart> {
                   child: Row(
                     children: <Widget>[
                       SmoothStarRating(
-                        rating: location[index].topCountriesEvaluation.toDouble(),
+                        rating:
+                            location[index].topCountriesEvaluation.toDouble(),
                         isReadOnly: true,
                         size: 20,
                         filledIconData: Icons.star,

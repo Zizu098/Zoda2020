@@ -123,8 +123,8 @@ class _ProfileState extends State<Profile> {
                     children: <Widget>[
                       CircleAvatar(
                         radius: 40,
-                        // backgroundImage: (_image != null) ? FileImage(_image)
-                        //                      :NetworkImage(user.imgUrl),
+                        backgroundImage: (_image != null) ? FileImage(_image)
+                                             :NetworkImage(user.imgUrl),
                         backgroundColor: Colors.black,
                       ),
                       Padding(
