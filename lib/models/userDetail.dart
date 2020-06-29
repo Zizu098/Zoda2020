@@ -31,7 +31,7 @@ class UserDetail {
     address = snapshot['address'] ?? '',
     email = snapshot['email'] ?? '',
     phone = snapshot['phone'] ?? '',
-      
+    imgUrl = snapshot['imgUrl'] ?? '',
     status = snapshot['status'] ?? '';
 
 

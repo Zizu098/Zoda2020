@@ -32,17 +32,19 @@ class _RegisterState extends State<Register> {
     GlobalKey<FormState>(),
   ];
 
- Future <List<UserDetail>> fetchEmail() async{
+  Future<List<UserDetail>> fetchEmail() async {
     // setState(() async {
-      fetchEmails = await userEmailServ.fetchData();
+    fetchEmails = await userEmailServ.fetchData();
     // });
   }
 
-  void initState(){
+  void initState() {
     fetchEmail();
   }
 
-  File _image;
+  dynamic result;
+
+  // File _image;
   String fileName;
 
   int _currentStep = 0;
@@ -62,26 +64,36 @@ class _RegisterState extends State<Register> {
   String conButton = 'Next';
   String dropdownValue = 'None';
 
+  File _image;
+  // String fileName;
+  // var url;
+  var imageURL;
   @override
   Widget build(BuildContext context) {
-    Future getImage() async {
-      var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-      setState(() {
-        _image = image;
-        print('Image Path $_image');
-      });
+    Future uploadFile(_image) async {
+      StorageReference storageReference =
+          FirebaseStorage.instance.ref().child('user/${_image.path}');
+      StorageUploadTask uploadTask = storageReference.putFile(_image);
+      await uploadTask.onComplete;
+      print('File Uploaded');
+      userData.imgUrl = await storageReference.getDownloadURL();
+      return await storageReference.getDownloadURL();
     }
 
-    Future uploadPic(BuildContext context) async {
-      fileName = basename(_image.path);
-      StorageReference firebaseStorageRef =
-          FirebaseStorage.instance.ref().child(fileName);
-      var downUrl = fileName;
-      url = downUrl.toString();
+    Future getImage() async {
+      var result = await ImagePicker().getImage(source: ImageSource.gallery);
       setState(() {
-        userData.imgUrl = url;
+        _image = File(result.path);
+        // print('Image Path $_image');
+        imageURL = uploadFile(_image);
+        // userData.imgUrl = imageURL;
       });
-      StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
+
+      // // UserService().getById(user.id).then((model)=> model.imgUrl = imageURL);
+      // UserService().update(user.toJson(), user.id);
+      // user.imgUrl = model.imgUrl;
+      // });
+      // imageURL = await uploadPic(image);
     }
 
     return loading
@@ -448,44 +460,47 @@ class _RegisterState extends State<Register> {
                         if (_currentStep < 3) {
                           if (_currentStep == 0) {
                             for (int i = 0; i < fetchEmails.length; i++) {
-                              if (fetchEmails[i].email == _email){
+                              if (fetchEmails[i].email == _email) {
                                 setState(() {
-                                   error = 'Email already used';
-                                   _currentStep--;
+                                  error = 'Email already used';
+                                  _currentStep--;
                                 });
-                            }else{
-                              setState(() {
-                                error = '';
-                              });
-                            }
+                              } else {
+                                setState(() {
+                                  error = '';
+                                });
+                              }
                             }
                           } else if (_currentStep == 1) {
                             conButton = 'Register';
                           } else if (_currentStep == 2) {
-                            setState(() {
+                            setState(() async {
                               loading = true;
-                            });
-                            dynamic result = _auth.registerWithEmailAndPassword(
-                                _email, _password);
-                            void getId() async {
-                              final FirebaseUser user =
-                                  await FirebaseAuth.instance.currentUser();
-                              userData.userId = user.uid.toString();
+                              result = await _auth.registerWithEmailAndPassword(
+                                  _email, _password);
+                              // void getId() async {
+                              //  final FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
+                              userData.userId = result.uid;
+                              uploadFile(_image);
                               userServ.add(userData);
-                            }
-
-                            if (result == null) {
-                              setState(() {
-                                error = 'Email already used';
-                                loading = false;
-                              });
-                            } else {
-                              uploadPic(context).then((v) {
-                                Navigator.of(context)
-                                    .pushReplacementNamed("./login");
-                              });
-                              getId();
-                            }
+                            });
+                            // }
+                            // uploadPic(context).then((v) {
+                            //       Navigator.of(context)
+                            //           .pushReplacementNamed("./login");
+                            //     });
+                            // if (result == null) {
+                            //   setState(() {
+                            //     error = 'Email already used';
+                            //     loading = false;
+                            //   });
+                            // } else {
+                            //   uploadPic(context).then((v) {
+                            //     Navigator.of(context)
+                            //         .pushReplacementNamed("./login");
+                            //   });
+                            //   // getId();
+                            // }
                           }
                           _currentStep = _currentStep + 1;
                         } else {
