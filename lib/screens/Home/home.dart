@@ -305,7 +305,7 @@ class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => studentHome()));
+                                  builder: (context) => StudentHome()));
                         },
                         child: Row(
                           children: <Widget>[
@@ -334,7 +334,7 @@ class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => migrationHome()));
+                                  builder: (context) => MigrationHome()));
                         },
                         child: Row(
                           children: <Widget>[
