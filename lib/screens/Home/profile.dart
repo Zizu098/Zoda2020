@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,8 +10,6 @@ import 'package:email_validator/email_validator.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:path/path.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:zoda/components/loading/loading.dart';
 
 class Profile extends StatefulWidget {
@@ -18,7 +17,35 @@ class Profile extends StatefulWidget {
   _ProfileState createState() => _ProfileState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
+  AnimationController animationController;
+  Animation degOneTranslationAnimation;
+  Animation rotationAnimation;
+  final dio = new Dio();
+
+  double getRadiansFormDegree(double degree) {
+    double unitRadian = 57.2985452;
+    return degree / unitRadian;
+  }
+
+  @override
+  void initState() {
+    animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 250));
+    degOneTranslationAnimation = TweenSequence([
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 0.0, end: 1.2), weight: 75.0),
+      TweenSequenceItem<double>(
+          tween: Tween<double>(begin: 1.2, end: 1.0), weight: 25.0),
+    ]).animate(animationController);
+    rotationAnimation = Tween<double>(begin: 180.0, end: 0.0).animate(
+        CurvedAnimation(parent: animationController, curve: Curves.easeOut));
+    super.initState();
+    animationController.addListener(() {
+      setState(() {});
+    });
+  }
+
   UserDetail user;
   String userId;
   UserService _userService = new UserService();
@@ -39,11 +66,11 @@ class _ProfileState extends State<Profile> {
     //User currentUser = auth.currentUSer();
   }
 
-  @override
-  void initState() {
-    getUserData();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   getUserData();
+  //   super.initState();
+  // }
   //Future<DocumentSnapshot> data = getDocumentById(user);
 
 // Upload Image
@@ -99,171 +126,226 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    if (user == null) {
-      return Loading();
-    }
+    Size size = MediaQuery.of(context).size;
+    Loading();
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Profile"),
-          backgroundColor: Colors.lightBlue[900],
-        ),
-        body: SafeArea(
-          child: Center(
-            child: ListView(
-              //  item: (BuildContext context, index) {
-              // if (user == null) return Loading();
-              // mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(
-                  height: 50,
-                ),
-                Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      CircleAvatar(
-                        radius: 40,
-                        // backgroundImage: (_image != null) ? FileImage(_image)
-                        //                      :NetworkImage(user.imgUrl),
-                        backgroundColor: Colors.black,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 42.0),
-                        child: IconButton(
-                            icon: Icon(
-                              Icons.camera_alt,
-                              size: 30.0,
-                            ),
-                            onPressed: () {
-                              getImage();
-                              // chooseFile();
-                            }),
-                      )
-                    ]),
-                Form(
-                  key: _formKeyValue,
-                  autovalidate: true,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Column(children: <Widget>[
-                      TextFormField(
-                        controller: _nameController,
-                        enabled: _enableEdit,
-                        decoration: InputDecoration(
+      appBar: AppBar(
+        title: Text("Profile"),
+        backgroundColor: Colors.lightBlue[900],
+      ),
+      body: Container(
+        width: size.width,
+        height: size.height,
+        child: Center(
+          child: ListView(
+            //  item: (BuildContext context, index) {
+            // if (user == null) return Loading();
+            // mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(
+                height: 50,
+              ),
+              Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    CircleAvatar(
+                      radius: 40,
+                      // backgroundImage: (_image != null) ? FileImage(_image)
+                      //                      :NetworkImage(user.imgUrl),
+                      backgroundColor: Colors.black,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 42.0),
+                      child: IconButton(
                           icon: Icon(
-                            FontAwesomeIcons.userCircle,
-                            color: Colors.lightBlue[900],
+                            Icons.camera_alt,
+                            size: 30.0,
                           ),
-                          hintText: 'First Name',
-                          labelText: "Name",
+                          onPressed: () {
+                            getImage();
+                            // chooseFile();
+                          }),
+                    )
+                  ]),
+              Form(
+                key: _formKeyValue,
+                autovalidate: true,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Column(children: <Widget>[
+                    TextFormField(
+                      controller: _nameController,
+                      enabled: _enableEdit,
+                      decoration: InputDecoration(
+                        icon: Icon(
+                          FontAwesomeIcons.userCircle,
+                          color: Colors.lightBlue[900],
                         ),
-                        validator: (String value) {
-                          if (value.isEmpty) {
-                            return 'Name is required';
-                          }
-                        },
+                        hintText: 'First Name',
+                        labelText: "Name",
                       ),
-                      TextFormField(
-                        controller: _emailController,
-                        enabled: _enableEdit,
-                        decoration: InputDecoration(
-                          icon: Icon(
-                            FontAwesomeIcons.envelope,
-                            color: Colors.lightBlue[900],
-                          ),
-                          hintText: 'Email',
-                          labelText: 'Email',
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return 'Name is required';
+                        }
+                      },
+                    ),
+                    TextFormField(
+                      controller: _emailController,
+                      enabled: _enableEdit,
+                      decoration: InputDecoration(
+                        icon: Icon(
+                          FontAwesomeIcons.envelope,
+                          color: Colors.lightBlue[900],
                         ),
-                        validator: (String value) {
-                          if (!EmailValidator.validate(value)) {
-                            return 'Enter valid email';
-                          }
-                        },
+                        hintText: 'Email',
+                        labelText: 'Email',
                       ),
-                      TextFormField(
-                        controller: _ageController,
-                        enabled: _enableEdit,
-                        decoration: InputDecoration(
-                          icon: Icon(
-                            FontAwesomeIcons.user,
-                            color: Colors.lightBlue[900],
-                          ),
-                          hintText: 'Age',
-                          labelText: 'Age',
+                      validator: (String value) {
+                        if (!EmailValidator.validate(value)) {
+                          return 'Enter valid email';
+                        }
+                      },
+                    ),
+                    TextFormField(
+                      controller: _ageController,
+                      enabled: _enableEdit,
+                      decoration: InputDecoration(
+                        icon: Icon(
+                          FontAwesomeIcons.user,
+                          color: Colors.lightBlue[900],
                         ),
+                        hintText: 'Age',
+                        labelText: 'Age',
                       ),
-                      TextFormField(
-                        controller: _phoneController,
-                        enabled: _enableEdit,
-                        decoration: InputDecoration(
-                          icon: Icon(
-                            Icons.phone_android,
-                            color: Colors.lightBlue[900],
-                          ),
-                          hintText: 'Phone',
-                          labelText: 'Phone',
+                    ),
+                    TextFormField(
+                      controller: _phoneController,
+                      enabled: _enableEdit,
+                      decoration: InputDecoration(
+                        icon: Icon(
+                          Icons.phone_android,
+                          color: Colors.lightBlue[900],
                         ),
+                        hintText: 'Phone',
+                        labelText: 'Phone',
                       ),
-                      TextFormField(
-                        controller: _addressController,
-                        enabled: _enableEdit,
-                        decoration: InputDecoration(
-                          icon: Icon(
-                            FontAwesomeIcons.addressCard,
-                            color: Colors.lightBlue[900],
-                          ),
-                          hintText: 'Address',
-                          labelText: 'adress',
+                    ),
+                    TextFormField(
+                      controller: _addressController,
+                      enabled: _enableEdit,
+                      decoration: InputDecoration(
+                        icon: Icon(
+                          FontAwesomeIcons.addressCard,
+                          color: Colors.lightBlue[900],
                         ),
-                        onTap: () {
-                          showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(1930),
-                                  lastDate: DateTime(2020))
-                              .then((date) {
-                            setState(() {
-                              _dateTime = date;
-                            });
+                        hintText: 'Address',
+                        labelText: 'adress',
+                      ),
+                      onTap: () {
+                        showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1930),
+                                lastDate: DateTime(2020))
+                            .then((date) {
+                          setState(() {
+                            _dateTime = date;
                           });
-                        },
-                        validator: (String value) {
-                          if (value.isEmpty) {
-                            return 'Address is required';
-                          }
-                        },
+                        });
+                      },
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return 'Address is required';
+                        }
+                      },
+                    ),
+                    // RaisedButton(
+                    //   onPressed: () {
+                    //     // uploadPic(_image);
+                    //     _performSave();
+                    //   },
+                    //   child: Text('Save'),
+                    // ),
+                    Positioned(
+                      right: 30,
+                      bottom: 30,
+                      child: Stack(
+                        children: <Widget>[
+                          Transform.translate(
+                            offset: Offset.fromDirection(
+                                getRadiansFormDegree(225),
+                                degOneTranslationAnimation.value * 100),
+                            child: Transform(
+                              transform: Matrix4.rotationZ(
+                                  getRadiansFormDegree(rotationAnimation.value))
+                                ..scale(degOneTranslationAnimation.value),
+                              alignment: Alignment.center,
+                              child: CircularButton(
+                                color: Colors.amber[200],
+                                width: 50,
+                                height: 50,
+                                icon: Icon(
+                                  Icons.save,
+                                  color: Colors.white,
+                                ),
+                                onClick: () {},
+                              ),
+                            ),
+                          ),
+                          Transform(
+                            transform: Matrix4.rotationZ(
+                                getRadiansFormDegree(rotationAnimation.value)),
+                            alignment: Alignment.center,
+                            child: CircularButton(
+                              color: Colors.amber[500],
+                              width: 60,
+                              height: 60,
+                              icon: Icon(
+                                Icons.edit,
+                                color: Colors.white,
+                              ),
+                              onClick: () {
+                                if (animationController.isCompleted) {
+                                  animationController.reverse();
+                                } else {
+                                  animationController.forward();
+                                }
+                              },
+                            ),
+                          )
+                        ],
                       ),
-                      RaisedButton(
-                        onPressed: () {
-                          // uploadPic(_image);
-                          _performSave();
-                        },
-                        child: Text('Save'),
-                      ),
-                    ]),
-                  ),
-                )
-              ],
-            ),
+                    ),
+                  ]),
+                ),
+              )
+            ],
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          highlightElevation: 20.0,
-          onPressed: () {
-            setState(() {
-              _enableEdit = !_enableEdit;
-              if (_enableEdit) {
-                iconEdit = Icons.clear;
-                colorEdit = Colors.lightBlue[200];
-              } else {
-                iconEdit = Icons.edit;
-                colorEdit = Colors.lightBlue[900];
-              }
-            });
-          },
-          backgroundColor: colorEdit,
-          tooltip: "Edit",
-          child: Icon(iconEdit),
-        ));
+      ),
+    );
+  }
+}
+
+class CircularButton extends StatelessWidget {
+  final double width;
+  final double height;
+  final Color color;
+  final Icon icon;
+  final Function onClick;
+
+  CircularButton(
+      {this.color, this.width, this.height, this.icon, this.onClick});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+      width: width,
+      height: height,
+      child: IconButton(icon: icon, enableFeedback: true, onPressed: onClick),
+    );
   }
 }
