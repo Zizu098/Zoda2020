@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zoda/screens/Home/home.dart';
@@ -13,50 +14,7 @@ class StudentHome extends StatefulWidget {
   _StudentHomeState createState() => _StudentHomeState();
 }
 
-class _StudentHomeState extends State<StudentHome>
-    with SingleTickerProviderStateMixin {
-  AnimationController animationController;
-  Animation degOneTranslationAnimation,
-      degTwoTranslationAnimation,
-      degThreeTranslationAnimation;
-  Animation rotationAnimation;
-  final dio = new Dio();
-
-  double getRadiansFormDegree(double degree) {
-    double unitRadian = 57.2985452;
-    return degree / unitRadian;
-  }
-
-  @override
-  void initState() {
-    animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 250));
-    degOneTranslationAnimation = TweenSequence([
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0.0, end: 1.2), weight: 75.0),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 1.2, end: 1.0), weight: 25.0),
-    ]).animate(animationController);
-    degTwoTranslationAnimation = TweenSequence([
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0.0, end: 1.4), weight: 55.0),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 1.4, end: 1.0), weight: 45.0),
-    ]).animate(animationController);
-    degThreeTranslationAnimation = TweenSequence([
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0.0, end: 1.75), weight: 35.0),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 1.75, end: 1.0), weight: 65.0),
-    ]).animate(animationController);
-    rotationAnimation = Tween<double>(begin: 180.0, end: 0.0).animate(
-        CurvedAnimation(parent: animationController, curve: Curves.easeOut));
-    super.initState();
-    animationController.addListener(() {
-      setState(() {});
-    });
-  }
-
+class _StudentHomeState extends State<StudentHome> {
   int _selectedIndex = 0;
   void _onItemTapped(int index) {
     setState(() {
@@ -72,159 +30,113 @@ class _StudentHomeState extends State<StudentHome>
     }
   }
 
+  Container MyCard(String imageVal, String nameUniv, String country) {
+    return Container(
+      width: 160.0,
+      child: Card(
+        child: Wrap(
+          children: <Widget>[
+            Image.network(imageVal),
+            ListTile(
+              title: Text(nameUniv),
+              subtitle: Text(country ,
+              textAlign: TextAlign.right,),
+              leading: IconButton(
+              icon: Icon(Icons.account_balance),
+              iconSize: 30,
+             onPressed: (){
+               
+             }),
+            ),
+            
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text('ZODA'),
         backgroundColor: Colors.orange[600],
       ),
-      body: Container(
-        width: size.width,
-        height: size.height,
-        child: Stack(
+      drawer: new Drawer(
+        child: new ListView(
           children: <Widget>[
-            ListView(
-              scrollDirection: Axis.vertical,
-              children: <Widget>[
-                Padding(
-                  padding:
-                      const EdgeInsets.only(top: 32.0, left: 8.0, right: 8.0),
-                  child: Container(
-                    child: FittedBox(
-                      child: Material(
-                        color: Colors.white,
-                        elevation: 14.0,
-                        borderRadius: BorderRadius.circular(35.0),
-                        shadowColor: Color(0x802196F3),
-                        child: Row(
-                          children: <Widget>[
-                            Container(
-                                child: myDetailsContanier(),
-                              //   new ListView.builder(
-                              // physics: ScrollPhysics(),
-                              // shrinkWrap: true,
-                              // itemCount: universities.length,
-                              // itemBuilder: (BuildContext context, int index) =>
-                              //     myDetailsContanier(context, index)),
-                              // _buildTripCard(context, index)),
-                            
-                                // myDetailsContanier(),
-                                ),
-                            Container(
-                              width: 300,
-                              height: 168,
-                              child: ClipRRect(
-                                borderRadius: new BorderRadius.circular(35.0),
-                                child: Image(
-                                  fit: BoxFit.contain,
-                                  alignment: Alignment.topRight,
-                                  image: NetworkImage(
-                                      "https://aljawaz.com/wp-content/uploads/2017/04/C5.jpg"),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
+            //           header
+            new UserAccountsDrawerHeader(
+              accountName: Text('omar Mohamed'),
+              accountEmail: Text('omar12@gmail.com'),
+              currentAccountPicture: GestureDetector(
+                child: new CircleAvatar(
+                  backgroundColor: Colors.grey,
+                  child: Icon(
+                    Icons.person,
+                    color: Colors.white,
                   ),
                 ),
-              ],
+              ),
+              decoration: new BoxDecoration(color: Colors.blueAccent),
             ),
-            Positioned(
-              right: 30,
-              bottom: 30,
-              child: Stack(
-                children: <Widget>[
-                  Transform.translate(
-                    offset: Offset.fromDirection(getRadiansFormDegree(270),
-                        degOneTranslationAnimation.value * 100),
-                    child: Transform(
-                      transform: Matrix4.rotationZ(
-                          getRadiansFormDegree(rotationAnimation.value))
-                        ..scale(degOneTranslationAnimation.value),
-                      alignment: Alignment.center,
-                      child: CircularButton(
-                        color: Colors.orange[400],
-                        width: 50,
-                        height: 50,
-                        icon: Icon(
-                          Icons.filter_list,
-                          color: Colors.white,
-                        ),
-                        onClick: () {},
-                      ),
-                    ),
-                  ),
-                  Transform.translate(
-                    offset: Offset.fromDirection(getRadiansFormDegree(225),
-                        degTwoTranslationAnimation.value * 100),
-                    child: Transform(
-                      transform: Matrix4.rotationZ(
-                          getRadiansFormDegree(rotationAnimation.value))
-                        ..scale(degTwoTranslationAnimation.value),
-                      alignment: Alignment.center,
-                      child: CircularButton(
-                        color: Colors.orange[500],
-                        width: 50,
-                        height: 50,
-                        icon: Icon(
-                          Icons.search,
-                          color: Colors.white,
-                        ),
-                        onClick: () {},
-                      ),
-                    ),
-                  ),
-                  Transform.translate(
-                    offset: Offset.fromDirection(getRadiansFormDegree(180),
-                        degThreeTranslationAnimation.value * 100),
-                    child: Transform(
-                      transform: Matrix4.rotationZ(
-                          getRadiansFormDegree(rotationAnimation.value))
-                        ..scale(degThreeTranslationAnimation.value),
-                      alignment: Alignment.center,
-                      child: CircularButton(
-                        color: Colors.orange[700],
-                        width: 50,
-                        height: 50,
-                        icon: Icon(
-                          Icons.sort,
-                          color: Colors.white,
-                        ),
-                        onClick: () {},
-                      ),
-                    ),
-                  ),
-                  Transform(
-                    transform: Matrix4.rotationZ(
-                        getRadiansFormDegree(rotationAnimation.value)),
-                    alignment: Alignment.center,
-                    child: CircularButton(
-                      color: Colors.orange[600],
-                      width: 60,
-                      height: 60,
-                      icon: Icon(
-                        Icons.menu,
-                        color: Colors.white,
-                      ),
-                      onClick: () {
-                        if (animationController.isCompleted) {
-                          animationController.reverse();
-                        } else {
-                          animationController.forward();
-                        }
-                      },
-                    ),
-                  )
-                ],
+            //          Body
+            InkWell(
+              child: ListTile(
+                title: Text('Home Page'),
+                leading: Icon(Icons.home),
+                onTap: () {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => Home()));
+                },
+              ),
+            ),
+
+            InkWell(
+              onTap: () {},
+              child: ListTile(
+                title: Text('Notification'),
+                leading: Icon(Icons.notifications),
+              ),
+            ),
+
+            InkWell(
+              onTap: () {},
+              child: ListTile(
+                title: Text('Settings'),
+                leading: Icon(Icons.settings),
+              ),
+            ),
+
+            InkWell(
+              onTap: () {},
+              child: ListTile(
+                title: Text('About'),
+                leading: Icon(Icons.help),
               ),
             ),
           ],
         ),
       ),
+      body:Container(
+        margin: EdgeInsets.symmetric(vertical: 20.0),
+        // height: 200,
+        child: ListView(
+          scrollDirection: Axis.vertical,
+          children: <Widget>[
+            MyCard('https://www.nordlys.info/studenter/manedens-universitet/au89.jpg', 'Aarhus University', 'Denmark'),
+            MyCard('https://static.accessmba.com/application/public/cache/80411b63c045b9cb055bce91a4e567f8.jpg', 'Geneva University', 'Switzerland'),
+            MyCard('https://scholarship-positions.com/wp-content/uploads/2016/12/University-of-Helsinki-Scholarships-for-Non-EUEEA-Students-in-Finland-1024x620.jpg', 'Helsinki University', 'Finland'),
+            MyCard('https://www.turku.fi/sites/default/files/styles/opengraph/public/thumbnails/image/turun-yliopisto-paarakennus.jpg?itok=LU4YQGrP', 'Turku University', 'Finland'),
+            MyCard('https://www.unak.is/static/files/Myndir/Haskolasvaedid/ha28a-nanne-springer.jpg', 'Akureyri University', 'Iceland'),
+            MyCard('https://guidetoiceland.imgix.net/389524/x/0/the-historical-holar-in-hjaltadalur-the-episcopal-see-and-nyibaer-turf-house-in-north-iceland-1?auto=compress%2Cformat&ch=Width%2CDPR&dpr=1&ixlib=php-3.1.0&w=883&s=cd19590d46456cfbe4462afc03a2d924', 'Hólar  University', 'Iceland'),
+          
+          ],
+        ),
+      ),     
+     
+
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -247,113 +159,137 @@ class _StudentHomeState extends State<StudentHome>
     );
   }
 }
+ // Column(
+      //   children: <Widget>[
+      //     Container(
+      //       child: Padding(
+      //         padding: const EdgeInsets.all(16.0),
+      //         child: Text(
+      //           'Recommendation',
+      //           style: TextStyle(
+      //               color: Colors.orange[800],
+      //               fontSize: 24.0,
+      //               fontWeight: FontWeight.bold),
+      //         ),
+      //       ),
+      //     ),
 
-class CircularButton extends StatelessWidget {
-  final double width;
-  final double height;
-  final Color color;
-  final Icon icon;
-  final Function onClick;
+      //     // Row(
+      //     //   mainAxisSize: MainAxisSize.max,
+      //     //   children: <Widget>[
+      //     //     myButton('London'),
+      //     //     myButton('Finland'),
+      //     //     myButton('Denmark'),
+      //     //     myButton('Norway'),
+      //     //     myButton('Iceland'),
+      //     //     myButton('Switzerland'),
+      //     //   ],
+      //     // ),
+      //     // Recommend(),
+      //   ],
+      // ),
 
-  CircularButton(
-      {this.color, this.width, this.height, this.icon, this.onClick});
+// class CircularButton extends StatelessWidget {
+//   final double width;
+//   final double height;
+//   final Color color;
+//   final Icon icon;
+//   final Function onClick;
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-      width: width,
-      height: height,
-      child: IconButton(icon: icon, enableFeedback: true, onPressed: onClick),
-    );
-  }
-}
+//   CircularButton(
+//       {this.color, this.width, this.height, this.icon, this.onClick});
 
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+//       width: width,
+//       height: height,
+//       child: IconButton(icon: icon, enableFeedback: true, onPressed: onClick),
+//     );
+//   }
+// }
 
-List universities = [
-  {
-    'uniName': 'Alberta',
-    'uniRate': 5,
-    'uniCountry': 'Italia',
-    'uniImg': 'https://aljawaz.com/wp-content/uploads/2017/04/C5.jpg'
-  },
-  {
-    'uniName': 'Ain shams',
-    'uniRate': 5,
-    'uniCountry': 'Egypt',
-    'uniImg': 'https://aljawaz.com/wp-content/uploads/2017/04/C5.jpg'
-  }
-];
+// List universities = [
+//   {
+//     'uniName': 'Alberta',
+//     'uniRate': 5,
+//     'uniCountry': 'Italia',
+//     'uniImg': 'https://aljawaz.com/wp-content/uploads/2017/04/C5.jpg'
+//   },
+//   {
+//     'uniName': 'Ain shams',
+//     'uniRate': 5,
+//     'uniCountry': 'Egypt',
+//     'uniImg': 'https://aljawaz.com/wp-content/uploads/2017/04/C5.jpg'
+//   }
+// ];
 
-Widget myDetailsContanier() {
-  
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    children: <Widget>[
-      Padding(
-        padding: const EdgeInsets.only(left: 8.0),
-        child: Container(
-          child: Text('zzzzz' + '     ',
-              style: TextStyle(
-                  color: Colors.orange[500],
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold)),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(left: 8.0),
-        child: Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Container(
-                child: Text(
-                  '4.3',
-                  style: TextStyle(color: Colors.black54, fontSize: 18.0),
-                ),
-              ),
-              Container(
-                child: Icon(
-                  FontAwesomeIcons.solidStar,
-                  color: Colors.amber[900],
-                  size: 15.0,
-                ),
-              ),
-              Container(
-                child: Icon(
-                  FontAwesomeIcons.solidStar,
-                  color: Colors.amber[900],
-                  size: 15.0,
-                ),
-              ),
-              Container(
-                child: Icon(
-                  FontAwesomeIcons.solidStar,
-                  color: Colors.amber[900],
-                  size: 15.0,
-                ),
-              ),
-              Container(
-                child: Icon(
-                  FontAwesomeIcons.solidStar,
-                  color: Colors.amber[900],
-                  size: 15.0,
-                ),
-              ),
-              Container(
-                child: Icon(
-                  FontAwesomeIcons.solidStarHalf,
-                  color: Colors.amber[900],
-                  size: 15.0,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ],
-  );
-}
+// Widget myDetailsContanier() {
+//   return Column(
+//     // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//     children: <Widget>[
+//       Padding(
+//         padding: const EdgeInsets.all(0.0),
+//         child: Container(
+//           width: 190,
+//           height: 100,
+//           child: ClipRRect(
+//             borderRadius: new BorderRadius.circular(35.0),
+//             child: Image(
+//               fit: BoxFit.contain,
+//               alignment: Alignment.center,
+//               image: NetworkImage(
+//                   "https://aljawaz.com/wp-content/uploads/2017/04/C5.jpg"),
+//             ),
+//           ),
+//         ),
+//       ),
+//       Row(children: <Widget>[
+//         Text(
+//           'zzzzz' + '     ',
+//           style: TextStyle(
+//             color: Colors.orange[500],
+//             fontSize: 24.0,
+//             fontWeight: FontWeight.bold,
+//           ),
+//           textAlign: TextAlign.left,
+//         ),
+//         Icon(
+//           FontAwesomeIcons.solidStar,
+//           color: Colors.amber[900],
+//           size: 10.0,
+//         ),
+//         Icon(
+//           FontAwesomeIcons.solidStar,
+//           color: Colors.amber[900],
+//           size: 10.0,
+//         ),
+//         Icon(
+//           FontAwesomeIcons.solidStar,
+//           color: Colors.amber[900],
+//           size: 10.0,
+//         ),
+//         Icon(
+//           FontAwesomeIcons.solidStar,
+//           color: Colors.amber[900],
+//           size: 10.0,
+//         ),
+//         Icon(
+//           FontAwesomeIcons.solidStarHalf,
+//           color: Colors.amber[900],
+//           size: 10.0,
+//         ),
+
+//         // Text(
+//         //           '4.3',
+//         //           style: TextStyle(color: Colors.black54, fontSize: 18.0),
+//         //         ),
+//       ]),
+//     ],
+//   );
+// }
+
 // @override
 // Widget build(BuildContext context) {
 //   loadData();
@@ -446,7 +382,7 @@ Widget myDetailsContanier() {
 //                   hint: Text(
 //                     '            Select feild',
 //                     style: TextStyle(
-//                         fontSize: 15.0, fontWeight: FontWeight.bold),
+//                         fontSize: 10.0, fontWeight: FontWeight.bold),
 //                   ),
 //                   onChanged: (value) {
 //                     selected = value;
@@ -457,9 +393,9 @@ Widget myDetailsContanier() {
 //             ),
 //             margin: EdgeInsets.symmetric(
 //               vertical: 10,
-//               horizontal: 15,
+//               horizontal: 10,
 //             ),
-//             width: 150.0,
+//             width: 100.0,
 //             decoration: BoxDecoration(
 //               color: Colors.blueAccent,
 //               border: Border.all(
@@ -488,7 +424,7 @@ Widget myDetailsContanier() {
 //                       child: Text(
 //                         '         Select University',
 //                         style: TextStyle(
-//                             fontSize: 15.0, fontWeight: FontWeight.bold),
+//                             fontSize: 10.0, fontWeight: FontWeight.bold),
 //                       ),
 //                     ),
 //                     onChanged: (value) {
@@ -646,7 +582,7 @@ Widget myDetailsContanier() {
 //   listDrop = drop
 //       .map((val) => DropdownMenuItem(
 //             child: SizedBox(
-//               width: 150.0, // for example
+//               width: 100.0, // for example
 //               child: Text(val, textAlign: TextAlign.center),
 //             ),
 //             value: val,
@@ -659,7 +595,7 @@ Widget myDetailsContanier() {
 //   listed = droping
 //       .map((valu) => DropdownMenuItem(
 //             child: SizedBox(
-//               width: 150.0, // for example
+//               width: 100.0, // for example
 //               child: Text(valu, textAlign: TextAlign.center),
 //             ),
 //             value: valu,
@@ -722,3 +658,171 @@ Widget myDetailsContanier() {
 //     ],
 //   ),
 // ),
+// AnimationController animationController;
+// Animation degOneTranslationAnimation,
+//     degTwoTranslationAnimation,
+//     degThreeTranslationAnimation;
+// Animation rotationAnimation;
+// final dio = new Dio();
+
+// double getRadiansFormDegree(double degree) {
+//   double unitRadian = 57.2985452;
+//   return degree / unitRadian;
+// }
+
+// @override
+// void initState() {
+//   animationController =
+//       AnimationController(vsync: this, duration: Duration(milliseconds: 250));
+//   degOneTranslationAnimation = TweenSequence([
+//     TweenSequenceItem<double>(
+//         tween: Tween<double>(begin: 0.0, end: 1.2), weight: 75.0),
+//     TweenSequenceItem<double>(
+//         tween: Tween<double>(begin: 1.2, end: 1.0), weight: 25.0),
+//   ]).animate(animationController);
+//   degTwoTranslationAnimation = TweenSequence([
+//     TweenSequenceItem<double>(
+//         tween: Tween<double>(begin: 0.0, end: 1.4), weight: 55.0),
+//     TweenSequenceItem<double>(
+//         tween: Tween<double>(begin: 1.4, end: 1.0), weight: 45.0),
+//   ]).animate(animationController);
+//   degThreeTranslationAnimation = TweenSequence([
+//     TweenSequenceItem<double>(
+//         tween: Tween<double>(begin: 0.0, end: 1.75), weight: 35.0),
+//     TweenSequenceItem<double>(
+//         tween: Tween<double>(begin: 1.75, end: 1.0), weight: 65.0),
+//   ]).animate(animationController);
+//   rotationAnimation = Tween<double>(begin: 180.0, end: 0.0).animate(
+//       CurvedAnimation(parent: animationController, curve: Curves.easeOut));
+//   super.initState();
+//   animationController.addListener(() {
+//     setState(() {});
+//   });
+// }
+//  Positioned(
+//             right: 30,
+//             bottom: 30,
+//             child: Stack(
+//               children: <Widget>[
+//                 Transform.translate(
+//                   offset: Offset.fromDirection(getRadiansFormDegree(270),
+//                       degOneTranslationAnimation.value * 100),
+//                   child: Transform(
+//                     transform: Matrix4.rotationZ(
+//                         getRadiansFormDegree(rotationAnimation.value))
+//                       ..scale(degOneTranslationAnimation.value),
+//                     alignment: Alignment.center,
+//                     child: CircularButton(
+//                       color: Colors.orange[400],
+//                       width: 50,
+//                       height: 50,
+//                       icon: Icon(
+//                         Icons.filter_list,
+//                         color: Colors.white,
+//                       ),
+//                       onClick: () {},
+//                     ),
+//                   ),
+//                 ),
+//                 Transform.translate(
+//                   offset: Offset.fromDirection(getRadiansFormDegree(225),
+//                       degTwoTranslationAnimation.value * 100),
+//                   child: Transform(
+//                     transform: Matrix4.rotationZ(
+//                         getRadiansFormDegree(rotationAnimation.value))
+//                       ..scale(degTwoTranslationAnimation.value),
+//                     alignment: Alignment.center,
+//                     child: CircularButton(
+//                       color: Colors.orange[500],
+//                       width: 50,
+//                       height: 50,
+//                       icon: Icon(
+//                         Icons.search,
+//                         color: Colors.white,
+//                       ),
+//                       onClick: () {},
+//                     ),
+//                   ),
+//                 ),
+//                 Transform.translate(
+//                   offset: Offset.fromDirection(getRadiansFormDegree(180),
+//                       degThreeTranslationAnimation.value * 100),
+//                   child: Transform(
+//                     transform: Matrix4.rotationZ(
+//                         getRadiansFormDegree(rotationAnimation.value))
+//                       ..scale(degThreeTranslationAnimation.value),
+//                     alignment: Alignment.center,
+//                     child: CircularButton(
+//                       color: Colors.orange[700],
+//                       width: 50,
+//                       height: 50,
+//                       icon: Icon(
+//                         Icons.sort,
+//                         color: Colors.white,
+//                       ),
+//                       onClick: () {},
+//                     ),
+//                   ),
+//                 ),
+//                 Transform(
+//                   transform: Matrix4.rotationZ(
+//                       getRadiansFormDegree(rotationAnimation.value)),
+//                   alignment: Alignment.center,
+//                   child: CircularButton(
+//                     color: Colors.orange[600],
+//                     width: 60,
+//                     height: 60,
+//                     icon: Icon(
+//                       Icons.menu,
+//                       color: Colors.white,
+//                     ),
+//                     onClick: () {
+//                       if (animationController.isCompleted) {
+//                         animationController.reverse();
+//                       } else {
+//                         // createAlertDialog(context);
+//                         animationController.forward();
+//                       }
+//                     },
+//                   ),
+//                 )
+//               ],
+//             ),
+//           ),
+// Container(
+//   width: size.width,
+//   height: size.height,
+//   child: Stack(
+//     children: <Widget>[
+//       ListView(
+//         scrollDirection: Axis.vertical,
+//         children: <Widget>[
+//           Padding(
+//             padding:
+//                 const EdgeInsets.only(top: 32.0, left: 8.0, right: 8.0),
+//             child: Container(
+//               child: FittedBox(
+//                 child: Material(
+//                   color: Colors.white,
+//                   elevation: 14.0,
+//                   borderRadius: BorderRadius.circular(35.0),
+//                   shadowColor: Color(0x802196F3),
+//                   child: Column(
+//                     children: <Widget>[
+//                       Row(
+//                         children: <Widget>[
+//                           myDetailsContanier(),
+//                         ],
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+
+//     ],
+//   ),
+// )

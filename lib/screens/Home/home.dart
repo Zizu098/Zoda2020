@@ -9,7 +9,6 @@ import 'package:flutter/src/widgets/scroll_physics.dart';
 import 'package:zoda/screens/migration/migrationHome.dart';
 import 'package:zoda/screens/student/studentHome.dart';
 import 'package:zoda/database.services/user.service.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:custom_switch/custom_switch.dart';
 import 'package:zoda/screens/Home/profile.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
 import 'package:zoda/screens/Home/home.dart';
 import 'package:zoda/screens/student/studentHome.dart';
 
@@ -11,49 +10,24 @@ class MigrationHome extends StatefulWidget {
 }
 
 class _MigrationHomeState extends State<MigrationHome> with SingleTickerProviderStateMixin{
-  AnimationController animationController;
-  Animation degOneTranslationAnimation,
-      degTwoTranslationAnimation,
-      degThreeTranslationAnimation;
-  Animation rotationAnimation;
-  final dio = new Dio();
   
-  double getRadiansFormDegree(double degree) {
-    double unitRadian = 57.2985452;
-    return degree / unitRadian;
+  Container MyCard(String imageVal, String nameUniv, String country) {
+    return Container(
+      width: 160.0,
+      child: Card(
+        child: Wrap(
+          children: <Widget>[
+            Image.network(imageVal),
+            ListTile(
+              title: Text(nameUniv),
+              subtitle: Text(country),
+            ),
+            // IconButton(icon: Icon(Icons.account_balance), onPressed: null)
+          ],
+        ),
+      ),
+    );
   }
-
-  @override
-  void initState() {
-    animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 250));
-    degOneTranslationAnimation = TweenSequence([
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0.0, end: 1.2), weight: 75.0),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 1.2, end: 1.0), weight: 25.0),
-    ]).animate(animationController);
-    degTwoTranslationAnimation = TweenSequence([
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0.0, end: 1.4), weight: 55.0),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 1.4, end: 1.0), weight: 45.0),
-    ]).animate(animationController);
-    degThreeTranslationAnimation = TweenSequence([
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0.0, end: 1.75), weight: 35.0),
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 1.75, end: 1.0), weight: 65.0),
-    ]).animate(animationController);
-    rotationAnimation = Tween<double>(begin: 180.0, end: 0.0).animate(
-        CurvedAnimation(parent: animationController, curve: Curves.easeOut));
-    super.initState();
-    animationController.addListener(() {
-      setState(() {});
-    });
-  }
-
-  
   
   int _selectedIndex = 2;
   
@@ -84,152 +58,22 @@ class _MigrationHomeState extends State<MigrationHome> with SingleTickerProvider
         title: Text('ZODA'),
         backgroundColor: Colors.amber[500],
       ),
-      body: Container(
-        width: size.width,
-        height: size.height,
-        child: Stack(
+        body:Container(
+        margin: EdgeInsets.symmetric(vertical: 20.0),
+        height: 180,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
           children: <Widget>[
-            ListView(
-              scrollDirection: Axis.vertical,
-              children: <Widget>[
-                Padding(
-                  padding:
-                      const EdgeInsets.only(top: 32.0, left: 8.0, right: 8.0),
-                  child: Container(
-                    child: FittedBox(
-                      child: Material(
-                        color: Colors.white,
-                        elevation: 14.0,
-                        borderRadius: BorderRadius.circular(35.0),
-                        shadowColor: Color(0x802196F3),
-                        child: Row(
-                          children: <Widget>[
-                            Container(
-                                child: myDetailsContanier(),
-                              //   new ListView.builder(
-                              // physics: ScrollPhysics(),
-                              // shrinkWrap: true,
-                              // itemCount: universities.length,
-                              // itemBuilder: (BuildContext context, int index) =>
-                              //     myDetailsContanier(context, index)),
-                              // _buildTripCard(context, index)),
-                            
-                                // myDetailsContanier(),
-                                ),
-                            Container(
-                              width: 300,
-                              height: 168,
-                              child: ClipRRect(
-                                borderRadius: new BorderRadius.circular(35.0),
-                                child: Image(
-                                  fit: BoxFit.contain,
-                                  alignment: Alignment.topRight,
-                                  image: NetworkImage(
-                                      "https://aljawaz.com/wp-content/uploads/2017/04/C5.jpg"),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Positioned(
-              right: 30,
-              bottom: 30,
-              child: Stack(
-                children: <Widget>[
-                  Transform.translate(
-                    offset: Offset.fromDirection(getRadiansFormDegree(270),
-                        degOneTranslationAnimation.value * 100),
-                    child: Transform(
-                      transform: Matrix4.rotationZ(
-                          getRadiansFormDegree(rotationAnimation.value))
-                        ..scale(degOneTranslationAnimation.value),
-                      alignment: Alignment.center,
-                      child: CircularButton(
-                        color: Colors.amber[200],
-                        width: 50,
-                        height: 50,
-                        icon: Icon(
-                          Icons.filter_list,
-                          color: Colors.white,
-                        ),
-                        onClick: () {},
-                      ),
-                    ),
-                  ),
-                  Transform.translate(
-                    offset: Offset.fromDirection(getRadiansFormDegree(225),
-                        degTwoTranslationAnimation.value * 100),
-                    child: Transform(
-                      transform: Matrix4.rotationZ(
-                          getRadiansFormDegree(rotationAnimation.value))
-                        ..scale(degTwoTranslationAnimation.value),
-                      alignment: Alignment.center,
-                      child: CircularButton(
-                        color: Colors.amber[300],
-                        width: 50,
-                        height: 50,
-                        icon: Icon(
-                          Icons.search,
-                          color: Colors.white,
-                        ),
-                        onClick: () {},
-                      ),
-                    ),
-                  ),
-                  Transform.translate(
-                    offset: Offset.fromDirection(getRadiansFormDegree(180),
-                        degThreeTranslationAnimation.value * 100),
-                    child: Transform(
-                      transform: Matrix4.rotationZ(
-                          getRadiansFormDegree(rotationAnimation.value))
-                        ..scale(degThreeTranslationAnimation.value),
-                      alignment: Alignment.center,
-                      child: CircularButton(
-                        color: Colors.amber[400],
-                        width: 50,
-                        height: 50,
-                        icon: Icon(
-                          Icons.sort,
-                          color: Colors.white,
-                        ),
-                        onClick: () {},
-                      ),
-                    ),
-                  ),
-                  Transform(
-                    transform: Matrix4.rotationZ(
-                        getRadiansFormDegree(rotationAnimation.value)),
-                    alignment: Alignment.center,
-                    child: CircularButton(
-                      color: Colors.amber[500],
-                      width: 60,
-                      height: 60,
-                      icon: Icon(
-                        Icons.menu,
-                        color: Colors.white,
-                      ),
-                      onClick: () {
-                        if (animationController.isCompleted) {
-                          animationController.reverse();
-                        } else {
-                          animationController.forward();
-                        }
-                      },
-                    ),
-                  )
-                ],
-              ),
-            ),
+            MyCard('https://www.nordlys.info/studenter/manedens-universitet/au89.jpg', 'Aarhus University', 'Denmark'),
+            MyCard('https://static.accessmba.com/application/public/cache/80411b63c045b9cb055bce91a4e567f8.jpg', 'Geneva University', 'Switzerland'),
+            MyCard('https://scholarship-positions.com/wp-content/uploads/2016/12/University-of-Helsinki-Scholarships-for-Non-EUEEA-Students-in-Finland-1024x620.jpg', 'Helsinki University', 'Finland'),
+            MyCard('https://www.turku.fi/sites/default/files/styles/opengraph/public/thumbnails/image/turun-yliopisto-paarakennus.jpg?itok=LU4YQGrP', 'Turku University', 'Finland'),
+            MyCard('https://www.unak.is/static/files/Myndir/Haskolasvaedid/ha28a-nanne-springer.jpg', 'Akureyri University', 'Iceland'),
+            MyCard('https://guidetoiceland.imgix.net/389524/x/0/the-historical-holar-in-hjaltadalur-the-episcopal-see-and-nyibaer-turf-house-in-north-iceland-1?auto=compress%2Cformat&ch=Width%2CDPR&dpr=1&ixlib=php-3.1.0&w=883&s=cd19590d46456cfbe4462afc03a2d924', 'Hólar  University', 'Iceland'),
+          
           ],
         ),
-      ),
-       
+      ),     
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -252,26 +96,7 @@ class _MigrationHomeState extends State<MigrationHome> with SingleTickerProvider
       );
   }
 }
-class CircularButton extends StatelessWidget {
-  final double width;
-  final double height;
-  final Color color;
-  final Icon icon;
-  final Function onClick;
 
-  CircularButton(
-      {this.color, this.width, this.height, this.icon, this.onClick});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-      width: width,
-      height: height,
-      child: IconButton(icon: icon, enableFeedback: true, onPressed: onClick),
-    );
-  }
-}
 // static const List<Widget> _widgetOptions = <Widget>[
 //     Text(
 //       'Index 0: Home',
