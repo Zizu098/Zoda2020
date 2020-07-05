@@ -9,7 +9,7 @@ class MigrationHome extends StatefulWidget {
   _MigrationHomeState createState() => _MigrationHomeState();
 }
 
-class _MigrationHomeState extends State<MigrationHome> with SingleTickerProviderStateMixin{
+class _MigrationHomeState extends State<MigrationHome>{
   
   Container MyCard(String imageVal, String nameUniv, String country) {
     return Container(

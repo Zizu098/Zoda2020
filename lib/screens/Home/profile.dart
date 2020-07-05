@@ -18,10 +18,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
-
   final dio = new Dio();
-
-  
 
   UserDetail user;
   String userId;
@@ -240,17 +237,29 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                           }
                         },
                       ),
-                      // RaisedButton(
-                      //   onPressed: () {
-                      //     // uploadPic(_image);
-                      //     _enableEdit = true;
-                      //   },
-                      //   child: Text('Save'),
-                      // ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 165.0, top: 10.0, bottom: 10.0),
+                        child: RaisedButton(
+                          onPressed: () {
+
+                             _enableEdit = !_enableEdit;
+                          },
+                          child: Text(
+                            'Save',
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(60.0),
+                          ),
+                          color: Colors.lightBlue[700],
+                          padding: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 15),
+                        ),
+                      ),
                     ]),
                   ),
                 ),
-                
               ),
             ],
           ),
@@ -259,4 +268,3 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
     );
   }
 }
-

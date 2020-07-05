@@ -4,34 +4,36 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zoda/screens/Home/home.dart';
 import 'package:zoda/screens/migration/migrationHome.dart';
-import 'package:zoda/screens/student/scholarship.dart';
+import 'package:zoda/screens/student/studentHome.dart';
 
-class StudentHome extends StatefulWidget {
-  StudentHome({Key key, this.title}) : super(key: key);
+class ScholarShip extends StatefulWidget {
+  ScholarShip({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _StudentHomeState createState() => _StudentHomeState();
+  _ScholarShipState createState() => _ScholarShipState();
 }
 
-class _StudentHomeState extends State<StudentHome> {
+class _ScholarShipState extends State<ScholarShip> {
   int _selectedIndex = 0;
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
     if (_selectedIndex == 1) {
-      _selectedIndex = 0;
       Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
     } else if (_selectedIndex == 2) {
-      _selectedIndex = 0;
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => MigrationHome()));
+    } else if (_selectedIndex == 0) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => StudentHome()));
     }
   }
 
-  Container _MyCard(String imageVal, String nameUniv, String country) {
+  Container _MyCard(
+      String imageVal, String nameUniv, String country, String description) {
     return Container(
       width: 160.0,
       child: Card(
@@ -39,19 +41,41 @@ class _StudentHomeState extends State<StudentHome> {
           children: <Widget>[
             Image.network(imageVal),
             ListTile(
-              title: Text(nameUniv),
-              subtitle: Text(country ,
-              textAlign: TextAlign.right,),
-              leading: IconButton(
-              icon: Icon(Icons.account_balance),
-              iconSize: 30,
-             onPressed: (){
-                Navigator.push(
-          context, MaterialPageRoute(builder: (context) => ScholarShip()));
-    
-             }),
+              title: Text(
+                nameUniv,
+                style: TextStyle(fontSize: 30),
+                
+              ),
+              subtitle: Text(
+                country,
+                style: TextStyle(fontSize: 25, color: Colors.orange[600]),
+              ),
             ),
-            
+            Padding(
+              padding: const EdgeInsets.only(left:8.0),
+              child: Text(
+                description,
+                style: TextStyle(
+                    fontSize: 20, fontWeight: FontWeight.bold, height: 2),
+                textAlign: TextAlign.left,
+                maxLines: 20,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left:165.0 , top:10.0 , bottom: 10.0),
+              child: RaisedButton(
+                onPressed: () {},
+                child: Text(
+                  'Evaluate Yourself',
+                  style: TextStyle(fontSize: 20),
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(50.0),
+                ),
+                color: Colors.amber[800],
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15), 
+              ),
+            ),
           ],
         ),
       ),
@@ -66,79 +90,21 @@ class _StudentHomeState extends State<StudentHome> {
         title: Text('ZODA'),
         backgroundColor: Colors.orange[600],
       ),
-      drawer: new Drawer(
-        child: new ListView(
-          children: <Widget>[
-            //           header
-            new UserAccountsDrawerHeader(
-              accountName: Text('omar Mohamed'),
-              accountEmail: Text('omar12@gmail.com'),
-              currentAccountPicture: GestureDetector(
-                child: new CircleAvatar(
-                  backgroundColor: Colors.grey,
-                  child: Icon(
-                    Icons.person,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              decoration: new BoxDecoration(color: Colors.blueAccent),
-            ),
-            //          Body
-            InkWell(
-              child: ListTile(
-                title: Text('Home Page'),
-                leading: Icon(Icons.home),
-                onTap: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => Home()));
-                },
-              ),
-            ),
 
-            InkWell(
-              onTap: () {},
-              child: ListTile(
-                title: Text('Notification'),
-                leading: Icon(Icons.notifications),
-              ),
-            ),
-
-            InkWell(
-              onTap: () {},
-              child: ListTile(
-                title: Text('Settings'),
-                leading: Icon(Icons.settings),
-              ),
-            ),
-
-            InkWell(
-              onTap: () {},
-              child: ListTile(
-                title: Text('About'),
-                leading: Icon(Icons.help),
-              ),
-            ),
-          ],
-        ),
-      ),
-      body:Container(
-        margin: EdgeInsets.symmetric(vertical: 2.0),
+      body: Container(
+        margin: EdgeInsets.symmetric(vertical: 1.0),
         // height: 200,
         child: ListView(
           scrollDirection: Axis.vertical,
           children: <Widget>[
-            _MyCard('https://www.nordlys.info/studenter/manedens-universitet/au89.jpg', 'Aarhus University', 'Denmark'),
-            _MyCard('https://static.accessmba.com/application/public/cache/80411b63c045b9cb055bce91a4e567f8.jpg', 'Geneva University', 'Switzerland'),
-            _MyCard('https://scholarship-positions.com/wp-content/uploads/2016/12/University-of-Helsinki-Scholarships-for-Non-EUEEA-Students-in-Finland-1024x620.jpg', 'Helsinki University', 'Finland'),
-            _MyCard('https://www.turku.fi/sites/default/files/styles/opengraph/public/thumbnails/image/turun-yliopisto-paarakennus.jpg?itok=LU4YQGrP', 'Turku University', 'Finland'),
-            _MyCard('https://www.unak.is/static/files/Myndir/Haskolasvaedid/ha28a-nanne-springer.jpg', 'Akureyri University', 'Iceland'),
-            _MyCard('https://guidetoiceland.imgix.net/389524/x/0/the-historical-holar-in-hjaltadalur-the-episcopal-see-and-nyibaer-turf-house-in-north-iceland-1?auto=compress%2Cformat&ch=Width%2CDPR&dpr=1&ixlib=php-3.1.0&w=883&s=cd19590d46456cfbe4462afc03a2d924', 'Hólar  University', 'Iceland'),
+            _MyCard(
+                'https://www.nordlys.info/studenter/manedens-universitet/au89.jpg',
+                'Aarhus University',
+                'Denmark ',
+                'Aarhus University is the largest and second oldest research university in Denmark. The university belongs to the Coimbra Group, the Guild, and Utrecht Network of European universities and is a member of the European University Association.\n \n Address: Nordre Ringgade 1, 8000 Aarhus C, Denmark '),
           ],
         ),
-      ),     
-     
-
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -161,35 +127,35 @@ class _StudentHomeState extends State<StudentHome> {
     );
   }
 }
- // Column(
-      //   children: <Widget>[
-      //     Container(
-      //       child: Padding(
-      //         padding: const EdgeInsets.all(16.0),
-      //         child: Text(
-      //           'Recommendation',
-      //           style: TextStyle(
-      //               color: Colors.orange[800],
-      //               fontSize: 24.0,
-      //               fontWeight: FontWeight.bold),
-      //         ),
-      //       ),
-      //     ),
+// Column(
+//   children: <Widget>[
+//     Container(
+//       child: Padding(
+//         padding: const EdgeInsets.all(16.0),
+//         child: Text(
+//           'Recommendation',
+//           style: TextStyle(
+//               color: Colors.orange[800],
+//               fontSize: 24.0,
+//               fontWeight: FontWeight.bold),
+//         ),
+//       ),
+//     ),
 
-      //     // Row(
-      //     //   mainAxisSize: MainAxisSize.max,
-      //     //   children: <Widget>[
-      //     //     myButton('London'),
-      //     //     myButton('Finland'),
-      //     //     myButton('Denmark'),
-      //     //     myButton('Norway'),
-      //     //     myButton('Iceland'),
-      //     //     myButton('Switzerland'),
-      //     //   ],
-      //     // ),
-      //     // Recommend(),
-      //   ],
-      // ),
+//     // Row(
+//     //   mainAxisSize: MainAxisSize.max,
+//     //   children: <Widget>[
+//     //     myButton('London'),
+//     //     myButton('Finland'),
+//     //     myButton('Denmark'),
+//     //     myButton('Norway'),
+//     //     myButton('Iceland'),
+//     //     myButton('Switzerland'),
+//     //   ],
+//     // ),
+//     // Recommend(),
+//   ],
+// ),
 
 // class CircularButton extends StatelessWidget {
 //   final double width;
