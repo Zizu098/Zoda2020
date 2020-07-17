@@ -239,11 +239,10 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
-                            left: 165.0, top: 10.0, bottom: 10.0),
+                            left: 195.0, top: 10.0, bottom: 10.0),
                         child: RaisedButton(
                           onPressed: () {
-
-                             _enableEdit = !_enableEdit;
+                            _enableEdit = !_enableEdit;
                           },
                           child: Text(
                             'Save',
