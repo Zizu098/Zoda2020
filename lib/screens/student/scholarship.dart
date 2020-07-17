@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zoda/screens/Home/home.dart';
 import 'package:zoda/screens/migration/migrationHome.dart';
 import 'package:zoda/screens/student/studentHome.dart';
+import 'package:zoda/screens/calculator/screens/input_page.dart';
 
 class ScholarShip extends StatefulWidget {
   ScholarShip({Key key, this.title}) : super(key: key);
@@ -64,7 +65,8 @@ class _ScholarShipState extends State<ScholarShip> {
             Padding(
               padding: const EdgeInsets.only(left:165.0 , top:10.0 , bottom: 10.0),
               child: RaisedButton(
-                onPressed: () {},
+                onPressed: ()=> Navigator.push(
+          context, MaterialPageRoute(builder: (context) => InputPage())),
                 child: Text(
                   'Evaluate Yourself',
                   style: TextStyle(fontSize: 20),
