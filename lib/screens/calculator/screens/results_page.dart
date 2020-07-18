@@ -19,6 +19,7 @@ class ResultsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('SCORE'),
         centerTitle: true,
+        backgroundColor: Colors.amber[700],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -35,9 +36,9 @@ class ResultsPage extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 5,
+            flex: 3,
             child: ReusableCard(
-              color: kActiveCardColor,
+              color: Colors.amber[700],
               cardChild: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -63,14 +64,19 @@ class ResultsPage extends StatelessWidget {
               ),
             ),
           ),
-          BottomButton(
-            buttonTitle: 'RE-CALCULATE',
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-          ),
+         
         ],
       ),
+       bottomNavigationBar: SizedBox(
+          height: 70,
+          child: RaisedButton(
+            child: Text('RE-SCORE',
+                style: TextStyle(fontSize: 35, fontFamily: 'RobotoMono')),
+            color: Colors.amber[700],
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )),
     );
   }
 }

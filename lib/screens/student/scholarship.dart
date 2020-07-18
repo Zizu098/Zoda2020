@@ -45,7 +45,6 @@ class _ScholarShipState extends State<ScholarShip> {
               title: Text(
                 nameUniv,
                 style: TextStyle(fontSize: 30),
-                
               ),
               subtitle: Text(
                 country,
@@ -53,7 +52,7 @@ class _ScholarShipState extends State<ScholarShip> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left:8.0),
+              padding: const EdgeInsets.only(left: 8.0),
               child: Text(
                 description,
                 style: TextStyle(
@@ -62,21 +61,34 @@ class _ScholarShipState extends State<ScholarShip> {
                 maxLines: 20,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left:165.0 , top:10.0 , bottom: 10.0),
-              child: RaisedButton(
-                onPressed: ()=> Navigator.push(
-          context, MaterialPageRoute(builder: (context) => InputPage())),
-                child: Text(
-                  'Evaluate Yourself',
-                  style: TextStyle(fontSize: 20),
+            Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: RaisedButton(
+                    onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => InputPage())),
+                    child: Text(
+                      'Evaluate Yourself',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(50.0),
+                    ),
+                    color: Colors.amber[800],
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  ),
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(50.0),
-                ),
-                color: Colors.amber[800],
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15), 
-              ),
+                Padding(padding: const EdgeInsets.only(left: 80),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.chat,
+                    color: Colors.orange[600],
+                    size: 45,
+                  ),
+                  onPressed: null,
+                ),)
+              ],
             ),
           ],
         ),
@@ -92,7 +104,6 @@ class _ScholarShipState extends State<ScholarShip> {
         title: Text('ZODA'),
         backgroundColor: Colors.orange[600],
       ),
-
       body: Container(
         margin: EdgeInsets.symmetric(vertical: 1.0),
         // height: 200,
