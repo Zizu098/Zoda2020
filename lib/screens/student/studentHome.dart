@@ -57,7 +57,28 @@ class _StudentHomeState extends State<StudentHome> {
       ),
     );
   }
+    Container MyCard(String imageVal, String nameUniv, String country) {
+    return Container(
+      width: 160.0,
+      child: Card(
+        child: Wrap(
+          children: <Widget>[
+            Image.network(imageVal),
+            ListTile(
+              title: Text(nameUniv),
+              subtitle: Text(country),
+              onTap: (){
+                Navigator.push(
+          context, MaterialPageRoute(builder: (context) => ScholarShip()));
+              },
+            ),
 
+            // IconButton(icon: Icon(Icons.account_balance), onPressed: null)
+          ],
+        ),
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,21 +143,171 @@ class _StudentHomeState extends State<StudentHome> {
           ],
         ),
       ),
-      body:Container(
-        margin: EdgeInsets.symmetric(vertical: 2.0),
-        // height: 200,
-        child: ListView(
-          scrollDirection: Axis.vertical,
-          children: <Widget>[
-            _MyCard('https://www.nordlys.info/studenter/manedens-universitet/au89.jpg', 'Aarhus University', 'Denmark'),
-            _MyCard('https://static.accessmba.com/application/public/cache/80411b63c045b9cb055bce91a4e567f8.jpg', 'Geneva University', 'Switzerland'),
-            _MyCard('https://scholarship-positions.com/wp-content/uploads/2016/12/University-of-Helsinki-Scholarships-for-Non-EUEEA-Students-in-Finland-1024x620.jpg', 'Helsinki University', 'Finland'),
-            _MyCard('https://www.turku.fi/sites/default/files/styles/opengraph/public/thumbnails/image/turun-yliopisto-paarakennus.jpg?itok=LU4YQGrP', 'Turku University', 'Finland'),
-            _MyCard('https://www.unak.is/static/files/Myndir/Haskolasvaedid/ha28a-nanne-springer.jpg', 'Akureyri University', 'Iceland'),
-            _MyCard('https://guidetoiceland.imgix.net/389524/x/0/the-historical-holar-in-hjaltadalur-the-episcopal-see-and-nyibaer-turf-house-in-north-iceland-1?auto=compress%2Cformat&ch=Width%2CDPR&dpr=1&ixlib=php-3.1.0&w=883&s=cd19590d46456cfbe4462afc03a2d924', 'Hólar  University', 'Iceland'),
+       body: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          SizedBox(
+                height: 50.0,
+                child: Card(
+                    child: Row(
+                  children: <Widget>[
+                    FlatButton.icon(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            child: new MyDialog(
+                                onValueChange: null,
+                                // sort,
+                                initialValue: null,
+                                // this.dialogValue
+                                ));
+                      },
+                      icon: Icon(Icons.sort),
+                      label: Text("Sort"),
+                    )
+                  ],
+                )),
+              ),
+          Text(
+            'Recommendation',
+            style: TextStyle(fontSize: 18),
+          ),
+          Expanded(
+            // child: ListView.builder(
+            //   shrinkWrap: true,
+            //   scrollDirection: Axis.horizontal,
+            //   itemCount: 10,
+            //   itemBuilder: (BuildContext context, int index) => MyCard('https://www.nordlys.info/studenter/manedens-universitet/au89.jpg',
+            //     'Aarhus University',
+            //     'Denmark')
+            //       //   child: Center(child: Text('Dummy Card Text')),
+            //       // ),
+            // ),
+            // children: <Widget>[
+          child:ListView(
+             scrollDirection: Axis.horizontal,
+            children: <Widget>[
+            MyCard(
+                'https://static.accessmba.com/application/public/cache/80411b63c045b9cb055bce91a4e567f8.jpg',
+                'Geneva University',
+                'Switzerland'),
+            MyCard(
+                'https://scholarship-positions.com/wp-content/uploads/2016/12/University-of-Helsinki-Scholarships-for-Non-EUEEA-Students-in-Finland-1024x620.jpg',
+                'Helsinki University',
+                'Finland'),
+            MyCard(
+                'https://www.turku.fi/sites/default/files/styles/opengraph/public/thumbnails/image/turun-yliopisto-paarakennus.jpg?itok=LU4YQGrP',
+                'Turku University',
+                'Finland'),
+            MyCard(
+                'https://www.unak.is/static/files/Myndir/Haskolasvaedid/ha28a-nanne-springer.jpg',
+                'Akureyri University',
+                'Iceland'),
+            MyCard(
+                'https://guidetoiceland.imgix.net/389524/x/0/the-historical-holar-in-hjaltadalur-the-episcopal-see-and-nyibaer-turf-house-in-north-iceland-1?auto=compress%2Cformat&ch=Width%2CDPR&dpr=1&ixlib=php-3.1.0&w=883&s=cd19590d46456cfbe4462afc03a2d924',
+                'Hólar  University',
+                'Iceland'),
           ],
-        ),
-      ),     
+          )
+          ),
+          Text(
+            'Rest of nations',
+            style: TextStyle(fontSize: 18),
+          ),
+          Expanded(
+            child: ListView(
+              // shrinkWrap: true,
+              // itemCount: 3,
+              // itemBuilder: (BuildContext context, int index){
+              // children: <Widget>[
+          // child:ListView(
+             scrollDirection: Axis.vertical,
+            children: <Widget>[
+            MyCard(
+                'https://www.nordlys.info/studenter/manedens-universitet/au89.jpg',
+                'Aarhus University',
+                'Denmark'),
+            MyCard(
+                'https://static.accessmba.com/application/public/cache/80411b63c045b9cb055bce91a4e567f8.jpg',
+                'Geneva University',
+                'Switzerland'),
+            MyCard(
+                'https://scholarship-positions.com/wp-content/uploads/2016/12/University-of-Helsinki-Scholarships-for-Non-EUEEA-Students-in-Finland-1024x620.jpg',
+                'Helsinki University',
+                'Finland'),
+            MyCard(
+                'https://www.turku.fi/sites/default/files/styles/opengraph/public/thumbnails/image/turun-yliopisto-paarakennus.jpg?itok=LU4YQGrP',
+                'Turku University',
+                'Finland'),
+            MyCard(
+                'https://www.unak.is/static/files/Myndir/Haskolasvaedid/ha28a-nanne-springer.jpg',
+                'Akureyri University',
+                'Iceland'),
+            MyCard(
+                'https://guidetoiceland.imgix.net/389524/x/0/the-historical-holar-in-hjaltadalur-the-episcopal-see-and-nyibaer-turf-house-in-north-iceland-1?auto=compress%2Cformat&ch=Width%2CDPR&dpr=1&ixlib=php-3.1.0&w=883&s=cd19590d46456cfbe4462afc03a2d924',
+                'Hólar  University',
+                'Iceland'),
+          ],
+        
+              // => _MyCard('https://static.accessmba.com/application/public/cache/80411b63c045b9cb055bce91a4e567f8.jpg',
+              //   'Geneva University',
+              //   'Switzerland')
+                // return Card(
+                //   child: ListTile(
+                //       title: Text('Motivation $int'),
+                //       subtitle: Text('this is a description of the motivation')),
+                // );
+              // },
+            ),
+          ),
+        ],
+      ),
+
+        // margin: EdgeInsets.symmetric(vertical: 2.0),
+        // height: 200,
+        // children: <Widget>[
+          // child:ListView(
+          //    scrollDirection: Axis.horizontal,
+          //   children: <Widget>[
+          //   MyCard(
+          //       'https://www.nordlys.info/studenter/manedens-universitet/au89.jpg',
+          //       'Aarhus University',
+          //       'Denmark'),
+          //   MyCard(
+          //       'https://static.accessmba.com/application/public/cache/80411b63c045b9cb055bce91a4e567f8.jpg',
+          //       'Geneva University',
+          //       'Switzerland'),
+          //   MyCard(
+          //       'https://scholarship-positions.com/wp-content/uploads/2016/12/University-of-Helsinki-Scholarships-for-Non-EUEEA-Students-in-Finland-1024x620.jpg',
+          //       'Helsinki University',
+          //       'Finland'),
+          //   MyCard(
+          //       'https://www.turku.fi/sites/default/files/styles/opengraph/public/thumbnails/image/turun-yliopisto-paarakennus.jpg?itok=LU4YQGrP',
+          //       'Turku University',
+          //       'Finland'),
+          //   MyCard(
+          //       'https://www.unak.is/static/files/Myndir/Haskolasvaedid/ha28a-nanne-springer.jpg',
+          //       'Akureyri University',
+          //       'Iceland'),
+          //   MyCard(
+          //       'https://guidetoiceland.imgix.net/389524/x/0/the-historical-holar-in-hjaltadalur-the-episcopal-see-and-nyibaer-turf-house-in-north-iceland-1?auto=compress%2Cformat&ch=Width%2CDPR&dpr=1&ixlib=php-3.1.0&w=883&s=cd19590d46456cfbe4462afc03a2d924',
+          //       'Hólar  University',
+          //       'Iceland'),
+          // ],
+          // ),
+        //    child: Column(
+        //   // scrollDirection: Axis.vertical,
+        //   children: <Widget>[
+        //     _MyCard('https://www.nordlys.info/studenter/manedens-universitet/au89.jpg', 'Aarhus University', 'Denmark'),
+        //     _MyCard('https://static.accessmba.com/application/public/cache/80411b63c045b9cb055bce91a4e567f8.jpg', 'Geneva University', 'Switzerland'),
+        //     _MyCard('https://scholarship-positions.com/wp-content/uploads/2016/12/University-of-Helsinki-Scholarships-for-Non-EUEEA-Students-in-Finland-1024x620.jpg', 'Helsinki University', 'Finland'),
+        //     _MyCard('https://www.turku.fi/sites/default/files/styles/opengraph/public/thumbnails/image/turun-yliopisto-paarakennus.jpg?itok=LU4YQGrP', 'Turku University', 'Finland'),
+        //     _MyCard('https://www.unak.is/static/files/Myndir/Haskolasvaedid/ha28a-nanne-springer.jpg', 'Akureyri University', 'Iceland'),
+        //     _MyCard('https://guidetoiceland.imgix.net/389524/x/0/the-historical-holar-in-hjaltadalur-the-episcopal-see-and-nyibaer-turf-house-in-north-iceland-1?auto=compress%2Cformat&ch=Width%2CDPR&dpr=1&ixlib=php-3.1.0&w=883&s=cd19590d46456cfbe4462afc03a2d924', 'Hólar  University', 'Iceland'),
+        //   ],
+        // ),
+        // ],
+      // ),     
      
 
       bottomNavigationBar: BottomNavigationBar(
@@ -828,3 +999,58 @@ class _StudentHomeState extends State<StudentHome> {
 //     ],
 //   ),
 // )
+class MyDialog extends StatefulWidget {
+  const MyDialog({this.onValueChange, this.initialValue});
+
+  final int initialValue;
+  final void Function(int) onValueChange;
+
+  @override
+  State createState() => new MyDialogState();
+}
+
+class MyDialogState extends State<MyDialog> {
+  int _selectedId;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedId = widget.initialValue;
+  }
+
+  Widget build(BuildContext context) {
+    return new SimpleDialog(
+      children: <Widget>[
+        ListTile(
+          title: Text('sort by name'),
+          leading: Radio(
+            value: 0,
+            groupValue: _selectedId,
+            onChanged: (value) {
+              setState(() {
+                _selectedId = value;
+              });
+              widget.onValueChange(value);
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        ListTile(
+          title: Text('sort by rate'),
+          leading: Radio(
+            value: 1,
+            groupValue: _selectedId,
+            onChanged: (value) {
+              setState(() {
+                _selectedId = value;
+              });
+
+              widget.onValueChange(value);
+              Navigator.pop(context);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
