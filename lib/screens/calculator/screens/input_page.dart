@@ -19,20 +19,21 @@ class _InputPageState extends State<InputPage> {
   bool _language = false;
   bool _passport = false;
   double _money = 0.0;
-  int money = 0, passport = 0, age = 0, education = 0, language = 0;
+  int money = 0, passport = 0, _age = 1, education = 0, language = 0, age = 0;
   void _onChanged(bool value) => setState(() => {
         if (_language == false) {language = 20} else {language = 0},
         _language = value,
       });
-  void _onChangedpass(bool value) => setState(() => {
+  void _onChangedpass(bool value) => setState(() => { 
         if (_passport == false) {passport = 20} else {passport = 0},
         _passport = value
       });
   void _setValue(double value) => setState(() => {
         money = value.round(),
+        if ((value*1000) >= 300 ) {money = 20} else if( 300 > (value*1000) && (value*1000) >= 100) {money = 10} else{money = 0},
         _money = value,
-        if (money == 0) {money = 0} else {money = 20}
       });
+    
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,12 +81,15 @@ class _InputPageState extends State<InputPage> {
                         splashColor: Colors.amber[900],
                         onPressed: () {
                           setState(() {
-                            if (age > 0) age--;
+                            if (_age > 0) {_age--;}
+                            if(_age <= 22) {age = 20;}
+                            else if (_age > 22 && _age <= 40) {age = 15;}
+                            else {age = 10;}
                           });
                         },
                       ),
                       Text(
-                        '${(age)}',
+                        '${(_age)}',
                         style: TextStyle(fontSize: 20),
                       ),
                       IconButton(
@@ -93,7 +97,10 @@ class _InputPageState extends State<InputPage> {
                         splashColor: Colors.amber[900],
                         onPressed: () {
                           setState(() {
-                            age++;
+                            _age++;
+                            if(_age <= 22) {age = 20;}
+                            else if (_age > 22 && _age <= 40) {age = 15;}
+                            else {age = 10;}
                           });
                         },
                       ),
@@ -102,7 +109,7 @@ class _InputPageState extends State<InputPage> {
                   Padding(
                     padding: const EdgeInsets.only(top:15.0),
                     child: Text(
-                      'Money : ${(_money * 1000).round()}',
+                      'Money: ${(_money * 1000).round()}'+'K',
                       style: TextStyle(fontSize: 20),
                     ),
                   ),

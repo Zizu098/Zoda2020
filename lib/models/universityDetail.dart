@@ -5,6 +5,7 @@ class UniversityDetail {
   num uniEvaluation;
   String uniId;
   String uniImg;
+  num hit;
 
   UniversityDetail({
       this.uniId,
@@ -13,6 +14,7 @@ class UniversityDetail {
       this.uniDescription,
       this.uniEvaluation,
       this.uniImg,
+      this.hit
       });
 
 
@@ -22,8 +24,9 @@ class UniversityDetail {
     uniName = snapshot['uniName'] ?? '',
     uniCountry = snapshot['uniCountry'] ?? '',
     uniDescription = snapshot['uniDescription'] ?? '',
-    uniEvaluation = snapshot['uniEvaluation'] ?? '',
-    uniImg = snapshot['uniImg'] ?? '';
+    uniEvaluation = snapshot['uniEvaluation'] ?? 0.0,
+    uniImg = snapshot['uniImg'] ?? '',
+    hit = snapshot['hit'] ?? 0;
   toJson() {
     return {
       "uniId": uniId,
@@ -32,6 +35,7 @@ class UniversityDetail {
       "uniDescription": uniDescription,
       "uniEvaluation": uniEvaluation,
       "uniImg": uniImg,
+      "hit": hit
     };
   }
 }

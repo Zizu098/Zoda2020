@@ -4,7 +4,6 @@ class Authenticate extends StatefulWidget {
   @override
   _AuthenticateState createState() => _AuthenticateState();
 }
-
 class _AuthenticateState extends State<Authenticate> {
   @override
   Widget build(BuildContext context) {
@@ -25,9 +24,6 @@ class _AuthenticateState extends State<Authenticate> {
             RaisedButton(
               color: Color(0xfff9811e),
               onPressed: () {
-                // Route route =
-                //     MaterialPageRoute(builder: (context) => new Register());
-                // Navigator.push(context, route);
                 Navigator.of(context).pushNamed("/register");
               },
               padding: EdgeInsets.all(15.0),
@@ -57,10 +53,6 @@ class _AuthenticateState extends State<Authenticate> {
                     ),
                     FlatButton(
                       onPressed: () {
-                        print("login pressed");
-                        // Route route =
-                        //     MaterialPageRoute(builder: (context) => new Login());
-                        // Navigator.push(context, route);
                         Navigator.of(context).pushNamed("/login");
                       },
                       child: Text(

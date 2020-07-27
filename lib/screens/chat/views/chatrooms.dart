@@ -1,3 +1,4 @@
+import 'package:zoda/screens/chat/helper/authenticate.dart';
 import 'package:zoda/screens/chat/helper/constants.dart';
 import 'package:zoda/screens/chat/helper/helperfunctions.dart';
 import 'package:zoda/screens/chat/helper/theme.dart';
@@ -65,16 +66,16 @@ class _ChatRoomState extends State<ChatRoom> {
         elevation: 0.0,
         centerTitle: false,
         actions: [
-          // GestureDetector(
-          //   onTap: () {
-          //     AuthService().signOut();
-          //     Navigator.pushReplacement(context,
-          //         MaterialPageRoute(builder: (context) => Authenticate()));
-          //   },
-          //   child: Container(
-          //       padding: EdgeInsets.symmetric(horizontal: 16),
-          //       child: Icon(Icons.exit_to_app)),
-          // )
+          GestureDetector(
+            onTap: () {
+              AuthService().signOut();
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => Authenticate()));
+            },
+            child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Icon(Icons.exit_to_app)),
+          )
         ],
       ),
       body: Container(
@@ -121,7 +122,7 @@ class ChatRoomsTile extends StatelessWidget {
               child: Text(userName.substring(0, 1),
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontSize: 16,
                       fontFamily: 'OverpassRegular',
                       fontWeight: FontWeight.w300)),
@@ -132,7 +133,7 @@ class ChatRoomsTile extends StatelessWidget {
             Text(userName,
                 textAlign: TextAlign.start,
                 style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontSize: 16,
                     fontFamily: 'OverpassRegular',
                     fontWeight: FontWeight.w300))

@@ -1,5 +1,5 @@
 import 'package:zoda/screens/chat/helper/constants.dart';
-import 'package:zoda/models/user.dart';
+import 'package:zoda/screens/chat/models/user.dart';
 import 'package:zoda/screens/chat/services/database.dart';
 import 'package:zoda/screens/chat/views/chat.dart';
 import 'package:zoda/screens/chat/widget/widget.dart';

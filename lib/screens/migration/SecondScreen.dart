@@ -1,156 +1,163 @@
+import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:zoda/models/nationDetail.dart';
+import 'package:zoda/screens/Home/home.dart';
+import 'package:zoda/screens/migration/migrationHome.dart';
+import 'package:zoda/screens/student/studentHome.dart';
+import 'package:zoda/screens/calculator/screens/input_page.dart';
+import 'package:zoda/screens/chat/views/chatrooms.dart';
+import 'package:zoda/screens/chat/views/chat.dart';
+import 'package:zoda/screens/chat/helper/authenticate.dart';
+import 'package:zoda/models/nationDetail.dart';
+import 'package:zoda/components/loading/loading.dart';
+import 'package:zoda/database.services/nation.service.dart';
+class SecondScreen extends StatefulWidget {
+  SecondScreen( this.nationId);
 
-class SecondScreen extends StatelessWidget {
-  Widget myDetailsContainer1() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Container(
+  final String nationId;
+
+  @override
+  _SecondScreenState createState() => _SecondScreenState(this.nationId);
+}
+
+class _SecondScreenState extends State<SecondScreen> {
+  String nationId;
+  var nationV;
+  _SecondScreenState(this.nationId);
+ int _selectedIndex = 2;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    if (_selectedIndex == 1) {
+      _selectedIndex = 2;
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+    } else if (_selectedIndex == 0) {
+      _selectedIndex = 2;
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => StudentHome()));
+    }}
+
+  NationDetail nation;
+  NationService uniServ = new NationService();
+  Future<NationDetail> _fetchnationData() async {
+     nationV = await uniServ.getById(this.nationId); 
+     refresh();
+  }
+  void refresh(){
+    setState(() {
+      nation = nationV;
+    });
+  }
+void initState() {
+    _fetchnationData();
+      // uniSort = nation;
+  }
+
+  Container _MyCard(String imageVal, String nameUniv, String country, String description) {
+    return Container(
+      width: 160.0,
+      child: Card(
+        child: Wrap(
+          children: <Widget>[
+            Image.asset(imageVal),
+            ListTile(
+              title: Text(
+                nameUniv,
+                style: TextStyle(fontSize: 30),
+              ),
+              subtitle: Text(
+                country,
+                style: TextStyle(fontSize: 25, color: Colors.orange[600]),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
               child: Text(
-            "Canada",
-            style: TextStyle(
-                color: Color(0xffe6020a),
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold),
-          )),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Container(
-              child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Container(
-                  child: Text(
-                "4.3",
+                description,
                 style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 18.0,
-                ),
-              )),
-              Container(
-                child: Icon(
-                  FontAwesomeIcons.solidStar,
-                  color: Colors.amber,
-                  size: 15.0,
-                ),
+                    fontSize: 20, fontWeight: FontWeight.bold, height: 2),
+                textAlign: TextAlign.left,
+                maxLines: 20,
               ),
-              Container(
-                child: Icon(
-                  FontAwesomeIcons.solidStar,
-                  color: Colors.amber,
-                  size: 15.0,
+            ),
+            Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: RaisedButton(
+                    onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => InputPage())),
+                    child: Text(
+                      'Evaluate Yourself',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(50.0),
+                    ),
+                    color: Colors.amber[800],
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                  ),
                 ),
-              ),
-              Container(
-                child: Icon(
-                  FontAwesomeIcons.solidStar,
-                  color: Colors.amber,
-                  size: 15.0,
-                ),
-              ),
-              Container(
-                child: Icon(
-                  FontAwesomeIcons.solidStar,
-                  color: Colors.amber,
-                  size: 15.0,
-                ),
-              ),
-              Container(
-                child: Icon(
-                  FontAwesomeIcons.solidStarHalf,
-                  color: Colors.amber,
-                  size: 15.0,
-                ),
-              ),
-              Container(
-                  child: Text(
-                "",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 18.0,
-                ),
-              )),
-            ],
-          )),
+                Padding(padding: const EdgeInsets.only(left: 80),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.chat,
+                    color: Colors.orange[600],
+                    size: 45,
+                  ),
+                  onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => ChatRoom())),
+                ),)
+              ],
+            ),
+          ],
         ),
-        Container(
-            child: Text(
-          "",
-          style: TextStyle(
-              color: Colors.black54,
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold),
-        )),
-      ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    // if(nation == null) return Loading();
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Second Screen"),
-        ),
-        body: ListView(
+      resizeToAvoidBottomPadding: false,
+      appBar: AppBar(
+        title: Text('ZODA'),
+        backgroundColor: Colors.orange[600],
+      ),
+      body: Container(
+        margin: EdgeInsets.symmetric(vertical: 1.0),
+        // height: 200,
+        child: ListView(
+          scrollDirection: Axis.vertical,
           children: <Widget>[
-            Container(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  alignment: AlignmentDirectional(0.3, 5.0),
-                  height: 240.0,
-                  child: FittedBox(
-                    child: Material(
-                      color: Colors.white,
-                      elevation: 14.0,
-                      borderRadius: BorderRadius.circular(24.0),
-                      shadowColor: Color(0x802196f3),
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(24.0),
-                              child: Image(
-                                image: NetworkImage(
-                                    "https://images.unsplash.com/photo-1490623970972-ae8bb3da443e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=749&q=80"),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 16.0),
-                              child: myDetailsContainer1(),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              child: Text("Requirements"),
-              decoration: BoxDecoration(
-                color: Colors.white30,
-                borderRadius: BorderRadius.circular(24.0),
-              ),
-            ),
-            Container(
-              child: Center(
-                child: RaisedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('Go back!'),
-                ),
-              ),
-            ),
+            _MyCard(nation.nationImg, nation.nationName, nation.nationContinent, nation.nationDescription)
           ],
-        ));
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.school),
+            title: Text('School'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.flight),
+            title: Text('Migration'),
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.orange[600],
+        onTap: _onItemTapped,
+      ),
+    );
   }
 }

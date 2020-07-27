@@ -93,7 +93,7 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   }
 
   final GlobalKey<FormState> _formKeyValue = new GlobalKey<FormState>();
-  bool _enableEdit = false;
+  bool _enableEdit = true;
   var iconEdit = Icons.edit;
   Color colorEdit = Colors.lightBlue[900];
   DateTime _dateTime;
@@ -242,7 +242,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
                             left: 195.0, top: 10.0, bottom: 10.0),
                         child: RaisedButton(
                           onPressed: () {
-                            _enableEdit = !_enableEdit;
+                            // _enableEdit = !_enableEdit;
+                            _performSave();
                           },
                           child: Text(
                             'Save',

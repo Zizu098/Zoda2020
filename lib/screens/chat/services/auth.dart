@@ -1,4 +1,4 @@
-import 'package:zoda/models/user.dart';
+import 'package:zoda/screens/chat/models/user.dart';
 import 'package:zoda/screens/chat/views/chat.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

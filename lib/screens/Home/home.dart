@@ -132,7 +132,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    Loading();
+    if(user == null) return Loading();
     // TODO: implement build
     return Scaffold(
       resizeToAvoidBottomPadding: false,

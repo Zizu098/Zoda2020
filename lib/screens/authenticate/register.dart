@@ -14,12 +14,75 @@ import 'package:path/path.dart';
 import 'dart:io';
 import 'package:email_validator/email_validator.dart';
 
+import 'package:zoda/screens/chat/helper/helperfunctions.dart';
+import 'package:zoda/screens/chat/helper/theme.dart';
+// import 'package:zoda/screens/chat/services/auth.dart';
+import 'package:zoda/screens/chat/services/database.dart';
+import 'package:zoda/screens/chat/views/chatrooms.dart';
+import 'package:zoda/screens/chat/widget/widget.dart';
+import 'package:flutter/material.dart';
+// import 'package:zoda/screens/chat/services/auth.dart';
+
 class Register extends StatefulWidget {
   @override
   _RegisterState createState() => _RegisterState();
 }
-
 class _RegisterState extends State<Register> {
+
+//Chat Register
+ TextEditingController emailEditingController = new TextEditingController();
+  TextEditingController passwordEditingController = new TextEditingController();
+  TextEditingController usernameEditingController =
+      new TextEditingController();
+
+  AuthService authService = new AuthService();
+  DatabaseMethods databaseMethods = new DatabaseMethods();
+
+  final formKey = GlobalKey<FormState>();
+  bool isLoading = false;
+
+  singUp() async {
+
+    if(formKey.currentState.validate()){
+      setState(() {
+
+        isLoading = true;
+      });
+
+      await authService.signInWithEmailAndPassword(emailEditingController.text,
+          passwordEditingController.text).then((result){
+            if(result != null){
+
+              Map<String,String> userDataMap = {
+                // "userName" : usernameEditingController.text,
+                "userName" : userData.firstName,
+                // "userEmail" : emailEditingController.text
+                "userEmail" : userData.email
+              };
+
+              databaseMethods.addUserInfo(userDataMap);
+
+              HelperFunctions.saveUserLoggedInSharedPreference(true);
+              HelperFunctions.saveUserNameSharedPreference(userData.firstName);
+              HelperFunctions.saveUserEmailSharedPreference(userData.email);
+              // HelperFunctions.saveUserNameSharedPreference(usernameEditingController.text);
+              // HelperFunctions.saveUserEmailSharedPreference(emailEditingController.text);
+
+              // Navigator.pushReplacement(context, MaterialPageRoute(
+              //     builder: (context) => ChatRoom()
+              // ));
+            }
+      });
+    }
+  }
+
+
+
+
+
+
+
+
   final AuthService _auth = AuthService();
   UserDetail userData = new UserDetail();
   UserService userServ = new UserService();
@@ -31,24 +94,16 @@ class _RegisterState extends State<Register> {
     GlobalKey<FormState>(),
     GlobalKey<FormState>(),
   ];
-
   Future<List<UserDetail>> fetchEmail() async {
-    // setState(() async {
     fetchEmails = await userEmailServ.fetchData();
-    // });
   }
-
   void initState() {
     fetchEmail();
   }
-
   dynamic result;
-
   // File _image;
   String fileName;
-
   int _currentStep = 0;
-
   String _firstName = "";
   String _lastName = "";
   int _age = 0;
@@ -60,13 +115,9 @@ class _RegisterState extends State<Register> {
   String error = '';
   bool loading = false;
   var url;
-
   String conButton = 'Next';
   String dropdownValue = 'None';
-
   File _image;
-  // String fileName;
-  // var url;
   var imageURL;
   @override
   Widget build(BuildContext context) {
@@ -79,7 +130,6 @@ class _RegisterState extends State<Register> {
       userData.imgUrl = await storageReference.getDownloadURL();
       return await storageReference.getDownloadURL();
     }
-
     Future getImage() async {
       var result = await ImagePicker().getImage(source: ImageSource.gallery);
       setState(() {
@@ -171,10 +221,12 @@ class _RegisterState extends State<Register> {
                           child: Column(
                             children: <Widget>[
                               TextFormField(
+                                // controller: usernameEditingController ?? '',
                                 initialValue: _firstName,
                                 onChanged: (String value) {
                                   setState(() {
                                     _firstName = value;
+                                    
                                     // userData.userId = '1';
                                     userData.firstName = value;
                                   });
@@ -206,6 +258,7 @@ class _RegisterState extends State<Register> {
                                 height: 15.0,
                               ),
                               TextFormField(
+                                // controller: emailEditingController,
                                 initialValue: _email,
                                 decoration: textInputDecoration.copyWith(
                                     hintText: 'Email'),
@@ -228,6 +281,7 @@ class _RegisterState extends State<Register> {
                                     color: Colors.red, fontSize: 14.0),
                               ),
                               TextFormField(
+                                controller: passwordEditingController,
                                 decoration: textInputDecoration.copyWith(
                                     hintText: 'Password'),
                                 validator: (val) => val.length < 6
@@ -450,7 +504,6 @@ class _RegisterState extends State<Register> {
                     setState(() {
                       _currentStep = _currentStep;
                     });
-                    // _currentStep = step;
                   },
                   onStepContinue: () {
                     setState(() {
@@ -478,29 +531,27 @@ class _RegisterState extends State<Register> {
                               loading = true;
                               result = await _auth.registerWithEmailAndPassword(
                                   _email, _password);
+                               //Char Reg
+                          Map<String,String> userDataMap = {
+                // "userName" : usernameEditingController.text,
+                "userName" : userData.firstName,
+                // "userEmail" : emailEditingController.text
+                "userEmail" : userData.email
+              };
+
+              databaseMethods.addUserInfo(userDataMap);
+
+              HelperFunctions.saveUserLoggedInSharedPreference(true);
+              HelperFunctions.saveUserNameSharedPreference(userData.firstName);
+              HelperFunctions.saveUserEmailSharedPreference(userData.email);
+
+
                               // void getId() async {
                               //  final FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
                               userData.userId = result.uid;
                               uploadFile(_image);
                               userServ.add(userData);
                             });
-                            // }
-                            // uploadPic(context).then((v) {
-                            //       Navigator.of(context)
-                            //           .pushReplacementNamed("./login");
-                            //     });
-                            // if (result == null) {
-                            //   setState(() {
-                            //     error = 'Email already used';
-                            //     loading = false;
-                            //   });
-                            // } else {
-                            //   uploadPic(context).then((v) {
-                            //     Navigator.of(context)
-                            //         .pushReplacementNamed("./login");
-                            //   });
-                            //   // getId();
-                            // }
                           }
                           _currentStep = _currentStep + 1;
                         } else {

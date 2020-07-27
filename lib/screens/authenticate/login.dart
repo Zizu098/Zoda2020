@@ -24,9 +24,7 @@ final AuthService _auth = AuthService();
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.lightBlue[900],
-        // elevation: 0.0,
-        title: Text('Login Page'),
-        
+        title: Text('Login Page'), 
       ),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
@@ -34,7 +32,6 @@ final AuthService _auth = AuthService();
           key: _formKey,
           child: Column(
             children: <Widget>[
-
               SizedBox(
                 height: 10.0,
               ),
@@ -45,11 +42,8 @@ final AuthService _auth = AuthService();
             SizedBox(
                 height: 45.0,
               ),
-
               TextFormField(
-
                 decoration:textInputDecoration.copyWith(hintText: 'Email', icon: Icon(Icons.person)), 
-                
                 validator: (val) => val.isEmpty ? 'Enter an valid email ': null,
                 onChanged: (val) {
                   if(val.endsWith(' '))
