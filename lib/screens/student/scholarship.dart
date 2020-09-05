@@ -107,13 +107,13 @@ class _ScholarShipState extends State<ScholarShip> {
                   fontFamily: 'Georgia',
                   color: Colors.lightBlue[300])),
           Padding(
-            padding: const EdgeInsets.only(left: 5.0, top: 10.0),
+            padding: const EdgeInsets.only(left: 10.0, top: 10.0),
             child: Row(
               children: [
                 Text(
                     'While some degree programs, \nsuch as mechanicalengineering, are \ncommon across schools, others \nvary acrossinstitutions. \nFor example,civil engineering',
                     style: TextStyle(
-                        fontSize: 20.0,
+                        fontSize: 15.0,
                         fontFamily: 'Georgia',
                         color: Colors.red[800])),
                 IconButton(
@@ -131,13 +131,13 @@ class _ScholarShipState extends State<ScholarShip> {
                   fontFamily: 'Georgia',
                   color: Colors.lightBlue[300])),
           Padding(
-            padding: const EdgeInsets.only(left: 5.0, top: 10.0),
+            padding: const EdgeInsets.only(left: 10.0, top: 10.0),
             child: Row(
               children: [
                 Text(
                     'While some degree programs, \nsuch as mechanicalengineering, are \ncommon across schools, others \nvary acrossinstitutions. \nFor example,civil engineering',
                     style: TextStyle(
-                        fontSize: 20.0,
+                        fontSize: 15.0,
                         fontFamily: 'Georgia',
                         color: Colors.red[800])),
                 IconButton(
@@ -155,13 +155,13 @@ class _ScholarShipState extends State<ScholarShip> {
                   fontFamily: 'Georgia',
                   color: Colors.lightBlue[300])),
           Padding(
-            padding: const EdgeInsets.only(left: 5.0, top: 10.0, bottom: 10.0),
+            padding: const EdgeInsets.only(left: 10.0, top: 10.0, bottom: 10.0),
             child: Row(
               children: [
                 Text(
                     'While some degree programs, \nsuch as mechanicalengineering, are \ncommon across schools, others \nvary acrossinstitutions. \nFor example,civil engineering',
                     style: TextStyle(
-                        fontSize: 20.0,
+                        fontSize: 15.0,
                         fontFamily: 'Georgia',
                         color: Colors.red[800])),
                 IconButton(
@@ -206,7 +206,7 @@ class _ScholarShipState extends State<ScholarShip> {
                         Icon(Icons.web , color: Colors.lightBlue[200],),
                         Text(
                           '+https://www.unige.ch/',
-                          style: TextStyle(fontSize: 22, color: Colors.red[300]),
+                          style: TextStyle(fontSize: 17, color: Colors.red[300]),
                         ),
                       ],
                     ),
