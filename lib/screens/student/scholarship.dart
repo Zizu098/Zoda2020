@@ -10,7 +10,7 @@ import 'package:zoda/components/loading/loading.dart';
 import 'package:zoda/database.services/university.service.dart';
 
 class ScholarShip extends StatefulWidget {
-  ScholarShip( this.uniId);
+  ScholarShip(this.uniId);
 
   final String uniId;
 
@@ -29,10 +29,12 @@ class _ScholarShipState extends State<ScholarShip> {
     });
     if (_selectedIndex == 1) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
-    // } else if (_selectedIndex == 2) {
+    }
+    // else if (_selectedIndex == 2) {
     //   Navigator.push(
     //       context, MaterialPageRoute(builder: (context) => MigrationHome()));
-    } else if (_selectedIndex == 0) {
+    // }
+    else if (_selectedIndex == 0) {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => StudentHome()));
     }
@@ -41,85 +43,218 @@ class _ScholarShipState extends State<ScholarShip> {
   UniversityDetail university;
   UniversityService uniServ = new UniversityService();
   Future<UniversityDetail> _fetchUniversityData() async {
-     universityV = await uniServ.getById(this.uniId); 
-     refresh();
+    universityV = await uniServ.getById(this.uniId);
+    refresh();
   }
-  void refresh(){
+
+  void refresh() {
     setState(() {
       university = universityV;
     });
   }
-void initState() {
+
+  void initState() {
     _fetchUniversityData();
-      // uniSort = university;
+    // uniSort = university;
   }
 
-  Container _MyCard(String imageVal, String nameUniv, String country, String description) {
+  Container _MyCard(
+      String imageVal, String nameUniv, String country, String description) {
     return Container(
       width: 160.0,
-      child: Card(
-        child: Wrap(
-          children: <Widget>[
-            Image.asset(imageVal),
-            ListTile(
-              title: Text(
-                nameUniv,
-                style: TextStyle(fontSize: 30),
-              ),
-              subtitle: Text(
-                country,
-                style: TextStyle(fontSize: 25, color: Colors.orange[600]),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Text(
-                description,
-                style: TextStyle(
-                    fontSize: 20, fontWeight: FontWeight.bold, height: 2),
-                textAlign: TextAlign.left,
-                maxLines: 20,
-              ),
-            ),
-            Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: RaisedButton(
-                    onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => InputPage())),
-                    child: Text(
-                      'Evaluate Yourself',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(50.0),
-                    ),
-                    color: Colors.amber[800],
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                  ),
+      child: Column(
+        children: [
+          Card(
+            child: Column(
+              children: [
+                Wrap(
+                  children: <Widget>[
+                    Image.asset(imageVal),
+                  ],
                 ),
-                Padding(padding: const EdgeInsets.only(left: 80),
-                child: IconButton(
-                  icon: Icon(
-                    Icons.chat,
-                    color: Colors.orange[600],
-                    size: 45,
-                  ),
-                  onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => ChatRoom())),
-                ),)
               ],
             ),
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Text(
+                  nameUniv,
+                  style: TextStyle(fontSize: 25, color: Colors.lightBlue[300]),
+                ),
+                
+                
+              ],
+            ),
+          ),
+
+          Padding(
+            padding:
+                const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 5.0),
+            child: Text(
+              description,
+              style: TextStyle(
+                  fontSize: 15, fontWeight: FontWeight.bold, height: 2),
+              textAlign: TextAlign.left,
+              maxLines: 20,
+            ),
+          ),
+
+          Text(' I - Engineering',
+              style: TextStyle(
+                  fontSize: 25.0,
+                  fontFamily: 'Georgia',
+                  color: Colors.lightBlue[300])),
+          Padding(
+            padding: const EdgeInsets.only(left: 5.0, top: 10.0),
+            child: Row(
+              children: [
+                Text(
+                    'While some degree programs, \nsuch as mechanicalengineering, are \ncommon across schools, others \nvary acrossinstitutions. \nFor example,civil engineering',
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontFamily: 'Georgia',
+                        color: Colors.red[800])),
+                IconButton(
+                  icon: Icon(Icons.add_circle),
+                  onPressed: () {},
+                  iconSize: 40.0,
+                  color: Colors.red[400],
+                )
+              ],
+            ),
+          ),
+          Text('\n II - Medicine field',
+              style: TextStyle(
+                  fontSize: 25.0,
+                  fontFamily: 'Georgia',
+                  color: Colors.lightBlue[300])),
+          Padding(
+            padding: const EdgeInsets.only(left: 5.0, top: 10.0),
+            child: Row(
+              children: [
+                Text(
+                    'While some degree programs, \nsuch as mechanicalengineering, are \ncommon across schools, others \nvary acrossinstitutions. \nFor example,civil engineering',
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontFamily: 'Georgia',
+                        color: Colors.red[800])),
+                IconButton(
+                  icon: Icon(Icons.add_circle),
+                  onPressed: () {},
+                  iconSize: 40.0,
+                  color: Colors.red[400],
+                )
+              ],
+            ),
+          ),
+          Text(' \n III - Business',
+              style: TextStyle(
+                  fontSize: 25.0,
+                  fontFamily: 'Georgia',
+                  color: Colors.lightBlue[300])),
+          Padding(
+            padding: const EdgeInsets.only(left: 5.0, top: 10.0, bottom: 10.0),
+            child: Row(
+              children: [
+                Text(
+                    'While some degree programs, \nsuch as mechanicalengineering, are \ncommon across schools, others \nvary acrossinstitutions. \nFor example,civil engineering',
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontFamily: 'Georgia',
+                        color: Colors.red[800])),
+                IconButton(
+                  icon: Icon(Icons.add_circle),
+                  onPressed: () {},
+                  iconSize: 40.0,
+                  color: Colors.red[400],
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Container(
+              color: Colors.red[50],
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.location_on , color: Colors.lightBlue[200],),
+                        Text(
+                          '  '+country,
+                          style: TextStyle(fontSize: 22, color: Colors.red[300]),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10.0,),
+                    Row(
+                      children: [
+                        Icon(Icons.phone , color: Colors.lightBlue[200],),
+                        Text(
+                          '+41223797111',
+                          style: TextStyle(fontSize: 22, color: Colors.red[300]),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10.0,),
+                    Row(
+                      children: [
+                        Icon(Icons.web , color: Colors.lightBlue[200],),
+                        Text(
+                          '+https://www.unige.ch/',
+                          style: TextStyle(fontSize: 22, color: Colors.red[300]),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+          // Row(
+          //   children: <Widget>[
+          //     Padding(
+          //       padding: const EdgeInsets.all(8.0),
+          //       child: RaisedButton(
+          //         onPressed: () => Navigator.push(context,
+          //             MaterialPageRoute(builder: (context) => InputPage())),
+          //         child: Text(
+          //           'Evaluate Yourself',
+          //           style: TextStyle(fontSize: 20),
+          //         ),
+          //         shape: RoundedRectangleBorder(
+          //           borderRadius: new BorderRadius.circular(50.0),
+          //         ),
+          //         color: Colors.amber[800],
+          //         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+          //       ),
+          //     ),
+          //     Padding(
+          //       padding: const EdgeInsets.only(left: 80),
+          //       child: IconButton(
+          //         icon: Icon(
+          //           Icons.chat,
+          //           color: Colors.orange[600],
+          //           size: 45,
+          //         ),
+          //         onPressed: () => Navigator.push(context,
+          //             MaterialPageRoute(builder: (context) => ChatRoom())),
+          //       ),
+          //     )
+          //   ],
+          // ),
+        ],
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    if(university == null) return Loading();
+    if (university == null) return Loading();
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
@@ -127,12 +262,18 @@ void initState() {
         backgroundColor: Colors.lightBlue[100],
       ),
       body: Container(
+        decoration: new BoxDecoration(
+            image: new DecorationImage(
+                image: AssetImage("img/scholarship2.jpg"),
+                fit: BoxFit.fill,
+                repeat: ImageRepeat.noRepeat)),
         margin: EdgeInsets.symmetric(vertical: 1.0),
         // height: 200,
         child: ListView(
           scrollDirection: Axis.vertical,
           children: <Widget>[
-            _MyCard(university.uniImg, university.uniName, university.uniCountry, university.uniDescription)
+            _MyCard(university.uniImg, university.uniName,
+                university.uniCountry, university.uniDescription)
           ],
         ),
       ),
@@ -152,7 +293,7 @@ void initState() {
           // ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.orange[600],
+        selectedItemColor: Colors.red[400],
         onTap: _onItemTapped,
       ),
     );

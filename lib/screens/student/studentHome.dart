@@ -61,6 +61,7 @@ class _StudentHomeState extends State<StudentHome> {
               fit: BoxFit.fill,
               repeat: ImageRepeat.noRepeat)),
       width: 160.0,
+      height: 85.0,
       child: Card(
         child: Wrap(
           children: <Widget>[
@@ -225,22 +226,22 @@ class _StudentHomeState extends State<StudentHome> {
                 ],
               )),
             ),
-            // Text(
-            //   'Recommendation',
-            //   style: TextStyle(fontSize: 18, color: Colors.black),
-            // ),
-            // Expanded(
-            //   child: ListView.builder(
-            //       shrinkWrap: true,
-            //       scrollDirection: Axis.horizontal,
-            //       itemCount: 10,
-            //       itemBuilder: (BuildContext context, int index) =>
-            //           _buildRecommendationCard(context, index)),
-            // ),
-            // Text(
-            //   'Rest of nations',
-            //   style: TextStyle(fontSize: 18, color: Colors.black),
-            // ),
+            Text(
+              'Recommendation',
+              style: TextStyle(fontSize: 18, color: Colors.black),
+            ),
+            Expanded(
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 10,
+                  itemBuilder: (BuildContext context, int index) =>
+                      _buildRecommendationCard(context, index)),
+            ),
+            Text(
+              'Rest of nations',
+              style: TextStyle(fontSize: 18, color: Colors.black),
+            ),
             Expanded(
                 child: ListView(children: <Widget>[
               for (k = 0; k < university.length; k++) _bBuildCard()

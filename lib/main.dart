@@ -29,7 +29,8 @@ class MyApp extends StatelessWidget {
           '/': (BuildContext context) => Wrapper(),
           '/login': (BuildContext context) => Login(),
           '/register': (BuildContext context) => Register(),
-          '/home': (BuildContext context) => Home()
+          '/home': (BuildContext context) => Home(),
+          
         },
       ),
     );
