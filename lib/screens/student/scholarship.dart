@@ -1,14 +1,10 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zoda/screens/Home/home.dart';
 import 'package:zoda/screens/migration/migrationHome.dart';
 import 'package:zoda/screens/student/studentHome.dart';
 import 'package:zoda/screens/calculator/screens/input_page.dart';
 import 'package:zoda/screens/chat/views/chatrooms.dart';
-import 'package:zoda/screens/chat/views/chat.dart';
-import 'package:zoda/screens/chat/helper/authenticate.dart';
 import 'package:zoda/models/universityDetail.dart';
 import 'package:zoda/components/loading/loading.dart';
 import 'package:zoda/database.services/university.service.dart';
@@ -33,9 +29,9 @@ class _ScholarShipState extends State<ScholarShip> {
     });
     if (_selectedIndex == 1) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
-    } else if (_selectedIndex == 2) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MigrationHome()));
+    // } else if (_selectedIndex == 2) {
+    //   Navigator.push(
+    //       context, MaterialPageRoute(builder: (context) => MigrationHome()));
     } else if (_selectedIndex == 0) {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => StudentHome()));
@@ -128,7 +124,7 @@ void initState() {
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text('ZODA'),
-        backgroundColor: Colors.orange[600],
+        backgroundColor: Colors.lightBlue[100],
       ),
       body: Container(
         margin: EdgeInsets.symmetric(vertical: 1.0),
@@ -150,10 +146,10 @@ void initState() {
             icon: Icon(Icons.home),
             title: Text('Home'),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.flight),
-            title: Text('Migration'),
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.flight),
+          //   title: Text('Migration'),
+          // ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.orange[600],

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zoda/components/loading/loading.dart';
 import 'package:zoda/database.services/auth.dart';
 import 'package:zoda/database.services/topCountries.service.dart';
@@ -132,98 +133,105 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    if(user == null) return Loading();
+    if (user == null) return Loading();
     // TODO: implement build
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      appBar: AppBar(
-        title: Text('ZODA'),
-        backgroundColor: Colors.lightBlue[900],
-      ),
-      drawer: Drawer(
-          child: Column(
-        children: <Widget>[
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(20),
-            color: Colors.lightBlue[900],
-            child: Center(
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    width: 75,
-                    height: 75,
-                    margin: EdgeInsets.fromLTRB(0, 18, 0, 5),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(image: NetworkImage('${user.imgUrl}')) ?? DecorationImage(image: AssetImage('img/Z.png')) ),
-                  ),
-                  Text(
-                    this.user.email ?? "wait email data.",
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
-                ],
+        resizeToAvoidBottomPadding: false,
+        appBar: AppBar(
+          title: Text('ZODA'),
+          backgroundColor: Colors.lightBlue[100],
+        ),
+        drawer: Drawer(
+            child: Column(
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(20),
+              color: Colors.lightBlue[200],
+              child: Center(
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      width: 75,
+                      height: 75,
+                      margin: EdgeInsets.fromLTRB(0, 18, 0, 5),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                                  image: NetworkImage('${user.imgUrl}')) ??
+                              DecorationImage(image: AssetImage('img/Z.png'))),
+                    ),
+                    Text(
+                      this.user.email ?? "wait email data.",
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          ListTile(
-            leading: Icon(Icons.person),
-            title: Text(
-              'Profile',
-              style:
-                  TextStyle(fontSize: 16, color: Color.fromRGBO(50, 51, 53, 1)),
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text(
+                'Profile',
+                style: TextStyle(
+                    fontSize: 16, color: Color.fromRGBO(50, 51, 53, 1)),
+              ),
+              onTap: () => Navigator.push(context,
+                  new MaterialPageRoute(builder: (context) => new Profile())),
             ),
-            onTap: () => Navigator.push(context,
-                new MaterialPageRoute(builder: (context) => new Profile())),
-          ),
-          // ListTile(
-          //   leading: Icon(Icons.settings),
-          //   title: Text(
-          //     'Settings',
-          //     style:
-          //         TextStyle(fontSize: 16, color: Color.fromRGBO(50, 51, 53, 1)),
-          //   ),
-          //   onTap: () {
-          //     infoWindowVisible = false;
-          //     createSettingsPopUp(context);
-          //   },
-          // ),
-          ListTile(
-            leading: Icon(Icons.phone),
-            title: Text(
-              'Contact us',
-              style:
-                  TextStyle(fontSize: 16, color: Color.fromRGBO(50, 51, 53, 1)),
+            // ListTile(
+            //   leading: Icon(Icons.settings),
+            //   title: Text(
+            //     'Settings',
+            //     style:
+            //         TextStyle(fontSize: 16, color: Color.fromRGBO(50, 51, 53, 1)),
+            //   ),
+            //   onTap: () {
+            //     infoWindowVisible = false;
+            //     createSettingsPopUp(context);
+            //   },
+            // ),
+            ListTile(
+              leading: Icon(Icons.phone),
+              title: Text(
+                'Contact us',
+                style: TextStyle(
+                    fontSize: 16, color: Color.fromRGBO(50, 51, 53, 1)),
+              ),
+              onTap: () {
+                setState(() {
+                  infoWindowVisible = false;
+                  createContactPopUp(context);
+                });
+              },
+              // onTap: null,
             ),
-            onTap: () {
-              setState(() {
-                infoWindowVisible = false;
-                createContactPopUp(context);
-              });
-            },
-            // onTap: null,
-          ),
-          ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text(
-              'Sign out',
-              style:
-                  TextStyle(fontSize: 16, color: Color.fromRGBO(50, 51, 53, 1)),
+            ListTile(
+              leading: Icon(Icons.exit_to_app),
+              title: Text(
+                'Sign out',
+                style: TextStyle(
+                    fontSize: 16, color: Color.fromRGBO(50, 51, 53, 1)),
+              ),
+              onTap: () {
+                _auth.signOut();
+                Navigator.of(context).pushReplacementNamed("/");
+              },
             ),
-            onTap: () {
-              _auth.signOut();
-              Navigator.of(context).pushReplacementNamed("/");
-            },
-          ),
-        ],
-      )),
-      body: ListView(
-        children: <Widget>[
-          HomeScreenTopPart(),
-          HomeScreenBottomPart(),
-        ],
-      ),
-    );
+          ],
+        )),
+        body:  
+              ListView(
+          children: <Widget>[
+            HomeScreenTopPart(),
+            HomeScreenBottomPart(),
+          ],
+        ),
+            
+          
+          
+        
+        );
   }
 }
 
@@ -250,124 +258,82 @@ class _HomeScreenTopPartState extends State<HomeScreenTopPart> {
   // UserDetail userData = new UserDetail();
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        ClipPath(
-          // clipper: CustomShapeClipper(),
-          child: Container(
-            height: 320.0,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                // color: bkColor,
-                colors: [firstColor, secondColor],
+    return Container(
+          decoration: new BoxDecoration(
+              image: new DecorationImage(
+                  image: AssetImage("img/home.jpg"),
+                  fit: BoxFit.fill,
+                  repeat: ImageRepeat.noRepeat)),
+          child: Column(
+            children: [
+              SizedBox(height: 150.0),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                        'Our application serves high\nschool diploma holders to \nobtain Scholarships available in\nthe following gields : ',
+                        style: TextStyle(
+                            fontSize: 20.0,
+                            fontFamily: 'Georgia',
+                            color: Colors.blue[400])),
+                  ),
+                ],
               ),
-            ),
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 10.0,
-                ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15.0),
+                    child: Text(
+                        'engineering - medicine field \n Political Science - Business',
+                        style: TextStyle(
+                            fontSize: 15.0,
+                            fontFamily: 'Georgia',
+                            color: Colors.blue[800])),
+                  )
+                ],
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 30.0),
+                    child: Text('take a look to \n our Scholarships',
+                        style: TextStyle(
+                            fontSize: 20.0,
+                            fontFamily: 'Georgia',
+                            color: Colors.red[200])),
+                  ),
+                  Icon(
+                    Icons.subdirectory_arrow_right,
+                    size: 30,
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => StudentHome()));
+                      },
+                      iconSize: 95.0,
+                      color: Colors.lightBlue[100],
+                      icon: Icon(FontAwesomeIcons.bookOpen)),
+                ],
+              ),
+              Row(children: [
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    children: <Widget>[],
-                  ),
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                Text(
-                  'Where would\nyou want to go?',
-                  style: TextStyle(
-                    fontSize: 30.0,
-                    color: Colors.white,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(
-                  height: 30.0,
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    InkWell(
-                      child: RaisedButton(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(50.0),
-                        ),
-                        color: Color(0xfff9811e),
-                        splashColor: Colors.yellow[200],
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => StudentHome()));
-                        },
-                        child: Row(
-                          children: <Widget>[
-                            Icon(Icons.school),
-                            SizedBox(
-                              width: 3.0,
-                            ),
-                            Text("Scholarship")
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 20.0,
-                    ),
-                    InkWell(
-                      child: RaisedButton(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(50.0),
-                        ),
-                        splashColor: Colors.red[200],
-                        color: Color(0xffffceae),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MigrationHome()));
-                        },
-                        child: Row(
-                          children: <Widget>[
-                            Icon(Icons.flight_takeoff),
-                            SizedBox(
-                              width: 3.0,
-                            ),
-                            Text("Migration")
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Text(
-                  '\nTOP 10 COUNTRIES',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.white,
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-                Spacer(),
-                Icon(
-                  Icons.arrow_drop_down,
-                  size: 40,
-                  color: Colors.lightBlue[200],
-                )
-              ],
-            ),
-          ),
-        )
-      ],
+                  padding: const EdgeInsets.only(left:10.0),
+                  child: Text('Top 10 Counntries : \n',
+                          style: TextStyle(
+                              fontSize: 20.0,
+                              fontFamily: 'Georgia',
+                              color: Colors.lightBlue[400])),
+                )])
+            ]
+          )
+            
     );
+            
+              
   }
 }
 
@@ -412,6 +378,11 @@ class _HomeScreenBottomPartState extends State<HomeScreenBottomPart> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: new BoxDecoration(
+              image: new DecorationImage(
+                  image: AssetImage("img/homebotton.jpg"),
+                  fit: BoxFit.fill,
+                  repeat: ImageRepeat.noRepeat)),
       child: new ListView.builder(
           physics: ScrollPhysics(),
           shrinkWrap: true,
@@ -423,72 +394,79 @@ class _HomeScreenBottomPartState extends State<HomeScreenBottomPart> {
 
   Widget _buildTripCard(BuildContext context, int index) {
     return new Container(
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 45.0, right: 35),
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Row(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right:40.0, left: 40.0),
+            child: Card(
+              color: Colors.blue[50],
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10.0, right: 35),
+                child: Column(
                   children: <Widget>[
-                    CircleAvatar(
-                      backgroundImage: (location == null)
-                          ? AssetImage('img/Z.png')
-                          : AssetImage('${location[index].topCountriesImage}'),
-                      backgroundColor: Colors.black,
-                      radius: 20,
-                    ),
-                    Text(
-                      '   ' + location[index].topCountriesName,
-                      style: new TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.blue[800],
-                        letterSpacing: 2,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Row(
+                        children: <Widget>[
+                          CircleAvatar(
+                            backgroundImage: (location == null)
+                                ? AssetImage('img/Z.png')
+                                : AssetImage('${location[index].topCountriesImage}'),
+                            backgroundColor: Colors.black,
+                            radius: 20,
+                          ),
+                          Text(
+                            '  ' + location[index].topCountriesName,
+                            style: new TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.blue[800],
+                              letterSpacing: 2,
+                            ),
+                          ),
+                          Spacer(),
+                          // Text(
+                          //   location[index].topCountriesContinent,
+                          //   style: new TextStyle(fontSize: 15),
+                          // ),
+                        ],
                       ),
                     ),
-                    Spacer(),
-                    Text(
-                      location[index].topCountriesContinent,
-                      style: new TextStyle(fontSize: 15),
-                    ),
+                    
+                     Row(
+                          children: <Widget>[
+                            SmoothStarRating(
+                              rating:
+                                  location[index].topCountriesEvaluation.toDouble(),
+                              isReadOnly: true,
+                              size: 20,
+                              filledIconData: Icons.star,
+                              halfFilledIconData: Icons.star_half,
+                              defaultIconData: Icons.star_border,
+                              starCount: 5,
+                              allowHalfRating: true,
+                              spacing: 2.0,
+                              onRated: null,
+                            ),
+                            Spacer(),
+                            IconButton(
+                              onPressed: () {
+                                _createAlertDialog(
+                                    context, location[index].topCountriesDescription);
+                              },
+                              icon: Icon(Icons.info_outline),
+                              color: Colors.blue[700],
+                              iconSize: 35,
+                              splashColor: Colors.lightBlue,
+                            ),
+                          ],
+                        )
                   ],
                 ),
               ),
-              Padding(
-                  padding: const EdgeInsets.only(top: 5.0),
-                  child: Row(
-                    children: <Widget>[
-                      SmoothStarRating(
-                        rating:
-                            location[index].topCountriesEvaluation.toDouble(),
-                        isReadOnly: true,
-                        size: 20,
-                        filledIconData: Icons.star,
-                        halfFilledIconData: Icons.star_half,
-                        defaultIconData: Icons.star_border,
-                        starCount: 5,
-                        allowHalfRating: true,
-                        spacing: 2.0,
-                        onRated: null,
-                      ),
-                      Spacer(),
-                      IconButton(
-                        onPressed: () {
-                          _createAlertDialog(
-                              context, location[index].topCountriesDescription);
-                        },
-                        icon: Icon(Icons.info_outline),
-                        color: Colors.blue[700],
-                        iconSize: 35,
-                        splashColor: Colors.lightBlue,
-                      ),
-                    ],
-                  ))
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

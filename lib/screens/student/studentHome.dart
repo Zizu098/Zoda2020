@@ -1,9 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
-import 'package:zoda/models/university.dart';
 import 'package:zoda/screens/Home/home.dart';
 import 'package:zoda/screens/migration/migrationHome.dart';
 import 'package:zoda/screens/student/scholarship.dart';
@@ -29,123 +26,145 @@ class _StudentHomeState extends State<StudentHome> {
     if (_selectedIndex == 1) {
       _selectedIndex = 0;
       Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
-    } else if (_selectedIndex == 2) {
-      _selectedIndex = 0;
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MigrationHome()));
     }
+    // else if (_selectedIndex == 2) {
+    //   _selectedIndex = 0;
+    //   Navigator.push(
+    //       context, MaterialPageRoute(builder: (context) => MigrationHome()));
+    // }
   }
 
- List<UniversityDetail> university;
- List<UniversityDetail> uniSort ;
- List<UniversityDetail> uniRec ;
- UniversityService uniServ = new UniversityService();
+  List<UniversityDetail> university;
+  List<UniversityDetail> uniSort;
+  List<UniversityDetail> uniRec;
+  UniversityService uniServ = new UniversityService();
   Future<List<UniversityDetail>> _fetchUniversityData() async {
-    university = await uniServ.fetchData(); 
-    uniSort = await uniServ.fetchData();  
+    university = await uniServ.fetchData();
+    uniSort = await uniServ.fetchData();
     setState(() {
       university.sort((a, b) => a.hit.compareTo(b.hit));
       if (university == null) Loading();
       // else   {uniSort = university; uniRec = university;}
     });
   }
-void initState() {
+
+  void initState() {
     _fetchUniversityData();
-      // uniSort = university;
+    // uniSort = university;
   }
-  
-  Widget _buildRecommendationCard(BuildContext context, int index){ 
+
+  Widget _buildRecommendationCard(BuildContext context, int index) {
     return Container(
+      decoration: new BoxDecoration(
+          image: new DecorationImage(
+              image: AssetImage("img/homebotton.jpg"),
+              fit: BoxFit.fill,
+              repeat: ImageRepeat.noRepeat)),
       width: 160.0,
       child: Card(
         child: Wrap(
           children: <Widget>[
-            Image.asset(university[university.length - index -1].uniImg),
+            Image.asset(university[university.length - index - 1].uniImg),
             ListTile(
-              title: Text(university[university.length - index -1].uniName),
-              subtitle: Text(university[university.length - index -1].uniCountry),
-              onTap: (){
-                setState(() async{
-                  university[university.length - index -1].hit ++;
-                  await uniServ.update(university[university.length - index -1], university[university.length - index -1].uniId);
-                   Navigator.push(context, MaterialPageRoute(builder: (context) => ScholarShip(university[university.length - index -1].uniId)));
-                });       
+              title: Text(university[university.length - index - 1].uniName),
+              subtitle:
+                  Text(university[university.length - index - 1].uniCountry),
+              onTap: () {
+                setState(() async {
+                  university[university.length - index - 1].hit++;
+                  await uniServ.update(
+                      university[university.length - index - 1],
+                      university[university.length - index - 1].uniId);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ScholarShip(
+                              university[university.length - index - 1]
+                                  .uniId)));
+                });
               },
             ),
             // IconButton(icon: Icon(Icons.account_balance), onPressed: null)
             Padding(
-                  padding: const EdgeInsets.only(top: 5.0),
-                  child: Row(
-                    children: <Widget>[
-                      SmoothStarRating(
-                        rating:
-                            university[index].uniEvaluation.toDouble(),
-                        isReadOnly: true,
-                        size: 20,
-                        filledIconData: Icons.star,
-                        halfFilledIconData: Icons.star_half,
-                        defaultIconData: Icons.star_border,
-                        starCount: 5,
-                        allowHalfRating: true,
-                        spacing: 2.0,
-                        onRated: null,
-                      ),
-                    ])),
+                padding: const EdgeInsets.only(top: 5.0),
+                child: Row(children: <Widget>[
+                  SmoothStarRating(
+                    rating: university[index].uniEvaluation.toDouble(),
+                    isReadOnly: true,
+                    size: 20,
+                    filledIconData: Icons.star,
+                    halfFilledIconData: Icons.star_half,
+                    defaultIconData: Icons.star_border,
+                    starCount: 5,
+                    allowHalfRating: true,
+                    spacing: 2.0,
+                    onRated: null,
+                  ),
+                ])),
           ],
         ),
       ),
     );
   }
+
   int k = 0;
-  Widget _bBuildCard(){
-    for(k ; k< university.length; k++){
-     return _buildCard(k);
+  Widget _bBuildCard() {
+    for (k; k < university.length; k++) {
+      return _buildCard(k);
     }
   }
-  Widget _buildCard(int k){
-    return Container(
-      width: 160.0,
-      child: Card(
-        child: Wrap(
-          children: <Widget>[
-            Image.asset(uniSort[k].uniImg),
-            ListTile(
-              title: Text(uniSort[k].uniName),
-              subtitle: Text(uniSort[k].uniCountry),
-              onTap: (){
-                uniSort[k].hit ++;
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ScholarShip(uniSort[k].uniId)));
-              },
-            ),
-             Padding(
-                  padding: const EdgeInsets.only(top: 5.0),
-                  child: Row(
-                    children: <Widget>[
-                      SmoothStarRating(
-                        rating:
-                            uniSort[k].uniEvaluation.toDouble(),
-                        isReadOnly: true,
-                        size: 20,
-                        filledIconData: Icons.star,
-                        halfFilledIconData: Icons.star_half,
-                        defaultIconData: Icons.star_border,
-                        starCount: 5,
-                        allowHalfRating: true,
-                        spacing: 2.0,
-                        onRated: null,
-                      ),
-                    ])),
-            // IconButton(icon: Icon(Icons.account_balance), onPressed: null)
-          ],
+
+  Widget _buildCard(int k) {
+    return Padding(
+      padding: const EdgeInsets.only(left:40.0, right: 40.0),
+      child: Container(
+        decoration: new BoxDecoration(
+            image: new DecorationImage(
+                image: AssetImage("img/homebotton.jpg"),
+                fit: BoxFit.fill,
+                repeat: ImageRepeat.noRepeat)),
+        child: Card(
+          child: Wrap(
+            children: <Widget>[
+              Image.asset(uniSort[k].uniImg),
+              ListTile(
+                title: Text(uniSort[k].uniName),
+                subtitle: Text(uniSort[k].uniCountry),
+                onTap: () {
+                  uniSort[k].hit++;
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ScholarShip(uniSort[k].uniId)));
+                },
+              ),
+              Row(children: <Widget>[
+                SmoothStarRating(
+                  rating: uniSort[k].uniEvaluation.toDouble(),
+                  isReadOnly: true,
+                  size: 20,
+                  filledIconData: Icons.star,
+                  halfFilledIconData: Icons.star_half,
+                  defaultIconData: Icons.star_border,
+                  starCount: 5,
+                  allowHalfRating: true,
+                  spacing: 2.0,
+                  onRated: null,
+                ),
+              ]),
+
+              // IconButton(icon: Icon(Icons.account_balance), onPressed: null)
+            ],
+          ),
         ),
       ),
     );
   }
- 
+
   bool _dataInProgres = true;
   int dialogValue = 2;
-  
- sort(value) async {
+
+  sort(value) async {
     this.setState(() {
       _dataInProgres = true;
     });
@@ -165,69 +184,70 @@ void initState() {
       _dataInProgres = false;
     });
   }
- 
- 
+
   @override
   Widget build(BuildContext context) {
-    if(university == null) return Loading();
+    if (university == null) return Loading();
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text('ZODA'),
-        backgroundColor: Colors.orange[600],
+        backgroundColor: Colors.lightBlue[100],
       ),
-       body: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          SizedBox(
-                height: 50.0,
-                child: Card(
-                    child: Row(
-                  children: <Widget>[
-                    FlatButton.icon(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            child: new MyDialog(
-                                onValueChange: sort,
-                                // sort,
-                                initialValue: this.dialogValue,
-                                // this.dialogValue
-                                ));
-                      },
-                      icon: Icon(Icons.sort),
-                      label: Text("Sort"),
-                    )
-                  ],
-                )),
-              ),
-          Text(
-            'Recommendation',
-            style: TextStyle(fontSize: 18,color: Colors.white),
-          ),
-          Expanded(
-            child: ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemCount: 10,
-              itemBuilder: (BuildContext context, int index) => _buildRecommendationCard(context, index)
+      body: Container(
+        decoration: new BoxDecoration(
+            image: new DecorationImage(
+                image: AssetImage("img/scholarship.jpg"),
+                fit: BoxFit.fill,
+                repeat: ImageRepeat.noRepeat)),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            SizedBox(
+              height: 50.0,
+              child: Card(
+                  child: Row(
+                children: <Widget>[
+                  FlatButton.icon(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          child: new MyDialog(
+                            onValueChange: sort,
+                            // sort,
+                            initialValue: this.dialogValue,
+                            // this.dialogValue
+                          ));
+                    },
+                    icon: Icon(Icons.sort),
+                    label: Text("Sort"),
+                  )
+                ],
+              )),
             ),
-          ),
-          Text(
-            'Rest of nations',
-            style: TextStyle(fontSize: 18,color: Colors.white),
-          ),
-          Expanded(
-           child: ListView(
-             children: <Widget>[
-                 for(k = 0; k< university.length; k++)  _bBuildCard()
-           ])
-    )
-              
-                            
-        ],
+            // Text(
+            //   'Recommendation',
+            //   style: TextStyle(fontSize: 18, color: Colors.black),
+            // ),
+            // Expanded(
+            //   child: ListView.builder(
+            //       shrinkWrap: true,
+            //       scrollDirection: Axis.horizontal,
+            //       itemCount: 10,
+            //       itemBuilder: (BuildContext context, int index) =>
+            //           _buildRecommendationCard(context, index)),
+            // ),
+            // Text(
+            //   'Rest of nations',
+            //   style: TextStyle(fontSize: 18, color: Colors.black),
+            // ),
+            Expanded(
+                child: ListView(children: <Widget>[
+              for (k = 0; k < university.length; k++) _bBuildCard()
+            ]))
+          ],
+        ),
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -238,18 +258,19 @@ void initState() {
             icon: Icon(Icons.home),
             title: Text('Home'),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.flight),
-            title: Text('Migration'),
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.flight),
+          //   title: Text('Migration'),
+          // ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.orange[600],
+        selectedItemColor: Colors.red[300],
         onTap: _onItemTapped,
       ),
     );
   }
 }
+
 class MyDialog extends StatefulWidget {
   const MyDialog({this.onValueChange, this.initialValue});
 

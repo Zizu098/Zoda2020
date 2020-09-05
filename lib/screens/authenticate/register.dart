@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,18 +9,11 @@ import 'login.dart';
 import 'package:zoda/database.services/user.service.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:path/path.dart';
 import 'dart:io';
 import 'package:email_validator/email_validator.dart';
 
 import 'package:zoda/screens/chat/helper/helperfunctions.dart';
-import 'package:zoda/screens/chat/helper/theme.dart';
-// import 'package:zoda/screens/chat/services/auth.dart';
 import 'package:zoda/screens/chat/services/database.dart';
-import 'package:zoda/screens/chat/views/chatrooms.dart';
-import 'package:zoda/screens/chat/widget/widget.dart';
-import 'package:flutter/material.dart';
-// import 'package:zoda/screens/chat/services/auth.dart';
 
 class Register extends StatefulWidget {
   @override
