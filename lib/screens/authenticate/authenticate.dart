@@ -25,7 +25,7 @@ class _AuthenticateState extends State<Authenticate> {
             Text(
               '"Find your best place"',
               style: TextStyle(
-                  color: Colors.lightBlue[900],
+                  color: Colors.lightBlue[400],
                   fontSize: 17.0,
                   fontStyle: FontStyle.italic,
                   fontWeight: FontWeight.bold),
@@ -36,20 +36,20 @@ class _AuthenticateState extends State<Authenticate> {
                 Padding(
                   padding: const EdgeInsets.only(left: 35.0),
                   child: RaisedButton(
-                    color: Colors.blue[700],
+                    color: Colors.lightBlue[100],
                     onPressed: () {
                       Navigator.of(context).pushNamed("/register");
                     },
                     padding: EdgeInsets.all(15.0),
                     shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30.0)),
+                        borderRadius: new BorderRadius.circular(10.0)),
                     child: Text(
                       'Create account',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 15.0, fontFamily: 'Georgia', height: 1),
                     ),
-                    textColor: Colors.white,
+                    textColor: Colors.black,
                   ),
                 ),
                 Padding(
@@ -66,20 +66,20 @@ class _AuthenticateState extends State<Authenticate> {
                 Padding(
                   padding: const EdgeInsets.only(left: 15.0),
                   child: RaisedButton(
-                    color: Colors.blue[700],
+                    color: Colors.lightBlue[100],
                     onPressed: () {
                       Navigator.of(context).pushNamed("/login");
                     },
                     padding: EdgeInsets.all(15.0),
                     shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30.0)),
+                        borderRadius: new BorderRadius.circular(10.0)),
                     child: Text(
                       'Login',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 15.0, fontFamily: 'Georgia', height: 1),
                     ),
-                    textColor: Colors.white,
+                    textColor: Colors.black,
                   ),
                 ),
               ],
