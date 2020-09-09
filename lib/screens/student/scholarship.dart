@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zoda/screens/Home/home.dart';
+import 'package:zoda/screens/Home/upload.dart';
 import 'package:zoda/screens/migration/migrationHome.dart';
 import 'package:zoda/screens/student/studentHome.dart';
 import 'package:zoda/screens/calculator/screens/input_page.dart';
@@ -107,7 +108,7 @@ class _ScholarShipState extends State<ScholarShip> {
                   fontFamily: 'Georgia',
                   color: Colors.lightBlue[300])),
           Padding(
-            padding: const EdgeInsets.only(left: 10.0, top: 10.0),
+            padding: const EdgeInsets.only(left: 30.0, top: 10.0),
             child: Row(
               children: [
                 Text(
@@ -118,9 +119,14 @@ class _ScholarShipState extends State<ScholarShip> {
                         color: Colors.red[800])),
                 IconButton(
                   icon: Icon(Icons.add_circle),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Upload()));
+                  },
                   iconSize: 40.0,
-                  color: Colors.red[400],
+                  color: Colors.red[300],
                 )
               ],
             ),
@@ -131,7 +137,7 @@ class _ScholarShipState extends State<ScholarShip> {
                   fontFamily: 'Georgia',
                   color: Colors.lightBlue[300])),
           Padding(
-            padding: const EdgeInsets.only(left: 10.0, top: 10.0),
+            padding: const EdgeInsets.only(left: 30.0, top: 10.0),
             child: Row(
               children: [
                 Text(
@@ -142,9 +148,14 @@ class _ScholarShipState extends State<ScholarShip> {
                         color: Colors.red[800])),
                 IconButton(
                   icon: Icon(Icons.add_circle),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Upload()));
+                  },
                   iconSize: 40.0,
-                  color: Colors.red[400],
+                  color: Colors.red[300],
                 )
               ],
             ),
@@ -155,7 +166,7 @@ class _ScholarShipState extends State<ScholarShip> {
                   fontFamily: 'Georgia',
                   color: Colors.lightBlue[300])),
           Padding(
-            padding: const EdgeInsets.only(left: 10.0, top: 10.0, bottom: 10.0),
+            padding: const EdgeInsets.only(left: 30.0, top: 10.0, bottom: 10.0),
             child: Row(
               children: [
                 Text(
@@ -166,9 +177,14 @@ class _ScholarShipState extends State<ScholarShip> {
                         color: Colors.red[800])),
                 IconButton(
                   icon: Icon(Icons.add_circle),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Upload()));
+                  },
                   iconSize: 40.0,
-                  color: Colors.red[400],
+                  color: Colors.red[300],
                 )
               ],
             ),
@@ -177,6 +193,7 @@ class _ScholarShipState extends State<ScholarShip> {
             padding: const EdgeInsets.all(32.0),
             child: Container(
               color: Colors.red[50],
+              
               child: Padding(
                 padding: const EdgeInsets.all(32.0),
                 child: Column(
@@ -258,7 +275,7 @@ class _ScholarShipState extends State<ScholarShip> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-        title: Text('ZODA'),
+        title: Text(university.uniName),
         backgroundColor: Colors.lightBlue[100],
       ),
       body: Container(
@@ -267,16 +284,18 @@ class _ScholarShipState extends State<ScholarShip> {
                 image: AssetImage("img/scholarship2.jpg"),
                 fit: BoxFit.fill,
                 repeat: ImageRepeat.noRepeat)),
-        margin: EdgeInsets.symmetric(vertical: 1.0),
         // height: 200,
-        child: ListView(
-          scrollDirection: Axis.vertical,
-          children: <Widget>[
-            _MyCard(university.uniImg, university.uniName,
-                university.uniCountry, university.uniDescription)
-          ],
-        ),
+        child: 
+            ListView(
+              children: [
+                Container(
+                  child: _MyCard(university.uniImg, university.uniName,
+                      university.uniCountry, university.uniDescription),
+                ),
+              ],
+            )
       ),
+    
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -293,7 +312,7 @@ class _ScholarShipState extends State<ScholarShip> {
           // ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.red[400],
+        selectedItemColor: Colors.red[300],
         onTap: _onItemTapped,
       ),
     );

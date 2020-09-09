@@ -397,7 +397,7 @@ class _HomeScreenBottomPartState extends State<HomeScreenBottomPart> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(right:40.0, left: 40.0),
+            padding: const EdgeInsets.only(right:20.0, left: 20.0),
             child: Card(
               color: Colors.blue[50],
               child: Padding(

@@ -23,7 +23,7 @@ class _AuthenticateState extends State<Authenticate> {
               ),
             ),
             Text(
-              '"Find your best place"',
+              '"Step to the SUCCESS"',
               style: TextStyle(
                   color: Colors.lightBlue[400],
                   fontSize: 17.0,
@@ -55,7 +55,7 @@ class _AuthenticateState extends State<Authenticate> {
                 Padding(
                   padding: const EdgeInsets.only(left:15.0),
                   child: Text(
-                    'OR',
+                    '  ',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 25.0,

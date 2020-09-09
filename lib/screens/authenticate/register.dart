@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zoda/components/loading/loading.dart';
 import 'package:zoda/database.Services/auth.dart';
 import 'package:zoda/models/userDetail.dart';
-import 'package:zoda/theme/input.dart';
 import 'login.dart';
 import 'package:zoda/database.services/user.service.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
-import 'package:email_validator/email_validator.dart';
 
 import 'package:zoda/screens/chat/helper/helperfunctions.dart';
 import 'package:zoda/screens/chat/services/database.dart';
@@ -194,61 +191,79 @@ class _RegisterState extends State<Register> {
                                   : null,
                             ),
                           ),
-                           Padding(
-                             padding: const EdgeInsets.only(right:48.0 , left: 20.0),
-                             child: Column(
-                                children: [
-                                  Row(
-                                    children: <Widget>[
-                                      Flexible(
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                right: 80.0, bottom: 10.0 , left: 20.0),
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                  hintText: 'Confirm Password',
+                                  hintStyle: TextStyle(
+                                      color: Colors.blue[200], fontSize: 15.0),
+                                  border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(25.0)),
+                                  prefixIcon: Icon(Icons.lock)),
+                              obscureText: true,
+                              validator: (val) => val.length < 6
+                                  ? 'Enter n password 6+ chars long'
+                                  : null,
+                            ),
+                          ),
+                          //  Padding(
+                          //    padding: const EdgeInsets.only(right:48.0 , left: 20.0),
+                          //    child: Column(
+                          //       children: [
+                          //         Row(
+                          //           children: <Widget>[
+                          //             Flexible(
                                         
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(right:5.0),
-                                            child: TextFormField(
-                                              decoration: InputDecoration(
+                          //                 child: Padding(
+                          //                   padding: const EdgeInsets.only(right:5.0),
+                          //                   child: TextFormField(
+                          //                     decoration: InputDecoration(
                                                 
-                                                  hintText: 'Country',
-                                                  hintStyle: TextStyle(
-                                                      color: Colors.blue[200],
-                                                      fontSize: 15.0),
-                                                  border: OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(25.0)),
-                                                  prefixIcon: Icon(Icons.language)),
-                                              obscureText: true,
-                                              validator: (val) => val.length < 6
-                                                  ? 'Enter n password 6+ chars long'
-                                                  : null,
-                                            ),
-                                          ),
-                                        ), 
+                          //                         hintText: 'Country',
+                          //                         hintStyle: TextStyle(
+                          //                             color: Colors.blue[200],
+                          //                             fontSize: 15.0),
+                          //                         border: OutlineInputBorder(
+                          //                             borderRadius:
+                          //                                 BorderRadius.circular(25.0)),
+                          //                         prefixIcon: Icon(Icons.language)),
+                          //                     obscureText: true,
+                          //                     validator: (val) => val.length < 6
+                          //                         ? 'Enter n password 6+ chars long'
+                          //                         : null,
+                          //                   ),
+                          //                 ),
+                          //               ), 
                                       
-                                      Flexible(
+                          //             Flexible(
                                         
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(right:30.0),
-                                            child: TextFormField(
-                                              decoration: InputDecoration(
-                                                  hintText: 'Age',
-                                                  hintStyle: TextStyle(
-                                                      color: Colors.blue[200],
-                                                      fontSize: 15.0),
-                                                  border: OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(25.0)),
-                                                  prefixIcon: Icon(Icons.date_range)),
-                                              validator: (val) => val.isEmpty
-                                                  ? 'Enter an valid email '
-                                                  : null,
-                                            ),
-                                          ),
-                                        ),
+                          //                 child: Padding(
+                          //                   padding: const EdgeInsets.only(right:30.0),
+                          //                   child: TextFormField(
+                          //                     decoration: InputDecoration(
+                          //                         hintText: 'Age',
+                          //                         hintStyle: TextStyle(
+                          //                             color: Colors.blue[200],
+                          //                             fontSize: 15.0),
+                          //                         border: OutlineInputBorder(
+                          //                             borderRadius:
+                          //                                 BorderRadius.circular(25.0)),
+                          //                         prefixIcon: Icon(Icons.date_range)),
+                          //                     validator: (val) => val.isEmpty
+                          //                         ? 'Enter an valid email '
+                          //                         : null,
+                          //                   ),
+                          //                 ),
+                          //               ),
                                       
-                                    ],
-                                  )
-                                ],
-                              ),
-                           ),
+                          //           ],
+                          //         )
+                          //       ],
+                          //     ),
+                          //  ),
                           SizedBox(height: 20.0),
                           Padding(
                             padding:
@@ -277,26 +292,7 @@ class _RegisterState extends State<Register> {
                               onPressed: () {},
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 75.0),
-                            child: RaisedButton(
-                              color: Colors.lightBlue[100],
-                              padding: const EdgeInsets.all(8.0),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(10.0),
-                              ),
-                              child: Text(
-                                '  Login  ',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 17,
-                                    fontFamily: 'Georgia'),
-                              ),
-                              onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
-                              },
-                            ),
-                          ),
+                          
                           SizedBox(height: 40.0),
                           Text(
                             'OR Create Account with...',

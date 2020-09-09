@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:zoda/screens/Home/home.dart';
 import 'package:zoda/screens/migration/migrationHome.dart';
@@ -86,22 +87,20 @@ class _StudentHomeState extends State<StudentHome> {
               },
             ),
             // IconButton(icon: Icon(Icons.account_balance), onPressed: null)
-            Padding(
-                padding: const EdgeInsets.only(top: 5.0),
-                child: Row(children: <Widget>[
-                  SmoothStarRating(
-                    rating: university[index].uniEvaluation.toDouble(),
-                    isReadOnly: true,
-                    size: 20,
-                    filledIconData: Icons.star,
-                    halfFilledIconData: Icons.star_half,
-                    defaultIconData: Icons.star_border,
-                    starCount: 5,
-                    allowHalfRating: true,
-                    spacing: 2.0,
-                    onRated: null,
-                  ),
-                ])),
+            Row(children: <Widget>[
+              SmoothStarRating(
+                rating: university[index].uniEvaluation.toDouble(),
+                isReadOnly: true,
+                size: 20,
+                filledIconData: Icons.star,
+                halfFilledIconData: Icons.star_half,
+                defaultIconData: Icons.star_border,
+                starCount: 5,
+                allowHalfRating: true,
+                spacing: 2.0,
+                onRated: null,
+              ),
+            ]),
           ],
         ),
       ),
@@ -117,7 +116,7 @@ class _StudentHomeState extends State<StudentHome> {
 
   Widget _buildCard(int k) {
     return Padding(
-      padding: const EdgeInsets.only(left:40.0, right: 40.0),
+      padding: const EdgeInsets.only(left: 10.0, right: 10.0),
       child: Container(
         decoration: new BoxDecoration(
             image: new DecorationImage(
@@ -186,6 +185,9 @@ class _StudentHomeState extends State<StudentHome> {
     });
   }
 
+  //List Visibility
+  bool _Visible = false;
+
   @override
   Widget build(BuildContext context) {
     if (university == null) return Loading();
@@ -226,17 +228,37 @@ class _StudentHomeState extends State<StudentHome> {
                 ],
               )),
             ),
-            Text(
-              'Recommendation',
-              style: TextStyle(fontSize: 18, color: Colors.black),
+            Row(
+              children: [
+                Text(
+                  'Recommendation',
+                  style: TextStyle(fontSize: 18, color: Colors.black),
+                ),
+               Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: IconButton(
+                    icon: Icon(FontAwesomeIcons.angleDoubleDown),
+                   onPressed: (){
+                     setState(() {
+                        _Visible = !_Visible;
+                      });
+                   })
+                ),
+              ],
             ),
-            Expanded(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 10,
-                  itemBuilder: (BuildContext context, int index) =>
-                      _buildRecommendationCard(context, index)),
+            Visibility(
+              visible: _Visible,
+              child: Container(
+                height: 210,
+                child: Expanded(
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 10,
+                      itemBuilder: (BuildContext context, int index) =>
+                          _buildRecommendationCard(context, index)),
+                ),
+              ),
             ),
             Text(
               'Rest of nations',
@@ -326,4 +348,6 @@ class MyDialogState extends State<MyDialog> {
       ],
     );
   }
+ 
 }
+ 
